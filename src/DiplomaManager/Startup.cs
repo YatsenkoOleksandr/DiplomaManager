@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using DiplomaManager.BLL.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -22,13 +23,31 @@ namespace DiplomaManager
             Configuration = builder.Build();
         }
 
+        public IContainer ApplicationContainer { get; private set; }
+
         public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
             services.AddMvc();
+
+            // Create the Autofac container builder.
+            var builder = new ContainerBuilder();
+
+            // Add any Autofac modules or registrations.
+            builder.RegisterModule(
+                new ServiceModule(@"Server=(localdb)\mssqllocaldb;Database=diplomamanagerdb;Trusted_Connection=True;"));
+
+            // Populate the services.
+            builder.Populate(services);
+
+            // Build the container.
+            ApplicationContainer = builder.Build();
+
+            // Create and return the service provider.
+            return new AutofacServiceProvider(ApplicationContainer);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

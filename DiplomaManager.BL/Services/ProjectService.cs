@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DiplomaManager.BL.Interfaces;
-using DiplomaManager.BL.RequestDTOs;
+﻿using DiplomaManager.BLL.Interfaces;
 
-namespace DiplomaManager.BL.Services
+namespace DiplomaManager.BLL.Services
 {
     class ProjectService : IProjectService
     {

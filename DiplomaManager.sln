@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B3B2D021-EF3
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiplomaManager", "src\DiplomaManager\DiplomaManager.csproj", "{833A5958-2D5B-42E1-B0EF-CF3A9D33043E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiplomaManager.BL", "DiplomaManager.BL\DiplomaManager.BL.csproj", "{2E155B4E-91B0-481B-A58B-E79D805C5DF2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiplomaManager.BLL", "DiplomaManager.BL\DiplomaManager.BLL.csproj", "{2E155B4E-91B0-481B-A58B-E79D805C5DF2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiplomaManager.DAL", "DiplomaManager.DAL\DiplomaManager.DAL.csproj", "{FCECF167-C700-4A63-BCB6-F68015A0E03E}"
 EndProject

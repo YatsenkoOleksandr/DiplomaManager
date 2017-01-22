@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace DiplomaManager.BL.Interfaces
+namespace DiplomaManager.BLL.Interfaces
 {
     public interface IEmailService
     {

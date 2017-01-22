@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
-using DiplomaManager.BL.Interfaces;
+using DiplomaManager.BLL.Interfaces;
 using MailKit.Net.Smtp;
 using MimeKit;
 
-namespace DiplomaManager.BL.Services
+namespace DiplomaManager.BLL.Services
 {
     public class EmailService : IEmailService
     {

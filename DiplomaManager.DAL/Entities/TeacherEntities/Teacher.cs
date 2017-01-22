@@ -1,0 +1,20 @@
+﻿using System.Collections.Generic;
+using DiplomaManager.DAL.Entities.ProjectEntities;
+using DiplomaManager.DAL.Entities.RequestEntities;
+using DiplomaManager.DAL.Entities.UserEnitites;
+
+namespace DiplomaManager.DAL.Entities.TeacherEntities
+{
+    public class Teacher : User
+    {
+        public int PositionId { get; set; }
+        public Position Position
+        { get; set; }
+
+        public List<Capacity> Capacities
+        { get; set; }
+
+        public List<Project> Projects
+        { get; set; }
+    }
+}
