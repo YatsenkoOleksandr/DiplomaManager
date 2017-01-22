@@ -1,20 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using DiplomaManager.DAL.RequestEntities;
+using DiplomaManager.DAL.StudentEntities;
+using DiplomaManager.DAL.TeacherEntities;
 
 namespace DiplomaManager.DAL.ProjectEntities
 {
     public class Project
     {
-        public int ID
+        public int Id
         { get; set; }
 
-        public StudentEntities.Student Student
+        public int StudentId { get; set; }
+        public Student Student
         { get; set; }
 
-        public TeacherEntities.Teacher Teacher
+        public int TeacherId { get; set; }
+        public Teacher Teacher
         { get; set; }
 
-        public RequestEntities.DevelopmentArea DevelopmentArea
+        public int DevelopmentAreaId { get; set; }
+        public DevelopmentArea DevelopmentArea
         { get; set; }
 
         public DateTime CreationDate

@@ -5,7 +5,7 @@ namespace DiplomaManager.DAL.UserEnitites
 {
     public class User
     {
-        public int ID
+        public int Id
         { get; set; }
 
         public string Login

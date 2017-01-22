@@ -1,19 +1,23 @@
 ﻿using System.Collections.Generic;
+using DiplomaManager.DAL.EventsEntities;
+using DiplomaManager.DAL.ProjectEntities;
+using DiplomaManager.DAL.UserEnitites;
 
 namespace DiplomaManager.DAL.StudentEntities
 {
-    public class Student: UserEnitites.User
+    public class Student : User
     {
         public Group Group
         { get; set; }
 
-        public List<ProjectEntities.Project> Projects
+        public List<Project> Projects
         { get; set; }
 
-        public List<EventsEntities.UndergraduateDefense> UndergraduateDefenses
+        public List<UndergraduateDefense> UndergraduateDefenses
         { get; set; }
 
-        public EventsEntities.Defense Defense
+        public int DefenseId { get; set; }
+        public Defense Defense
         { get; set; }
     }
 }

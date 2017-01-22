@@ -1,6 +1,6 @@
 ﻿namespace DiplomaManager.DAL.TeacherEntities
 {
-    public class Admin:Teacher
+    public class Admin : Teacher
     {
     }
 }

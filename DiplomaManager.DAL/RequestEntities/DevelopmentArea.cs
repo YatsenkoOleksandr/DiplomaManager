@@ -4,7 +4,7 @@ namespace DiplomaManager.DAL.RequestEntities
 {
     public class DevelopmentArea
     {
-        public int ID
+        public int Id
         { get; set; }
 
         public string Name

@@ -1,10 +1,14 @@
-﻿namespace DiplomaManager.DAL.RequestEntities
+﻿using DiplomaManager.DAL.TeacherEntities;
+
+namespace DiplomaManager.DAL.RequestEntities
 {
     public class Interest
     {
-        public TeacherEntities.Teacher Teacher
+        public int TeacherId { get; set; }
+        public Teacher Teacher
         { get; set; }
 
+        public int DevelopmentAreaId { get; set; }
         public DevelopmentArea DevelopmentArea
         { get; set; }
     }

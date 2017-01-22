@@ -1,16 +1,19 @@
 ﻿using System;
+using DiplomaManager.DAL.StudentEntities;
 
 namespace DiplomaManager.DAL.EventsEntities
 {
     public class UndergraduateDefense
     {
-        public int ID
+        public int Id
         { get; set; }
 
+        public int CommitteeId { get; set; }
         public Committee Committee
         { get; set; }
 
-        public StudentEntities.Student Student
+        public int StudentId { get; set; }
+        public Student Student
         { get; set; }
 
         public DateTime Date

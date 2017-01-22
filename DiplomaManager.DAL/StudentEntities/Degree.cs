@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using DiplomaManager.DAL.RequestEntities;
 
 namespace DiplomaManager.DAL.StudentEntities
 {
     public class Degree
     {
-        public int ID
+        public int Id
         { get; set; }
 
         public List<DegreeName> DegreeNames
@@ -13,7 +14,7 @@ namespace DiplomaManager.DAL.StudentEntities
         public List<Group> Groups
         { get; set; }
 
-        public List<RequestEntities.Capacity> Capacities
+        public List<Capacity> Capacities
         { get; set; }
     }
 }

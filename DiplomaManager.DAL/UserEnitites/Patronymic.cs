@@ -4,12 +4,13 @@ namespace DiplomaManager.DAL.UserEnitites
 {
     public class Patronymic
     {
-        public int ID
+        public int Id
         { get; set; }
 
-        public int LocaleID
+        public int LocaleId
         { get; set; }
 
+        public int UserId { get; set; }
         public User User
         { get; set; }
 

@@ -4,13 +4,13 @@ namespace DiplomaManager.DAL.ProjectEntities
 {
     public class ProjectTitle
     {
-        public int ID
+        public int Id
         { get; set; }
 
         public Project Project
         { get; set; }
 
-        public int LocaleID
+        public int LocaleId
         { get; set; }
 
         public string Title

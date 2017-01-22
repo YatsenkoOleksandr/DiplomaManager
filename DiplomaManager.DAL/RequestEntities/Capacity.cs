@@ -1,16 +1,20 @@
 ﻿using System;
+using DiplomaManager.DAL.StudentEntities;
+using DiplomaManager.DAL.TeacherEntities;
 
 namespace DiplomaManager.DAL.RequestEntities
 {
     public class Capacity
     {
-        public int ID
+        public int Id
         { get; set; }
 
-        public TeacherEntities.Teacher Teacher
+        public int TeacherId { get; set; }
+        public Teacher Teacher
         { get; set; }
 
-        public StudentEntities.Degree Degree
+        public int DegreeId { get; set; }
+        public Degree Degree
         { get; set; }
 
         public int Count

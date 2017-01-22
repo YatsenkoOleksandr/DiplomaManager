@@ -5,7 +5,7 @@ namespace DiplomaManager.DAL.EventsEntities
 {
     public class Committee
     {
-        public int ID
+        public int Id
         { get; set; }
 
         public List<Appointment> Appointments
