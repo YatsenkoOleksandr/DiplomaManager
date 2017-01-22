@@ -1,20 +1,18 @@
 ﻿using System;
 
-namespace DiplomaManager.DAL.ProjectEntities
+namespace DiplomaManager.BL.UserDTOs
 {
-    public class ProjectTitle
+    public class FirstNameDTO
     {
         public int Id
-        { get; set; }
-
-        public int ProjectId { get; set; }
-        public Project Project
         { get; set; }
 
         public int LocaleId
         { get; set; }
 
-        public string Title
+        public int UserId { get; set; }
+
+        public string Name
         { get; set; }
 
         public DateTime CreationDate

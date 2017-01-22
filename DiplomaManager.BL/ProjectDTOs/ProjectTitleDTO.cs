@@ -1,15 +1,13 @@
 ﻿using System;
 
-namespace DiplomaManager.DAL.ProjectEntities
+namespace DiplomaManager.BL.ProjectDTOs
 {
-    public class ProjectTitle
+    public class ProjectTitleDTO
     {
         public int Id
         { get; set; }
 
         public int ProjectId { get; set; }
-        public Project Project
-        { get; set; }
 
         public int LocaleId
         { get; set; }

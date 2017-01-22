@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DiplomaManager.DAL
 {
-    class ApplicationContext : DbContext
+    public class ApplicationContext : DbContext
     {
         //User
         public DbSet<User> Users { get; set; }

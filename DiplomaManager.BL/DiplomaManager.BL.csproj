@@ -7,7 +7,11 @@
     <EmbeddedResource Include="**\*.resx" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="5.2.0" />
     <PackageReference Include="MailKit" Version="1.10.1" />
-    <PackageReference Include="NETStandard.Library" Version="1.6" />
+    <PackageReference Include="NETStandard.Library" Version="1.6.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DiplomaManager.DAL\DiplomaManager.DAL.csproj" />
   </ItemGroup>
 </Project>
