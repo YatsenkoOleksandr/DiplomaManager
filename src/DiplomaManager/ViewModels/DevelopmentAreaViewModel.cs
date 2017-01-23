@@ -9,6 +9,7 @@ namespace DiplomaManager.ViewModels
 
         [Required]
         [MaxLength(50)]
+        [Display(Name = "Название")]
         public string Name
         { get; set; }
     }

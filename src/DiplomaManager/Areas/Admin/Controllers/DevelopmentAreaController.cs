@@ -25,9 +25,22 @@ namespace DiplomaManager.Areas.Admin.Controllers
             return View(das);
         }
 
-        public IActionResult Edit(int id)
+        public IActionResult Edit(int? id)
         {
-            return View();
+            if (id == null) return NotFound();
+            var daDto = _requestService.GetDevelopmentArea(id.Value);
+            Mapper.Initialize(cfg => cfg.CreateMap<DevelopmentAreaDTO, DevelopmentAreaViewModel>());
+            var da = Mapper.Map<DevelopmentAreaDTO, DevelopmentAreaViewModel>(daDto);
+            return View(da);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(DevelopmentAreaViewModel davm)
+        {
+            Mapper.Initialize(cfg => cfg.CreateMap<DevelopmentAreaViewModel, DevelopmentAreaDTO>());
+            var daDto = Mapper.Map<DevelopmentAreaViewModel, DevelopmentAreaDTO>(davm);
+            _requestService.UpdateDevelopmentArea(daDto);
+            return RedirectToAction("Index");
         }
 
         public IActionResult Delete(int? id)
@@ -43,12 +56,12 @@ namespace DiplomaManager.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(DevelopmentAreaViewModel da)
+        public IActionResult Add(DevelopmentAreaViewModel davm)
         {
             if (ModelState.IsValid)
             {
                 Mapper.Initialize(cfg => cfg.CreateMap<DevelopmentAreaViewModel, DevelopmentAreaDTO>());
-                var daDto = Mapper.Map<DevelopmentAreaViewModel, DevelopmentAreaDTO>(da);
+                var daDto = Mapper.Map<DevelopmentAreaViewModel, DevelopmentAreaDTO>(davm);
                 _requestService.AddDevelopmentArea(daDto);
             }
             return View();

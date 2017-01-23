@@ -5,6 +5,7 @@ namespace DiplomaManager.BLL.Interfaces
 {
     public interface IRequestService
     {
+        DevelopmentAreaDTO GetDevelopmentArea(int id);
         IEnumerable<DevelopmentAreaDTO> GetDevelopmentAreas();
         void AddDevelopmentArea(DevelopmentAreaDTO developmentArea);
         void UpdateDevelopmentArea(DevelopmentAreaDTO developmentArea);

@@ -2,30 +2,34 @@
 @model IEnumerable<DevelopmentAreaViewModel>
 
 @{
-    ViewBag.Title = "Специальности";
+    ViewBag.Title = "Предметные области";
 }
 
-<div class="row">
-    <table class="table table-hover">
-        <thead>
+<h3>Предметные области</h3>
+<hr />
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Название</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var da in Model)
+        {
             <tr>
-                <th>Название</th>
-                <th></th>
+                <td>@da.Name</td>
+                <td>
+                    <a class="btn btn-default" role="button" asp-action="Edit"
+                       asp-route-id="@da.Id">Редактировать</a>
+                    <a class="btn btn-default" role="button" asp-action="Delete"
+                       asp-route-id="@da.Id">Удалить</a>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var da in Model)
-            {
-                <tr>
-                    <td>@da.Name</td>
-                    <td>
-                        <a class="btn btn-default" role="button" asp-action="Edit"
-                           asp-route-id="@da.Id">Редактировать</a>
-                        <a class="btn btn-default" role="button" asp-action="Delete"
-                           asp-route-id="@da.Id">Удалить</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+        }
+    </tbody>
+</table>
+<div>
+    <a class="btn btn-default" role="button" asp-action="Add">Добавить</a>
 </div>

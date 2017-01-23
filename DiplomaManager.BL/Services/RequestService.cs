@@ -9,11 +9,17 @@ namespace DiplomaManager.BLL.Services
 {
     public class RequestService : IRequestService
     {
-        private IUnitOfWork Database { get; set; }
+        private IUnitOfWork Database { get; }
 
         public RequestService(IUnitOfWork uow)
         {
             Database = uow;
+        }
+
+        public DevelopmentAreaDTO GetDevelopmentArea(int id)
+        {
+            Mapper.Initialize(cfg => cfg.CreateMap<DevelopmentArea, DevelopmentAreaDTO>());
+            return Mapper.Map<DevelopmentArea, DevelopmentAreaDTO>(Database.DevelopmentAreas.Get(id));
         }
 
         public IEnumerable<DevelopmentAreaDTO> GetDevelopmentAreas()
@@ -26,17 +32,20 @@ namespace DiplomaManager.BLL.Services
         {
             Mapper.Initialize(cfg => cfg.CreateMap<DevelopmentAreaDTO, DevelopmentArea>());
             Database.DevelopmentAreas.Create(Mapper.Map<DevelopmentAreaDTO, DevelopmentArea>(developmentArea));
+            Database.Save();
         }
 
         public void UpdateDevelopmentArea(DevelopmentAreaDTO developmentArea)
         {
             Mapper.Initialize(cfg => cfg.CreateMap<DevelopmentAreaDTO, DevelopmentArea>());
             Database.DevelopmentAreas.Update(Mapper.Map<DevelopmentAreaDTO, DevelopmentArea>(developmentArea));
+            Database.Save();
         }
 
         public void DeleteDevelopmentArea(int id)
         {
             Database.DevelopmentAreas.Delete(id);
+            Database.Save();
         }
 
         public void Dispose()
