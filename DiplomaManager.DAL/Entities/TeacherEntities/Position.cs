@@ -7,6 +7,9 @@ namespace DiplomaManager.DAL.Entities.TeacherEntities
         public int Id
         { get; set; }
 
+        public List<Teacher> Teachers
+        { get; set; }
+
         public List<PositionName> PositionNames
         { get; set; }
     }

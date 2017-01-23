@@ -52,5 +52,21 @@ namespace DiplomaManager.DAL.EF
         {
 
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Interest>()
+                .HasKey(i => new { i.DevelopmentAreaId, i.TeacherId });
+
+            modelBuilder.Entity<Interest>()
+                .HasOne(i => i.Teacher)
+                .WithMany(t => t.Interests)
+                .HasForeignKey(i => i.TeacherId);
+
+            modelBuilder.Entity<Interest>()
+                .HasOne(i => i.DevelopmentArea)
+                .WithMany(da => da.Interests)
+                .HasForeignKey(i => i.DevelopmentAreaId);
+        }
     }
 }

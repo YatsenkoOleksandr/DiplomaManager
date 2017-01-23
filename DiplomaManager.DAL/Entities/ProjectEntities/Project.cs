@@ -15,7 +15,7 @@ namespace DiplomaManager.DAL.Entities.ProjectEntities
         public Student Student
         { get; set; }
 
-        public int TeacherId { get; set; }
+        public int? TeacherId { get; set; }
         public Teacher Teacher
         { get; set; }
 

@@ -17,7 +17,6 @@ namespace DiplomaManager.DAL.Entities.StudentEntities
         public List<UndergraduateDefense> UndergraduateDefenses
         { get; set; }
 
-        public int DefenseId { get; set; }
         public Defense Defense
         { get; set; }
     }
