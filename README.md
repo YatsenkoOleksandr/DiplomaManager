@@ -4,4 +4,4 @@
   * Entity Framework 6.1.3
   * Autofac (Inversion of Control container)
   
-## Three-Level Program Architecture
+## Three-Level Architecture
