@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using DiplomaManager.DAL.EF;
 using DiplomaManager.DAL.Entities.RequestEntities;
 using DiplomaManager.DAL.Interfaces;
@@ -48,6 +47,11 @@ namespace DiplomaManager.DAL.Repositories
             var da = _db.DevelopmentAreas.Find(id);
             if (da != null)
                 _db.DevelopmentAreas.Remove(da);
+        }
+
+        public bool IsEmpty()
+        {
+            return !_db.DevelopmentAreas.Any();
         }
     }
 }

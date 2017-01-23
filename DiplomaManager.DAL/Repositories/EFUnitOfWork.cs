@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DiplomaManager.DAL.Repositories
 {
-    public class EFUnitOfWork : IDisposable
+    public sealed class EFUnitOfWork : IUnitOfWork
     {
         private readonly DiplomaManagerContext _db;
         private DevelopmentAreaRepository _developmentAreaRepository;
@@ -24,9 +24,14 @@ namespace DiplomaManager.DAL.Repositories
         public IRepository<DevelopmentArea> DevelopmentAreas 
             => _developmentAreaRepository ?? (_developmentAreaRepository = new DevelopmentAreaRepository(_db));
 
+        public void Save()
+        {
+            _db.SaveChanges();
+        }
+
         private bool _disposed;
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (!_disposed)
             {

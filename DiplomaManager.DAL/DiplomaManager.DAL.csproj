@@ -12,9 +12,4 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="1.0.0-msbuild1-final" />
     <PackageReference Include="NETStandard.Library" Version="1.6.1" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Autofac">
-      <HintPath>C:\Users\telan\.nuget\packages\autofac\4.3.0\lib\netstandard1.1\Autofac.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 </Project>
