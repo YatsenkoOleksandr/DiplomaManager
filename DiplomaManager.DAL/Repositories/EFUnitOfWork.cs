@@ -2,7 +2,6 @@
 using DiplomaManager.DAL.EF;
 using DiplomaManager.DAL.Entities.RequestEntities;
 using DiplomaManager.DAL.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace DiplomaManager.DAL.Repositories
 {
@@ -13,12 +12,7 @@ namespace DiplomaManager.DAL.Repositories
 
         public EFUnitOfWork(string connectionString)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<DiplomaManagerContext>();
-            var options = optionsBuilder
-                .UseSqlServer(connectionString)
-                .Options;
-
-            _db = new DiplomaManagerContext(options);
+            _db = new DiplomaManagerContext(connectionString);
         }
 
         public IRepository<DevelopmentArea> DevelopmentAreas 

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using DiplomaManager.DAL.EF;
 using DiplomaManager.DAL.Entities.RequestEntities;
 using DiplomaManager.DAL.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace DiplomaManager.DAL.Repositories
 {
@@ -19,7 +19,7 @@ namespace DiplomaManager.DAL.Repositories
 
         public IEnumerable<DevelopmentArea> GetAll()
         {
-            return _db.DevelopmentAreas.Include(da => da.Interests);
+            return _db.DevelopmentAreas.Include(da => da.Teachers);
         }
 
         public DevelopmentArea Get(int id)
@@ -29,7 +29,7 @@ namespace DiplomaManager.DAL.Repositories
 
         public IEnumerable<DevelopmentArea> Find(Func<DevelopmentArea, bool> predicate)
         {
-            return _db.DevelopmentAreas.Include(da => da.Interests).Where(predicate);
+            return _db.DevelopmentAreas.Include(da => da.Teachers).Where(predicate);
         }
 
         public void Create(DevelopmentArea item)

@@ -1,10 +1,10 @@
-﻿using DiplomaManager.DAL.Entities.EventsEntities;
+﻿using System.Data.Entity;
+using DiplomaManager.DAL.Entities.EventsEntities;
 using DiplomaManager.DAL.Entities.ProjectEntities;
 using DiplomaManager.DAL.Entities.RequestEntities;
 using DiplomaManager.DAL.Entities.StudentEntities;
 using DiplomaManager.DAL.Entities.TeacherEntities;
 using DiplomaManager.DAL.Entities.UserEnitites;
-using Microsoft.EntityFrameworkCore;
 
 namespace DiplomaManager.DAL.EF
 {
@@ -34,7 +34,7 @@ namespace DiplomaManager.DAL.EF
         //Request
         public DbSet<Capacity> Capacities { get; set; }
         public DbSet<DevelopmentArea> DevelopmentAreas { get; set; }
-        public DbSet<Interest> Interests { get; set; }
+        //public DbSet<Interest> Interests { get; set; }
 
         //Event
         public DbSet<Appointment> Appointments { get; set; }
@@ -42,31 +42,26 @@ namespace DiplomaManager.DAL.EF
         public DbSet<Defense> Defenses { get; set; }
         public DbSet<UndergraduateDefense> UndergraduateDefenses { get; set; }
 
-        /*public ApplicationContext()
+        public DiplomaManagerContext(string connectionString)
+            : base(connectionString)
         {
-
-        }*/
-
-        public DiplomaManagerContext(DbContextOptions options)
-            : base(options)
-        {
-
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Interest>()
-                .HasKey(i => new { i.DevelopmentAreaId, i.TeacherId });
+            modelBuilder.Entity<Teacher>()
+                        .HasMany(t => t.DevelopmentAreas)
+                        .WithMany(da => da.Teachers)
+                        .Map(i =>
+                        {
+                            i.MapLeftKey("DevelopmentAreaId");
+                            i.MapRightKey("TeacherId");
+                            i.ToTable("Interest");
+                        });
 
-            modelBuilder.Entity<Interest>()
-                .HasOne(i => i.Teacher)
-                .WithMany(t => t.Interests)
-                .HasForeignKey(i => i.TeacherId);
-
-            modelBuilder.Entity<Interest>()
-                .HasOne(i => i.DevelopmentArea)
-                .WithMany(da => da.Interests)
-                .HasForeignKey(i => i.DevelopmentAreaId);
+            modelBuilder.Entity<Defense>()
+                .HasRequired(d => d.Student)
+                .WithOptional(s => s.Defense);
         }
     }
 }

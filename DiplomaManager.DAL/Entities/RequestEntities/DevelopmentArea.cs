@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using DiplomaManager.DAL.Entities.TeacherEntities;
 
 namespace DiplomaManager.DAL.Entities.RequestEntities
 {
@@ -13,7 +14,7 @@ namespace DiplomaManager.DAL.Entities.RequestEntities
         public string Name
         { get; set; }
 
-        public List<Interest> Interests
+        public List<Teacher> Teachers
         { get; set; }
     }
 }
