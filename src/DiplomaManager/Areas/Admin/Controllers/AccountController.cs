@@ -19,7 +19,6 @@ namespace DiplomaManager.Areas.Admin.Controllers
             UserService = userService;
         }
 
-        [AllowAnonymous]
         [HttpGet]
         public IActionResult Login()
         {
