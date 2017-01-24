@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace DiplomaManager.DAL.Entities.ProjectEntities
 {
@@ -14,6 +15,8 @@ namespace DiplomaManager.DAL.Entities.ProjectEntities
         public int LocaleId
         { get; set; }
 
+        [Required]
+        [MaxLength(100)]
         public string Title
         { get; set; }
 

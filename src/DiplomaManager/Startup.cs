@@ -54,6 +54,14 @@ namespace DiplomaManager
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory
             , IApplicationLifetime appLifetime)
         {
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationScheme = "Admin",
+                LoginPath = new Microsoft.AspNetCore.Http.PathString("/Admin/Account/Login"),
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true
+            });
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
@@ -93,7 +101,7 @@ namespace DiplomaManager
             builder.RegisterModule(
                 new ServiceModule("Server=(local);Database=diplomamanagerdb;Trusted_Connection=True;"));
             builder.RegisterType<RequestService>().As<IRequestService>();
+            builder.RegisterType<UserService>().As<IUserService>();
         }
-
     }
 }

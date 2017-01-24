@@ -9,7 +9,7 @@ namespace DiplomaManager.DAL.Entities.TeacherEntities
     [Table("Teachers")]
     public class Teacher : User
     {
-        public int PositionId { get; set; }
+        public int? PositionId { get; set; }
         public Position Position
         { get; set; }
 

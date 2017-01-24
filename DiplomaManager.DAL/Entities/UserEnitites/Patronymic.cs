@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace DiplomaManager.DAL.Entities.UserEnitites
 {
@@ -14,6 +15,8 @@ namespace DiplomaManager.DAL.Entities.UserEnitites
         public User User
         { get; set; }
 
+        [Required]
+        [MaxLength(50)]
         public string Name
         { get; set; }
 

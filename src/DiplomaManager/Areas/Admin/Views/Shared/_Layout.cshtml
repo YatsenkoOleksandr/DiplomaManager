@@ -33,6 +33,7 @@
                     <li><a asp-area="Admin" asp-controller="Home" asp-action="Index">Главная</a></li>
                     <li><a asp-area="Admin" asp-controller="DevelopmentArea" asp-action="Index">Предметные области</a></li>
                 </ul>
+                @await Html.PartialAsync("_LoginPartial")
             </div>
         </div>
     </div>

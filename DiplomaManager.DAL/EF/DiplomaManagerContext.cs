@@ -23,6 +23,7 @@ namespace DiplomaManager.DAL.EF
         public DbSet<Student> Students { get; set; }
 
         //Teacher
+        public DbSet<Admin> Admins { get; set; }
         public DbSet<Position> Positions { get; set; }
         public DbSet<PositionName> PositionNames { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
@@ -60,8 +61,8 @@ namespace DiplomaManager.DAL.EF
                         });
 
             modelBuilder.Entity<Defense>()
-                .HasRequired(d => d.Student)
-                .WithOptional(s => s.Defense);
+                        .HasRequired(d => d.Student)
+                        .WithOptional(s => s.Defense);
         }
     }
 }
