@@ -13,8 +13,6 @@ namespace DiplomaManager.DAL.Entities.TeacherEntities
         public Position Position
         { get; set; }
 
-        //public List<Interest> Interests { get; set; }
-
         public List<DevelopmentArea> DevelopmentAreas
         { get; set; }
 

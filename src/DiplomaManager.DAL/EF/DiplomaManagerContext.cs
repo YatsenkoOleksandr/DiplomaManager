@@ -61,8 +61,8 @@ namespace DiplomaManager.DAL.EF
                         });
 
             modelBuilder.Entity<Defense>()
-                        .HasRequired(d => d.Student)
-                        .WithOptional(s => s.Defense);
+                .HasRequired(d => d.Student)
+                .WithOptional(s => s.Defense);
         }
     }
 }

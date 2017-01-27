@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
+using System.Linq.Expressions;
 using DiplomaManager.DAL.EF;
 using DiplomaManager.DAL.Entities.RequestEntities;
 using DiplomaManager.DAL.Interfaces;
+using DiplomaManager.DAL.Utils;
 
 namespace DiplomaManager.DAL.Repositories
 {
@@ -17,7 +17,7 @@ namespace DiplomaManager.DAL.Repositories
             _db = context;
         }
 
-        public IEnumerable<DevelopmentArea> GetAll()
+        /*public IEnumerable<DevelopmentArea> Get()
         {
             return _db.DevelopmentAreas.Include(da => da.Teachers);
         }
@@ -52,6 +52,53 @@ namespace DiplomaManager.DAL.Repositories
         public bool IsEmpty()
         {
             return !_db.DevelopmentAreas.Any();
+        }*/
+
+        public IEnumerable<DevelopmentArea> Get()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<DevelopmentArea> Get(Expression<Func<DevelopmentArea, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<DevelopmentArea> Get(Expression<Func<DevelopmentArea, bool>> filter, string[] includePaths)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<DevelopmentArea> Get(Expression<Func<DevelopmentArea, bool>> filter, 
+            string[] includePaths, int? page, int? pageSize = null,
+            params SortExpression<DevelopmentArea>[] sortExpressions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Add(DevelopmentArea entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Remove(DevelopmentArea entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(DevelopmentArea entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DevelopmentArea Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Remove(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

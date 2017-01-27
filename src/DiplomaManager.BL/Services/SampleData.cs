@@ -12,20 +12,20 @@ namespace DiplomaManager.BLL.Services
         {
             using (var scope = container.BeginLifetimeScope())
             {
-                var uow = scope.Resolve<IUnitOfWork>();
+                /*var uow = scope.Resolve<IDiplomaManagerUnitOfWork>();
 
                 //Add DevelopmentAreas
                 if (uow.DevelopmentAreas.IsEmpty())
                 {
-                    uow.DevelopmentAreas.Create(new DevelopmentArea { Name = "Искусственный интеллект" });
-                    uow.DevelopmentAreas.Create(new DevelopmentArea { Name = "Веб-разработка" });
+                    uow.DevelopmentAreas.Add(new DevelopmentArea { Name = "Искусственный интеллект" });
+                    uow.DevelopmentAreas.Add(new DevelopmentArea { Name = "Веб-разработка" });
                     uow.Save();
                 }
 
                 //Add Admin User
                 if (uow.Admins.IsEmpty())
                 {
-                    uow.Admins.Create(new Admin
+                    uow.Admins.Add(new Admin
                     {
                         Login = "admin",
                         Password = "admin",
@@ -33,7 +33,7 @@ namespace DiplomaManager.BLL.Services
                         StatusCreationDate = DateTime.Now
                     });
                     uow.Save();
-                }
+                }*/
             }
         }
     }

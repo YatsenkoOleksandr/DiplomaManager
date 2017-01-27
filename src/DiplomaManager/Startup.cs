@@ -100,6 +100,7 @@ namespace DiplomaManager
         {
             builder.RegisterModule(
                 new ServiceModule("Server=(local);Database=diplomamanagerdb;Trusted_Connection=True;"));
+
             builder.RegisterType<RequestService>().As<IRequestService>();
             builder.RegisterType<UserService>().As<IUserService>();
         }

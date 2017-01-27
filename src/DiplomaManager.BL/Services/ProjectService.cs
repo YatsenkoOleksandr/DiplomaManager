@@ -4,5 +4,6 @@ namespace DiplomaManager.BLL.Services
 {
     class ProjectService : IProjectService
     {
+
     }
 }

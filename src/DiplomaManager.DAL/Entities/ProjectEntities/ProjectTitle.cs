@@ -16,7 +16,7 @@ namespace DiplomaManager.DAL.Entities.ProjectEntities
         { get; set; }
 
         [Required]
-        [MaxLength(100)]
+        [MaxLength(255)]
         public string Title
         { get; set; }
 

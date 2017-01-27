@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using DiplomaManager.DAL.EF;
 using DiplomaManager.DAL.Entities.ProjectEntities;
 using DiplomaManager.DAL.Interfaces;
+using DiplomaManager.DAL.Utils;
 
 namespace DiplomaManager.DAL.Repositories
 {
@@ -17,7 +19,7 @@ namespace DiplomaManager.DAL.Repositories
             _db = context;
         }
 
-        public IEnumerable<Project> GetAll()
+        /*public IEnumerable<Project> GetAll()
         {
             return _db.Projects.Include(p => p.ProjectsTitles);
         }
@@ -52,6 +54,55 @@ namespace DiplomaManager.DAL.Repositories
             var p = _db.Projects.Find(id);
             if (p != null)
                 _db.Projects.Remove(p);
+        }*/
+
+        public IEnumerable<Project> Get()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Project> Get(Expression<Func<Project, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Project> Get(Expression<Func<Project, bool>> filter, string[] includePaths)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Project> Get(Expression<Func<Project, bool>> filter, 
+            string[] includePaths, 
+            int? page, 
+            int? pageSize = null,
+            params SortExpression<Project>[] sortExpressions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Add(Project entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Remove(Project entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(Project entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Project Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Remove(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
