@@ -22,34 +22,46 @@ namespace DiplomaManager.DAL.Repositories
 
         public IEnumerable<TEntity> Get()
         {
-            return Get(null, null, null, null, null);
+            return Get(null, new string[0], null);
         }
 
         public IEnumerable<TEntity> Get(
             Expression<Func<TEntity, bool>> filter)
         {
-            return Get(filter, null, null, null, null);
+            return Get(filter, null, null);
         }
 
         public IEnumerable<TEntity> Get(
             Expression<Func<TEntity, bool>> filter,
             string[] includePaths)
         {
-            return Get(filter, includePaths, null, null, null);
+            return Get(filter, includePaths, null);
         }
 
         public IEnumerable<TEntity> Get(
-           Expression<Func<TEntity, bool>> filter = null,
-           string[] includePaths = null,
-           int? page = null,
-           int? pageSize = null,
-           params SortExpression<TEntity>[] sortExpressions)
+           Expression<Func<TEntity, bool>> filter,
+           string[] includePaths,
+           int? page,
+           int? pageSize = null)
+        {
+            return Get(includePaths, page, pageSize, null, filter);
+        }
+
+        public IEnumerable<TEntity> Get(
+            string[] includePaths = null, 
+            int? page = 0, 
+            int? pageSize = null,  
+            SortExpression<TEntity>[] sortExpressions = null,
+            params Expression<Func<TEntity, bool>>[] filters)
         {
             IQueryable<TEntity> query = _dbSet;
 
-            if (filter != null)
+            if (filters != null)
             {
-                query = query.Where(filter);
+                foreach (var t in filters)
+                {
+                    query = query.Where(t);
+                }
             }
 
             if (includePaths != null)
@@ -63,20 +75,20 @@ namespace DiplomaManager.DAL.Repositories
             if (sortExpressions != null)
             {
                 IOrderedQueryable<TEntity> orderedQuery = null;
-                for (var i = 0; i < sortExpressions.Count(); i++)
+                for (var i = 0; i < sortExpressions.Length; i++)
                 {
                     if (i == 0)
                     {
-                        orderedQuery = sortExpressions[i].SortDirection == ListSortDirection.Ascending 
-                            ? query.OrderBy(sortExpressions[i].SortBy) 
+                        orderedQuery = sortExpressions[i].SortDirection == ListSortDirection.Ascending
+                            ? query.OrderBy(sortExpressions[i].SortBy)
                             : query.OrderByDescending(sortExpressions[i].SortBy);
                     }
                     else
                     {
                         if (orderedQuery != null)
                         {
-                            orderedQuery = sortExpressions[i].SortDirection == ListSortDirection.Ascending 
-                                ? orderedQuery.ThenBy(sortExpressions[i].SortBy) 
+                            orderedQuery = sortExpressions[i].SortDirection == ListSortDirection.Ascending
+                                ? orderedQuery.ThenBy(sortExpressions[i].SortBy)
                                 : orderedQuery.ThenByDescending(sortExpressions[i].SortBy);
                         }
                     }
@@ -94,6 +106,11 @@ namespace DiplomaManager.DAL.Repositories
             }
 
             return query.ToList();
+        }
+
+        public TEntity Get(int id)
+        {
+            return _dbSet.Find(id);
         }
 
         public virtual void Add(TEntity entity)
@@ -116,14 +133,16 @@ namespace DiplomaManager.DAL.Repositories
             _db.Entry(entityToUpdate).State = EntityState.Modified;
         }
 
-        public TEntity Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Remove(int id)
         {
-            throw new NotImplementedException();
+            var entity = _dbSet.Find(id);
+            if (entity != null)
+                _dbSet.Remove(entity);
+        }
+
+        public bool IsEmpty()
+        {
+            return !_db.Set<TEntity>().Any();
         }
     }
 }

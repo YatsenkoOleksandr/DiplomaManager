@@ -13,9 +13,9 @@ namespace DiplomaManager.BLL.Services
 {
     public class UserService : IUserService
     {
-        private IUnitOfWork Database { get; }
+        private IDiplomaManagerUnitOfWork Database { get; }
 
-        public UserService(IUnitOfWork uow)
+        public UserService(IDiplomaManagerUnitOfWork uow)
         {
             Database = uow;
         }
@@ -23,37 +23,37 @@ namespace DiplomaManager.BLL.Services
         public T GetUser<T>(string login, string password)
             where T : UserDTO, new()
         {
-            /*var type = typeof(T).Name;
+            var type = typeof(T).Name;
             Mapper.Initialize(cfg => cfg.CreateMap<Admin, AdminDTO>());
             switch (type)
             {
                 case nameof(AdminDTO):
                 {
-                        var user = Database.Admins.Find(u => u.Login == login && u.Password == password)
-                            .SingleOrDefault();
-                        Mapper.Initialize(cfg => cfg.CreateMap<Admin, AdminDTO>());
+                    var user = Database.Admins.Get(u => u.Login == login && u.Password == password)
+                        .SingleOrDefault();
+                    Mapper.Initialize(cfg => cfg.CreateMap<Admin, AdminDTO>());
                     var userDto = Mapper.Map<Admin, AdminDTO>(user);
                     return (T) (object) userDto;
                 }
                 case nameof(TeacherDTO):
                 {
-                        var user = Database.Teachers.Find(u => u.Login == login && u.Password == password)
-                            .SingleOrDefault();
-                        Mapper.Initialize(cfg => cfg.CreateMap<Teacher, TeacherDTO>());
+                    var user = Database.Teachers.Get(u => u.Login == login && u.Password == password)
+                        .SingleOrDefault();
+                    Mapper.Initialize(cfg => cfg.CreateMap<Teacher, TeacherDTO>());
                     var userDto = Mapper.Map<Teacher, TeacherDTO>(user);
                     return (T) (object) userDto;
                 }
                 case nameof(StudentDTO):
                 {
-                        var user = Database.Students.Find(u => u.Login == login && u.Password == password)
-                            .SingleOrDefault();
-                        Mapper.Initialize(cfg => cfg.CreateMap<Student, StudentDTO>());
+                    var user = Database.Students.Get(u => u.Login == login && u.Password == password)
+                        .SingleOrDefault();
+                    Mapper.Initialize(cfg => cfg.CreateMap<Student, StudentDTO>());
                     var userDto = Mapper.Map<Student, StudentDTO>(user);
                     return (T) (object) userDto;
                 }
                 default:
-                    return null;*/
-            throw new NotImplementedException();
+                    return null;
+            }
         }
     }
 }

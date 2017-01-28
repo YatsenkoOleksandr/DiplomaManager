@@ -1,5 +1,6 @@
 ﻿using System;
 using DiplomaManager.DAL.EF;
+using DiplomaManager.DAL.Entities.ProjectEntities;
 using DiplomaManager.DAL.Entities.RequestEntities;
 using DiplomaManager.DAL.Entities.StudentEntities;
 using DiplomaManager.DAL.Entities.TeacherEntities;
@@ -10,13 +11,14 @@ namespace DiplomaManager.DAL.Repositories
     public sealed class EFUnitOfWork : IDiplomaManagerUnitOfWork
     {
         private readonly DiplomaManagerContext _db;
-        private DevelopmentAreaRepository _developmentAreaRepository;
 
-        private UserRepository<Admin> _adminRepository;
-        private UserRepository<Teacher> _teacherRepository;
-        private UserRepository<Student> _studentRepository;
+        private EFRepository<DevelopmentArea> _developmentAreaRepository;
 
-        private ProjectRepository _projectRepository;
+        private EFRepository<Admin> _adminRepository;
+        private EFRepository<Teacher> _teacherRepository;
+        private EFRepository<Student> _studentRepository;
+
+        private EFRepository<Project> _projectRepository;
 
         public EFUnitOfWork(string connectionString)
         {
@@ -24,19 +26,19 @@ namespace DiplomaManager.DAL.Repositories
         }
 
         public IRepository<DevelopmentArea> DevelopmentAreas 
-            => _developmentAreaRepository ?? (_developmentAreaRepository = new DevelopmentAreaRepository(_db));
+            => _developmentAreaRepository ?? (_developmentAreaRepository = new EFRepository<DevelopmentArea>(_db));
 
-        public ProjectRepository Projects
-            => _projectRepository ?? (_projectRepository = new ProjectRepository(_db));
+        public IRepository<Project> Projects
+            => _projectRepository ?? (_projectRepository = new EFRepository<Project>(_db));
 
         public IRepository<Admin> Admins
-            => _adminRepository ?? (_adminRepository = new UserRepository<Admin>(_db));
+            => _adminRepository ?? (_adminRepository = new EFRepository<Admin>(_db));
 
         public IRepository<Teacher> Teachers
-            => _teacherRepository ?? (_teacherRepository = new UserRepository<Teacher>(_db));
+            => _teacherRepository ?? (_teacherRepository = new EFRepository<Teacher>(_db));
 
         public IRepository<Student> Students
-            => _studentRepository ?? (_studentRepository = new UserRepository<Student>(_db));
+            => _studentRepository ?? (_studentRepository = new EFRepository<Student>(_db));
 
         public void Save()
         {

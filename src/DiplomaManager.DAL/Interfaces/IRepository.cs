@@ -5,17 +5,6 @@ using DiplomaManager.DAL.Utils;
 
 namespace DiplomaManager.DAL.Interfaces
 {
-    /*public interface IRepository<T> where T : class
-    {
-        IEnumerable<T> GetAll();
-        T Get(int id);
-        IEnumerable<T> Find(Func<T, bool> predicate);
-        bool IsEmpty();
-        void Create(T item);
-        void Update(T item);
-        void Delete(int id);
-    }*/
-
     public interface IRepository<TEntity> where TEntity : class
     {
         IEnumerable<TEntity> Get();
@@ -30,11 +19,17 @@ namespace DiplomaManager.DAL.Interfaces
            string[] includePaths);
 
         IEnumerable<TEntity> Get(
-           Expression<Func<TEntity, bool>> filter = null,
-           string[] includePaths = null,
-           int? page = 0,
-           int? pageSize = null,
-           params SortExpression<TEntity>[] sortExpressions);
+           Expression<Func<TEntity, bool>> filter,
+           string[] includePaths,
+           int? page,
+           int? pageSize = null);
+
+        IEnumerable<TEntity> Get(
+            string[] includePaths = null,
+            int? page = 0,
+            int? pageSize = null,
+            SortExpression<TEntity>[] sortExpressions = null,
+            params Expression<Func<TEntity, bool>>[] filters);
 
         void Add(TEntity entity);
 
@@ -43,5 +38,7 @@ namespace DiplomaManager.DAL.Interfaces
         void Remove(TEntity entity);
 
         void Remove(int id);
+
+        bool IsEmpty();
     }
 }

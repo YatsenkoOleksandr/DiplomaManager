@@ -16,7 +16,7 @@ namespace DiplomaManager.BLL.Infrastructure
         protected override void Load(ContainerBuilder builder)
         {
             builder.Register(c => new EFUnitOfWork(_connectionString))
-                .As<IUnitOfWork>()
+                .As<IDiplomaManagerUnitOfWork>()
                 .InstancePerLifetimeScope();
         }
     }

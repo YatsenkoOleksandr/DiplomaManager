@@ -12,7 +12,7 @@ namespace DiplomaManager.BLL.Services
         {
             using (var scope = container.BeginLifetimeScope())
             {
-                /*var uow = scope.Resolve<IDiplomaManagerUnitOfWork>();
+                var uow = scope.Resolve<IDiplomaManagerUnitOfWork>();
 
                 //Add DevelopmentAreas
                 if (uow.DevelopmentAreas.IsEmpty())
@@ -33,7 +33,7 @@ namespace DiplomaManager.BLL.Services
                         StatusCreationDate = DateTime.Now
                     });
                     uow.Save();
-                }*/
+                }
             }
         }
     }
