@@ -6,9 +6,9 @@ namespace DiplomaManager.Controllers
 {
     public class ProjectController : Controller
     {
-        private IProjectService ProjectService { get; }
+        private IRequestService ProjectService { get; }
 
-        public ProjectController(IProjectService projectService)
+        public ProjectController(IRequestService projectService)
         {
             ProjectService = projectService;
         }

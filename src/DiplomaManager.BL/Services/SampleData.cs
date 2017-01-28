@@ -54,7 +54,7 @@ namespace DiplomaManager.BLL.Services
                 //Add Teachers
                 if (uow.Teachers.IsEmpty())
                 {
-                    uow.Teachers.Add(new Teacher { Login = "t1", Password = "123"});
+                    //uow.Teachers.Add(new Teacher { Login = "t1", Password = "123"});
                 }
             }
         }
