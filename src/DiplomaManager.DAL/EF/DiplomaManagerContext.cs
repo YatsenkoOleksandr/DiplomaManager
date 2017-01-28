@@ -2,6 +2,7 @@
 using DiplomaManager.DAL.Entities.EventsEntities;
 using DiplomaManager.DAL.Entities.ProjectEntities;
 using DiplomaManager.DAL.Entities.RequestEntities;
+using DiplomaManager.DAL.Entities.SharedEntities;
 using DiplomaManager.DAL.Entities.StudentEntities;
 using DiplomaManager.DAL.Entities.TeacherEntities;
 using DiplomaManager.DAL.Entities.UserEnitites;
@@ -11,6 +12,7 @@ namespace DiplomaManager.DAL.EF
     public class DiplomaManagerContext : DbContext
     {
         //User
+        public DbSet<Locale> Locales { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<FirstName> FirstNames { get; set; }
         public DbSet<LastName> LastNames { get; set; }
@@ -35,7 +37,6 @@ namespace DiplomaManager.DAL.EF
         //Request
         public DbSet<Capacity> Capacities { get; set; }
         public DbSet<DevelopmentArea> DevelopmentAreas { get; set; }
-        //public DbSet<Interest> Interests { get; set; }
 
         //Event
         public DbSet<Appointment> Appointments { get; set; }

@@ -1,6 +1,6 @@
-Ôªøusing System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
-namespace DiplomaManager.ViewModels
+namespace DiplomaManager.Areas.Admin.ViewModels
 {
     public class DevelopmentAreaViewModel
     {
@@ -9,7 +9,7 @@ namespace DiplomaManager.ViewModels
 
         [Required]
         [MaxLength(50)]
-        [Display(Name = "–ù–∞–∑–≤–∞–Ω–∏–µ")]
+        [Display(Name = "Õ‡Á‚‡ÌËÂ")]
         public string Name
         { get; set; }
     }

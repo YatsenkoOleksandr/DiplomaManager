@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using DiplomaManager.DAL.Entities.SharedEntities;
 
 namespace DiplomaManager.DAL.Entities.TeacherEntities
 {
@@ -7,7 +8,8 @@ namespace DiplomaManager.DAL.Entities.TeacherEntities
         public int Id
         { get; set; }
 
-        public int LocaleId
+        public int LocaleId { get; set; }
+        public Locale Locale
         { get; set; }
 
         [Required]

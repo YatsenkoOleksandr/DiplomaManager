@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using DiplomaManager.DAL.Entities.SharedEntities;
 
 namespace DiplomaManager.DAL.Entities.UserEnitites
 {
@@ -8,7 +9,8 @@ namespace DiplomaManager.DAL.Entities.UserEnitites
         public int Id
         { get; set; }
 
-        public int LocaleId
+        public int LocaleId { get; set; }
+        public Locale Locale
         { get; set; }
 
         public int UserId { get; set; }

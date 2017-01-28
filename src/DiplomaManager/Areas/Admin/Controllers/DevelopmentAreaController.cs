@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
+using DiplomaManager.Areas.Admin.ViewModels;
 using DiplomaManager.BLL.DTOs.RequestDTOs;
 using DiplomaManager.BLL.Interfaces;
 using DiplomaManager.ViewModels;
