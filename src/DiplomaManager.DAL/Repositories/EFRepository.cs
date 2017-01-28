@@ -60,7 +60,8 @@ namespace DiplomaManager.DAL.Repositories
             {
                 foreach (var t in filters)
                 {
-                    query = query.Where(t);
+                    if (t != null)
+                        query = query.Where(t);
                 }
             }
 
