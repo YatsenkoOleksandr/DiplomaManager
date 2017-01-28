@@ -25,7 +25,8 @@ namespace DiplomaManager.BLL.Services
         public IEnumerable<DevelopmentAreaDTO> GetDevelopmentAreas()
         {
             Mapper.Initialize(cfg => cfg.CreateMap<DevelopmentArea, DevelopmentAreaDTO>());
-            return Mapper.Map<IEnumerable<DevelopmentArea>, List<DevelopmentAreaDTO>>(Database.DevelopmentAreas.Get());
+            var das = Database.DevelopmentAreas.Get();
+            return Mapper.Map<IEnumerable<DevelopmentArea>, List<DevelopmentAreaDTO>>(das);
         }
 
         public void AddDevelopmentArea(DevelopmentAreaDTO developmentArea)

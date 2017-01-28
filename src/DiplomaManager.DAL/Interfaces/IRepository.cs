@@ -28,8 +28,8 @@ namespace DiplomaManager.DAL.Interfaces
             string[] includePaths = null,
             int? page = 0,
             int? pageSize = null,
-            SortExpression<TEntity>[] sortExpressions = null,
-            params Expression<Func<TEntity, bool>>[] filters);
+            FilterExpression<TEntity>[] filters = null,
+            params SortExpression<TEntity>[] sortExpressions);
 
         void Add(TEntity entity);
 

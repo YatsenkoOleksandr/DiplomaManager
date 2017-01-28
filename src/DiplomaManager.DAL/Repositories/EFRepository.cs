@@ -22,7 +22,7 @@ namespace DiplomaManager.DAL.Repositories
 
         public IEnumerable<TEntity> Get()
         {
-            return Get(null, new string[0], null);
+            return Get(null, null, null, null, null);
         }
 
         public IEnumerable<TEntity> Get(
@@ -44,15 +44,15 @@ namespace DiplomaManager.DAL.Repositories
            int? page,
            int? pageSize = null)
         {
-            return Get(includePaths, page, pageSize, null, filter);
+            return Get(includePaths, page, pageSize);
         }
 
         public IEnumerable<TEntity> Get(
             string[] includePaths = null, 
             int? page = 0, 
-            int? pageSize = null,  
-            SortExpression<TEntity>[] sortExpressions = null,
-            params Expression<Func<TEntity, bool>>[] filters)
+            int? pageSize = null,
+            FilterExpression<TEntity>[] filters = null,
+            params SortExpression<TEntity>[] sortExpressions)
         {
             IQueryable<TEntity> query = _dbSet;
 
@@ -61,7 +61,7 @@ namespace DiplomaManager.DAL.Repositories
                 foreach (var t in filters)
                 {
                     if (t != null)
-                        query = query.Where(t);
+                        query = query.Where(t.Filter);
                 }
             }
 
