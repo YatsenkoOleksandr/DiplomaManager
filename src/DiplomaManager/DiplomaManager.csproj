@@ -35,7 +35,4 @@
     <ProjectReference Include="..\DiplomaManager.BL\DiplomaManager.BLL.csproj" />
     <ProjectReference Include="..\DiplomaManager.DAL\DiplomaManager.DAL.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Project\" />
-  </ItemGroup>
 </Project>

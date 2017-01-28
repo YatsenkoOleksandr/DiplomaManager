@@ -1,4 +1,4 @@
-﻿namespace DiplomaManager.Areas.Admin.ViewModels
+﻿namespace DiplomaManager.ViewModels
 {
     public class TeacherViewModel
     {
