@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using AutoMapper;
 using DiplomaManager.BLL.DTOs.RequestDTOs;
 using DiplomaManager.BLL.DTOs.TeacherDTOs;
@@ -51,7 +53,7 @@ namespace DiplomaManager.BLL.Services
             Database.Save();
         }
 
-        public IEnumerable<TeacherDTO> GetTeachers()
+        public IEnumerable<TeacherDTO> GetTeachers(CultureInfo cultureInfo = null)
         {
             var teachers = Database.Teachers.Get();
             Mapper.Initialize(cfg => cfg.CreateMap<Teacher, TeacherDTO>());

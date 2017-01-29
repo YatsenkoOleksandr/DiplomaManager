@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using System.Linq;
 using Autofac;
 using DiplomaManager.DAL.Entities.RequestEntities;
 using DiplomaManager.DAL.Entities.SharedEntities;
@@ -39,9 +41,12 @@ namespace DiplomaManager.BLL.Services
                 //Add Locales
                 if (uow.Locales.IsEmpty())
                 {
-                    uow.Locales.Add(new Locale { Name = "English", NativeName = "English" });
-                    uow.Locales.Add(new Locale { Name = "Russian", NativeName = "Русский" });
-                    uow.Locales.Add(new Locale { Name = "Ukrainian", NativeName = "Українська" });
+                    var cultures = CultureInfo.GetCultures(CultureTypes.AllCultures)
+                          .Except(CultureInfo.GetCultures(CultureTypes.SpecificCultures));
+                    foreach (var culture in cultures)
+                    {
+                        uow.Locales.Add(new Locale { Name = culture.Name, NativeName = culture.NativeName });
+                    }
                     uow.Save();
                 }
 
