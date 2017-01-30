@@ -40,5 +40,7 @@ namespace DiplomaManager.DAL.Interfaces
         void Remove(int id);
 
         bool IsEmpty();
+
+        bool IsEmpty(FilterExpression<TEntity> expression);
     }
 }

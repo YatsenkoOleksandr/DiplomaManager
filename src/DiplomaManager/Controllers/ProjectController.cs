@@ -1,4 +1,5 @@
-﻿using DiplomaManager.BLL.Interfaces;
+﻿using System.Linq;
+using DiplomaManager.BLL.Interfaces;
 using DiplomaManager.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +16,16 @@ namespace DiplomaManager.Controllers
 
         public IActionResult Index()
         {
-            //ViewBag.Teachers = ProjectService.GetTeachers();
+            var teachers = ProjectService.GetTeachers("ru");
+            var teachersFio = teachers.Select(t =>
+                new TeacherViewModel()
+                {
+                    Id = t.Id,
+                    FirstName = t.FirstNames[0].Name,
+                    LastName = t.LastNames[0].Name,
+                    Patronymic = t.Patronymics[0].Name
+                });
+            ViewBag.Teachers = teachersFio;
             ViewBag.DevelopmentAreas = ProjectService.GetDevelopmentAreas();
 
             return View();

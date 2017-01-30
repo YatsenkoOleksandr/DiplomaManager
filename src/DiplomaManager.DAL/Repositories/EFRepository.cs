@@ -44,7 +44,7 @@ namespace DiplomaManager.DAL.Repositories
            int? page,
            int? pageSize = null)
         {
-            return Get(includePaths, page, pageSize);
+            return Get(includePaths, page, pageSize, new[] { new FilterExpression<TEntity>(filter) });
         }
 
         public IEnumerable<TEntity> Get(
@@ -144,6 +144,11 @@ namespace DiplomaManager.DAL.Repositories
         public bool IsEmpty()
         {
             return !_db.Set<TEntity>().Any();
+        }
+
+        public bool IsEmpty(FilterExpression<TEntity> expression)
+        {
+            return !_db.Set<TEntity>().Any(expression.Filter);
         }
     }
 }

@@ -9,5 +9,10 @@ namespace DiplomaManager.ViewModels
 
         [Display(Name = "Предметная область")]
         public int DevelopmentAreaId { get; set; }
+
+        [Required]
+        [MaxLength(255)]
+        [Display(Name = "Тема работы")]
+        public string Title { get; set; }
     }
 }

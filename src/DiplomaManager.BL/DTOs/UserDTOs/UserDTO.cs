@@ -24,10 +24,10 @@ namespace DiplomaManager.BLL.DTOs.UserDTOs
         public DateTime StatusCreationDate
         { get; set; }
 
-        public List<FirstName> FirstNames
+        public List<FirstNameDTO> FirstNames
         { get; set; }
 
-        public List<LastName> LastNames
+        public List<LastNameDTO> LastNames
         { get; set; }
 
         public List<PatronymicDTO> Patronymics

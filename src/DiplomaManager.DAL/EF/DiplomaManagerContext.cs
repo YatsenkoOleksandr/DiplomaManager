@@ -1,4 +1,8 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Reflection;
 using DiplomaManager.DAL.Entities.EventsEntities;
 using DiplomaManager.DAL.Entities.ProjectEntities;
 using DiplomaManager.DAL.Entities.RequestEntities;
@@ -47,6 +51,7 @@ namespace DiplomaManager.DAL.EF
         public DiplomaManagerContext(string connectionString)
             : base(connectionString)
         {
+            Configuration.LazyLoadingEnabled = false;
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

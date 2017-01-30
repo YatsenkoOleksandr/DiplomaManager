@@ -5,7 +5,9 @@ using Autofac;
 using DiplomaManager.DAL.Entities.RequestEntities;
 using DiplomaManager.DAL.Entities.SharedEntities;
 using DiplomaManager.DAL.Entities.TeacherEntities;
+using DiplomaManager.DAL.Entities.UserEnitites;
 using DiplomaManager.DAL.Interfaces;
+using DiplomaManager.DAL.Utils;
 
 namespace DiplomaManager.BLL.Services
 {
@@ -16,27 +18,6 @@ namespace DiplomaManager.BLL.Services
             using (var scope = container.BeginLifetimeScope())
             {
                 var uow = scope.Resolve<IDiplomaManagerUnitOfWork>();
-
-                //Add DevelopmentAreas
-                if (uow.DevelopmentAreas.IsEmpty())
-                {
-                    uow.DevelopmentAreas.Add(new DevelopmentArea { Name = "Искусственный интеллект" });
-                    uow.DevelopmentAreas.Add(new DevelopmentArea { Name = "Веб-разработка" });
-                    uow.Save();
-                }
-
-                //Add Admin User
-                if (uow.Admins.IsEmpty())
-                {
-                    uow.Admins.Add(new Admin
-                    {
-                        Login = "admin",
-                        Password = "admin",
-                        Email = "admin@mail.ru",
-                        StatusCreationDate = DateTime.Now
-                    });
-                    uow.Save();
-                }
 
                 //Add Locales
                 if (uow.Locales.IsEmpty())
@@ -50,16 +31,110 @@ namespace DiplomaManager.BLL.Services
                     uow.Save();
                 }
 
+                //Add DevelopmentAreas
+                if (uow.DevelopmentAreas.IsEmpty())
+                {
+                    uow.DevelopmentAreas.Add(new DevelopmentArea { Name = "Искусственный интеллект" });
+                    uow.DevelopmentAreas.Add(new DevelopmentArea { Name = "Веб-разработка" });
+
+                    uow.Save();
+                }
+
+                //Add Admin User
+                if (uow.Admins.IsEmpty())
+                {
+                    uow.Admins.Add(new Admin
+                    {
+                        Login = "admin",
+                        Password = "admin",
+                        Email = "admin@mail.ru",
+                        StatusCreationDate = DateTime.Now
+                    });
+
+                    uow.Save();
+
+                    uow.FirstNames.Add(
+                        new FirstName { CreationDate = DateTime.Now, LocaleId = 193, Name = "Андрей", UserId = 1 });
+                    uow.LastNames.Add(
+                        new LastName { CreationDate = DateTime.Now, LocaleId = 193, Name = "Телешев", UserId = 1 });
+                    uow.Patronymics.Add(
+                        new Patronymic { CreationDate = DateTime.Now, LocaleId = 193, Name = "Максимович", UserId = 1 });
+
+                    uow.Save();
+                }
+
                 //Add Positions
                 if (uow.Positions.IsEmpty())
                 {
-                    
+                    uow.Positions.Add(new Position());
+                    uow.PositionNames.Add(new PositionName
+                        {
+                            Name = "Кандидат технических наук",
+                            LocaleId = 1,
+                            PositionId = 1
+                        });
+
+                    uow.Positions.Add(new Position());
+                    uow.PositionNames.Add(new PositionName
+                    {
+                        Name = "Профессор",
+                        LocaleId = 1,
+                        PositionId = 2
+                    });
+
+                    uow.Save();
                 }
 
                 //Add Teachers
-                if (uow.Teachers.IsEmpty())
+                if (uow.Teachers.IsEmpty(new FilterExpression<Teacher>(t => !(t is Admin))))
                 {
-                    //uow.Teachers.Add(new Teacher { Login = "t1", Password = "123"});
+                    uow.Teachers.Add(new Teacher
+                    {
+                        Login = "t1",
+                        Password = "123",
+                        Email = "te@te.ru", 
+                        PositionId = 2,
+                        StatusCreationDate = DateTime.Now
+                    });
+
+                    uow.Save();
+
+                    uow.FirstNames.Add(
+                        new FirstName { CreationDate = DateTime.Now, LocaleId = 193, Name = "Андрей", UserId = 2 });
+                    uow.FirstNames.Add(
+                        new FirstName { CreationDate = DateTime.Now, LocaleId = 53, Name = "Andrew", UserId = 2 });
+
+                    uow.LastNames.Add(
+                        new LastName { CreationDate = DateTime.Now, LocaleId = 193, Name = "Рыбкин", UserId = 2 });
+                    uow.LastNames.Add(
+                        new LastName { CreationDate = DateTime.Now, LocaleId = 53, Name = "Rybkin", UserId = 2 });
+
+                    uow.Patronymics.Add(
+                        new Patronymic { CreationDate = DateTime.Now, LocaleId = 193, Name = "Александрович", UserId = 2 });
+                    uow.Patronymics.Add(
+                        new Patronymic { CreationDate = DateTime.Now, LocaleId = 53, Name = "Aleksandrovich", UserId = 2 });
+
+                    uow.Save();
+
+                    uow.Teachers.Add(new Teacher
+                    {
+                        Login = "t2",
+                        Password = "123",
+                        Email = "lu@lu.ru",
+                        PositionId = 1,
+                        StatusCreationDate = DateTime.Now
+                    });
+
+                    uow.Save();
+
+                    uow.FirstNames.Add(
+                        new FirstName { CreationDate = DateTime.Now, LocaleId = 193, Name = "Павел", UserId = 3 });
+                    uow.LastNames.Add(
+                        new LastName { CreationDate = DateTime.Now, LocaleId = 193, Name = "Лучшев", UserId = 3 });
+                    uow.Patronymics.Add(
+                        new Patronymic { CreationDate = DateTime.Now, LocaleId = 193, Name = "Александрович", UserId = 3 });
+
+                    uow.Save();
                 }
             }
         }

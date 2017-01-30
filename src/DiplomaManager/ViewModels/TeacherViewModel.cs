@@ -1,9 +1,13 @@
 ﻿namespace DiplomaManager.ViewModels
 {
-    public class TeacherViewModel
+    public class TeacherViewModel : UserViewModel
     {
-        public int Id { get; set; }
+        public int PositionName { get; set; }
 
-        public int PositionId { get; set; }
+        public override string ToString()
+        {
+            return
+                $"{FirstName} {LastName.Substring(1, 1)}. {Patronymic.Substring(1, 1)}.";
+        }
     }
 }

@@ -5,6 +5,7 @@ using DiplomaManager.DAL.Entities.RequestEntities;
 using DiplomaManager.DAL.Entities.SharedEntities;
 using DiplomaManager.DAL.Entities.StudentEntities;
 using DiplomaManager.DAL.Entities.TeacherEntities;
+using DiplomaManager.DAL.Entities.UserEnitites;
 using DiplomaManager.DAL.Interfaces;
 
 namespace DiplomaManager.DAL.Repositories
@@ -25,6 +26,10 @@ namespace DiplomaManager.DAL.Repositories
 
         private EFRepository<Position> _positionRepository;
         private EFRepository<PositionName> _positionNameRepository;
+
+        private EFRepository<FirstName> _firstNameRepository;
+        private EFRepository<LastName> _lastNameRepository;
+        private EFRepository<Patronymic> _patronymicRepository;
 
         public EFUnitOfWork(string connectionString)
         {
@@ -57,6 +62,15 @@ namespace DiplomaManager.DAL.Repositories
 
         public IRepository<PositionName> PositionNames
             => _positionNameRepository ?? (_positionNameRepository = new EFRepository<PositionName>(_db));
+
+        public IRepository<FirstName> FirstNames
+            => _firstNameRepository ?? (_firstNameRepository = new EFRepository<FirstName>(_db));
+
+        public IRepository<LastName> LastNames
+            => _lastNameRepository ?? (_lastNameRepository = new EFRepository<LastName>(_db));
+
+        public IRepository<Patronymic> Patronymics
+            => _patronymicRepository ?? (_patronymicRepository = new EFRepository<Patronymic>(_db));
 
         public void Save()
         {

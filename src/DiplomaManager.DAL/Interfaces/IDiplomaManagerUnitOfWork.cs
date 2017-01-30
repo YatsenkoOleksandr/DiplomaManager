@@ -3,6 +3,7 @@ using DiplomaManager.DAL.Entities.RequestEntities;
 using DiplomaManager.DAL.Entities.SharedEntities;
 using DiplomaManager.DAL.Entities.StudentEntities;
 using DiplomaManager.DAL.Entities.TeacherEntities;
+using DiplomaManager.DAL.Entities.UserEnitites;
 
 namespace DiplomaManager.DAL.Interfaces
 {
@@ -25,5 +26,11 @@ namespace DiplomaManager.DAL.Interfaces
         IRepository<Position> Positions { get; }
 
         IRepository<PositionName> PositionNames { get; }
+
+        IRepository<FirstName> FirstNames { get; }
+
+        IRepository<LastName> LastNames { get; }
+
+        IRepository<Patronymic> Patronymics { get; }
     }
 }

@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using AutoMapper;
 using DiplomaManager.BLL.DTOs.RequestDTOs;
 using DiplomaManager.BLL.DTOs.TeacherDTOs;
+using DiplomaManager.BLL.DTOs.UserDTOs;
 using DiplomaManager.BLL.Interfaces;
 using DiplomaManager.DAL.Entities.RequestEntities;
 using DiplomaManager.DAL.Entities.TeacherEntities;
+using DiplomaManager.DAL.Entities.UserEnitites;
 using DiplomaManager.DAL.Interfaces;
 
 namespace DiplomaManager.BLL.Services
@@ -53,10 +54,28 @@ namespace DiplomaManager.BLL.Services
             Database.Save();
         }
 
-        public IEnumerable<TeacherDTO> GetTeachers(CultureInfo cultureInfo = null)
+        public IEnumerable<TeacherDTO> GetTeachers(string cultureName = null)
         {
-            var teachers = Database.Teachers.Get();
+            List<Teacher> teachers;
+            if (!string.IsNullOrWhiteSpace(cultureName))
+            {
+                teachers = Database.Teachers.Get(t => !(t is Admin)).ToList();
+
+                Database.FirstNames.Get(
+                    f => f.Locale.Name == cultureName, new [] { "Locale" });
+                Database.LastNames.Get(
+                    l => l.Locale.Name == cultureName, new[] { "Locale" });
+                Database.Patronymics.Get(
+                    p => p.Locale.Name == cultureName, new[] { "Locale" });
+            }
+            else
+            {
+                teachers = Database.Teachers.Get(new [] { "FirstNames", "LastNames", "Patronymics" }).ToList();
+            }
+
             Mapper.Initialize(cfg => cfg.CreateMap<Teacher, TeacherDTO>());
+            Mapper.Initialize(cfg => cfg.CreateMap<PeopleName, PeopleNameDTO>());
+
             var teacherDtos = Mapper.Map<IEnumerable<Teacher>, IEnumerable<TeacherDTO>>(teachers);
             return teacherDtos;
         }
