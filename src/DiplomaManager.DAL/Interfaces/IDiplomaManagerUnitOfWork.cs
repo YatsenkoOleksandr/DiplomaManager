@@ -32,5 +32,11 @@ namespace DiplomaManager.DAL.Interfaces
         IRepository<LastName> LastNames { get; }
 
         IRepository<Patronymic> Patronymics { get; }
+
+        IRepository<Degree> Degrees { get; }
+
+        IRepository<DegreeName> DegreeNames { get; }
+
+        IRepository<Capacity> Capacities { get; }
     }
 }

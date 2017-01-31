@@ -31,6 +31,10 @@ namespace DiplomaManager.DAL.Repositories
         private EFRepository<LastName> _lastNameRepository;
         private EFRepository<Patronymic> _patronymicRepository;
 
+        private EFRepository<Degree> _degreeRepository;
+        private EFRepository<DegreeName> _degreeNameRepository;
+        private EFRepository<Capacity> _capacityRepository;
+
         public EFUnitOfWork(string connectionString)
         {
             _db = new DiplomaManagerContext(connectionString);
@@ -38,39 +42,39 @@ namespace DiplomaManager.DAL.Repositories
 
         public IRepository<Locale> Locales
             => _localeRepository ?? (_localeRepository = new EFRepository<Locale>(_db));
-
         public IRepository<DevelopmentArea> DevelopmentAreas 
             => _developmentAreaRepository ?? (_developmentAreaRepository = new EFRepository<DevelopmentArea>(_db));
 
         public IRepository<Admin> Admins
             => _adminRepository ?? (_adminRepository = new EFRepository<Admin>(_db));
-
         public IRepository<Teacher> Teachers
             => _teacherRepository ?? (_teacherRepository = new EFRepository<Teacher>(_db));
-
         public IRepository<Student> Students
             => _studentRepository ?? (_studentRepository = new EFRepository<Student>(_db));
 
         public IRepository<Project> Projects
             => _projectRepository ?? (_projectRepository = new EFRepository<Project>(_db));
-
         public IRepository<ProjectTitle> ProjectTitles
             => _projectTitleRepository ?? (_projectTitleRepository = new EFRepository<ProjectTitle>(_db));
 
         public IRepository<Position> Positions
             => _positionRepository ?? (_positionRepository = new EFRepository<Position>(_db));
-
         public IRepository<PositionName> PositionNames
             => _positionNameRepository ?? (_positionNameRepository = new EFRepository<PositionName>(_db));
 
         public IRepository<FirstName> FirstNames
             => _firstNameRepository ?? (_firstNameRepository = new EFRepository<FirstName>(_db));
-
         public IRepository<LastName> LastNames
             => _lastNameRepository ?? (_lastNameRepository = new EFRepository<LastName>(_db));
-
         public IRepository<Patronymic> Patronymics
             => _patronymicRepository ?? (_patronymicRepository = new EFRepository<Patronymic>(_db));
+
+        public IRepository<Degree> Degrees
+            => _degreeRepository ?? (_degreeRepository = new EFRepository<Degree>(_db));
+        public IRepository<DegreeName> DegreeNames
+            => _degreeNameRepository ?? (_degreeNameRepository = new EFRepository<DegreeName>(_db));
+        public IRepository<Capacity> Capacities
+            => _capacityRepository ?? (_capacityRepository = new EFRepository<Capacity>(_db));
 
         public void Save()
         {

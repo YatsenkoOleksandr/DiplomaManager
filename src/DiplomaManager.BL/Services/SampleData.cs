@@ -4,6 +4,7 @@ using System.Linq;
 using Autofac;
 using DiplomaManager.DAL.Entities.RequestEntities;
 using DiplomaManager.DAL.Entities.SharedEntities;
+using DiplomaManager.DAL.Entities.StudentEntities;
 using DiplomaManager.DAL.Entities.TeacherEntities;
 using DiplomaManager.DAL.Entities.UserEnitites;
 using DiplomaManager.DAL.Interfaces;
@@ -64,7 +65,7 @@ namespace DiplomaManager.BLL.Services
                 }
 
                 //Add Positions
-                if (uow.Positions.IsEmpty())
+                if (uow.Positions.IsEmpty() && uow.PositionNames.IsEmpty())
                 {
                     uow.Positions.Add(new Position());
                     uow.PositionNames.Add(new PositionName
@@ -133,6 +134,55 @@ namespace DiplomaManager.BLL.Services
                         new LastName { CreationDate = DateTime.Now, LocaleId = 193, Name = "Лучшев", UserId = 3 });
                     uow.Patronymics.Add(
                         new Patronymic { CreationDate = DateTime.Now, LocaleId = 193, Name = "Александрович", UserId = 3 });
+
+                    uow.Save();
+                }
+
+                //Add Degrees
+                if (uow.Degrees.IsEmpty() && uow.DegreeNames.IsEmpty())
+                {
+                    uow.Degrees.Add(new Degree());
+                    uow.DegreeNames.Add(new DegreeName { DegreeId = 1, LocaleId = 193, Name = "Бакалавр"});
+                    uow.DegreeNames.Add(new DegreeName { DegreeId = 1, LocaleId = 53, Name = "Bachelor's degree" });
+
+                    uow.Degrees.Add(new Degree());
+                    uow.DegreeNames.Add(new DegreeName { DegreeId = 2, LocaleId = 193, Name = "Магистр" });
+                    uow.DegreeNames.Add(new DegreeName { DegreeId = 2, LocaleId = 53, Name = "Master's degree" });
+
+                    uow.Save();
+                }
+
+                //Add Capacities
+                if (uow.Capacities.IsEmpty())
+                {
+                    uow.Capacities.Add(new Capacity
+                    {
+                        TeacherId = 2,
+                        Count = 6,
+                        DegreeId = 1,
+                        StudyingYear = DateTime.Now
+                    });
+                    uow.Capacities.Add(new Capacity
+                    {
+                        TeacherId = 2,
+                        Count = 5,
+                        DegreeId = 2,
+                        StudyingYear = DateTime.Now
+                    });
+                    uow.Capacities.Add(new Capacity
+                    {
+                        TeacherId = 3,
+                        Count = 8,
+                        DegreeId = 1,
+                        StudyingYear = DateTime.Now
+                    });
+                    uow.Capacities.Add(new Capacity
+                    {
+                        TeacherId = 3,
+                        Count = 3,
+                        DegreeId = 2,
+                        StudyingYear = DateTime.Now
+                    });
 
                     uow.Save();
                 }
