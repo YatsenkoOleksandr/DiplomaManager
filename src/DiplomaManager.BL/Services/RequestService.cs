@@ -73,8 +73,19 @@ namespace DiplomaManager.BLL.Services
                 teachers = Database.Teachers.Get(new [] { "FirstNames", "LastNames", "Patronymics" }).ToList();
             }
 
-            Mapper.Initialize(cfg => cfg.CreateMap<Teacher, TeacherDTO>());
-            Mapper.Initialize(cfg => cfg.CreateMap<PeopleName, PeopleNameDTO>());
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<PeopleName, PeopleNameDTO>()
+                    .Include<FirstName, FirstNameDTO>()
+                    .Include<LastName, LastNameDTO>()
+                    .Include<Patronymic, PatronymicDTO>();
+
+                cfg.CreateMap<FirstName, FirstNameDTO>();
+                cfg.CreateMap<LastName, LastNameDTO>();
+                cfg.CreateMap<Patronymic, PatronymicDTO>();
+
+                cfg.CreateMap<Teacher, TeacherDTO>();
+            });
 
             var teacherDtos = Mapper.Map<IEnumerable<Teacher>, IEnumerable<TeacherDTO>>(teachers);
             return teacherDtos;

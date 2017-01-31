@@ -18,7 +18,7 @@ namespace DiplomaManager.Controllers
         {
             var teachers = ProjectService.GetTeachers("ru");
             var teachersFio = teachers.Select(t =>
-                new TeacherViewModel()
+                new TeacherViewModel
                 {
                     Id = t.Id,
                     FirstName = t.FirstNames[0].Name,
