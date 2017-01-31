@@ -14,5 +14,20 @@ namespace DiplomaManager.ViewModels
         [MaxLength(255)]
         [Display(Name = "Тема работы")]
         public string Title { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        [Display(Name = "Имя")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        [Display(Name = "Фамилия")]
+        public string LastName { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        [Display(Name = "Отчество")]
+        public string Patronymic { get; set; }
     }
 }
