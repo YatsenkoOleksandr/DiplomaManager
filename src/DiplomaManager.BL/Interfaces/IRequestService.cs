@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using DiplomaManager.BLL.DTOs.RequestDTOs;
+using DiplomaManager.BLL.DTOs.StudentDTOs;
 using DiplomaManager.BLL.DTOs.TeacherDTOs;
 
 namespace DiplomaManager.BLL.Interfaces
@@ -12,6 +13,7 @@ namespace DiplomaManager.BLL.Interfaces
         void UpdateDevelopmentArea(DevelopmentAreaDTO developmentArea);
         void DeleteDevelopmentArea(int id);
 
+        IEnumerable<DegreeDTO> GetDegrees(string cultureName = null);
         IEnumerable<TeacherDTO> GetTeachers(string cultureName = null);
 
         void Dispose();

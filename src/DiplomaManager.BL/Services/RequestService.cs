@@ -2,10 +2,12 @@
 using System.Linq;
 using AutoMapper;
 using DiplomaManager.BLL.DTOs.RequestDTOs;
+using DiplomaManager.BLL.DTOs.StudentDTOs;
 using DiplomaManager.BLL.DTOs.TeacherDTOs;
 using DiplomaManager.BLL.DTOs.UserDTOs;
 using DiplomaManager.BLL.Interfaces;
 using DiplomaManager.DAL.Entities.RequestEntities;
+using DiplomaManager.DAL.Entities.StudentEntities;
 using DiplomaManager.DAL.Entities.TeacherEntities;
 using DiplomaManager.DAL.Entities.UserEnitites;
 using DiplomaManager.DAL.Interfaces;
@@ -89,6 +91,30 @@ namespace DiplomaManager.BLL.Services
 
             var teacherDtos = Mapper.Map<IEnumerable<Teacher>, IEnumerable<TeacherDTO>>(teachers);
             return teacherDtos;
+        }
+
+        public IEnumerable<DegreeDTO> GetDegrees(string cultureName = null)
+        {
+            List<Degree> degrees;
+            if (!string.IsNullOrWhiteSpace(cultureName))
+            {
+                degrees = Database.Degrees.Get().ToList();
+                Database.DegreeNames.Get(dn => dn.Locale.Name == cultureName, new[] { "Locale" });
+            }
+            else
+            {
+                degrees = Database.Degrees.Get(new[] { "DegreeNames" }).ToList();
+            }
+
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<Degree, DegreeDTO>();
+                cfg.CreateMap<DegreeName, DegreeNameDTO>();
+                cfg.CreateMap<Capacity, CapacityDTO>();
+            });
+
+            var degreeDtos = Mapper.Map<IEnumerable<Degree>, IEnumerable<DegreeDTO>>(degrees);
+            return degreeDtos;
         }
 
         public void Dispose()

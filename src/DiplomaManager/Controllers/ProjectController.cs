@@ -25,6 +25,16 @@ namespace DiplomaManager.Controllers
                     LastName = t.LastNames[0].Name,
                     Patronymic = t.Patronymics[0].Name
                 });
+
+            var degrees  = ProjectService.GetDegrees("ru");
+            var degreesNames = degrees.Select(d =>
+                new DegreeViewModel
+                {
+                    Id = d.Id,
+                    Name = d.DegreeNames[0].Name
+                });
+
+            ViewBag.Degrees = degreesNames;
             ViewBag.Teachers = teachersFio;
             ViewBag.DevelopmentAreas = ProjectService.GetDevelopmentAreas();
 

@@ -7,6 +7,9 @@ namespace DiplomaManager.ViewModels
         [Display(Name = "Преподаватель")]
         public int TeacherId { get; set; }
 
+        [Display(Name = "Образовательный уровень")]
+        public int DegreeId { get; set; }
+
         [Display(Name = "Предметная область")]
         public int DevelopmentAreaId { get; set; }
 
