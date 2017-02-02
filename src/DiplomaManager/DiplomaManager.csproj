@@ -48,9 +48,7 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
     <Content Include="wwwroot\js\systemjs.config.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="wwwroot\systemjs.config.js" />
+    <Content Include="wwwroot\request.json" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.ComponentModel.DataAnnotations" />
