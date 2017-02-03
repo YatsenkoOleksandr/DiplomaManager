@@ -20,6 +20,8 @@
             '@angular/router': 'js/router.umd.js',
             '@angular/forms': 'js/forms.umd.js',
 
+            'ng2-select': 'js/ng2-select.umd.js',
+
             // other libraries
             'rxjs': 'js'
         },

@@ -16,7 +16,7 @@ namespace DiplomaManager.Controllers
 
         public IActionResult Index()
         {
-            var teachers = ProjectService.GetTeachers("ru");
+            /*var teachers = ProjectService.GetTeachers("ru");
             var teachersFio = teachers.Select(t =>
                 new TeacherViewModel
                 {
@@ -36,15 +36,24 @@ namespace DiplomaManager.Controllers
 
             ViewBag.Degrees = degreesNames;
             ViewBag.Teachers = teachersFio;
-            ViewBag.DevelopmentAreas = ProjectService.GetDevelopmentAreas();
+            ViewBag.DevelopmentAreas = ProjectService.GetDevelopmentAreas();*/
 
             return View();
         }
 
-        [HttpPost]
-        public IActionResult Create(ProjectViewModel pvm)
+        public IActionResult GetTeachers()
         {
-            return View();
+            var teachers = ProjectService.GetTeachers("ru");
+            var teachersFio = teachers.Select(t =>
+                new TeacherViewModel
+                {
+                    Id = t.Id,
+                    FirstName = t.FirstNames[0].Name,
+                    LastName = t.LastNames[0].Name,
+                    Patronymic = t.Patronymics[0].Name
+                });
+
+            return Json(teachersFio);
         }
     }
 }

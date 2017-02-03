@@ -38,7 +38,8 @@ gulp.task('beforeBuild', function () {
               paths.nodeModules + '@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
               paths.nodeModules + '@angular/http/bundles/http.umd.js',
               paths.nodeModules + '@angular/router/bundles/router.umd.js',
-              paths.nodeModules + '@angular/forms/bundles/forms.umd.js'])
+              paths.nodeModules + '@angular/forms/bundles/forms.umd.js',
+              paths.nodeModules + 'ng2-select/bundles/ng2-select.umd.js'])
         .pipe(gulp.dest(webRoot + 'js/'));
 
     // Copy across the Reactive Extensions files, in the same structure as they are found (as this needs to be preserved)
