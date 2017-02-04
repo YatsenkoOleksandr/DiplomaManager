@@ -1,0 +1,48 @@
+﻿<form>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="teacher">Преподаватель</label>
+            <ng-select id="teacher"
+                       class="ui-select"
+                       [items]="teachers"
+                       placeholder="Не выбран преподаватель">
+            </ng-select>
+        </div>
+        <div class="form-group">
+            <label for="degree">Образовательный уровень</label>
+            <ng-select id="degree"
+                       class="ui-select"
+                       [items]="degrees"
+                       placeholder="Не выбран образовательный уровень">
+            </ng-select>
+        </div>
+        <div class="form-group">
+            <label for="developmentArea">Предметная область</label>
+            <ng-select id="developmentArea"
+                       class="ui-select"
+                       [items]="das"
+                       placeholder="Не выбрана предметная область">
+            </ng-select>
+        </div>
+        <div class="form-group">
+            <label for="lastName">Фамилия</label>
+            <input type="text" id="lastName" class="form-control" placeholder="Введите фамилию" />
+        </div>
+        <div class="form-group">
+            <label for="firstName">Имя</label>
+            <input type="text" id="firstName" class="form-control" placeholder="Введите имя" />
+        </div>
+        <div class="form-group">
+            <label for="patronymic">Отчество</label>
+            <input type="text" id="patronymic" class="form-control" placeholder="Введите отчество" />
+        </div>
+        <div class="form-group">
+            <label for="title">Тема работы</label>
+            <textarea type="text" id="title" class="form-control" placeholder="Введите тему работы"
+                      rows="5"></textarea>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Подать" class="btn btn-primary" />
+        </div>
+    </div>
+</form>

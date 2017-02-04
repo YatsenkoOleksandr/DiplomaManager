@@ -44,5 +44,9 @@ gulp.task('beforeBuild', function () {
 
     // Copy across the Reactive Extensions files, in the same structure as they are found (as this needs to be preserved)
     gulp.src([paths.nodeModules + 'rxjs/**/*.js'], { base: "node_modules/rxjs" })
-        .pipe(gulp.dest(webRoot + 'js/'))
+        .pipe(gulp.dest(webRoot + 'js/'));
+
+    // Copy HTML files from App folder
+    gulp.src(['app/*.html'])
+        .pipe(gulp.dest(webRoot + 'app/'));
 });
