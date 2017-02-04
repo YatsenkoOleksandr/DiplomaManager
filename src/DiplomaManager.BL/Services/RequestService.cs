@@ -11,6 +11,7 @@ using DiplomaManager.DAL.Entities.StudentEntities;
 using DiplomaManager.DAL.Entities.TeacherEntities;
 using DiplomaManager.DAL.Entities.UserEnitites;
 using DiplomaManager.DAL.Interfaces;
+using DiplomaManager.DAL.Utils;
 
 namespace DiplomaManager.BLL.Services
 {
@@ -56,12 +57,22 @@ namespace DiplomaManager.BLL.Services
             Database.Save();
         }
 
-        public IEnumerable<TeacherDTO> GetTeachers(string cultureName = null)
+        public IEnumerable<TeacherDTO> GetTeachers(int? daId = null, string cultureName = null)
         {
             List<Teacher> teachers;
+            var filterExpressions = new List<FilterExpression<Teacher>>
+            { new FilterExpression<Teacher>(t => !(t is Admin)) };
+            var includePaths = new List<string>();
+            if (daId != null)
+            {
+                includePaths.Add("DevelopmentAreas");
+                filterExpressions.Add(new FilterExpression<Teacher>(
+                    t => t.DevelopmentAreas.Any(da => da.Id == daId.Value)));
+            }
             if (!string.IsNullOrWhiteSpace(cultureName))
             {
-                teachers = Database.Teachers.Get(t => !(t is Admin)).ToList();
+                teachers = Database.Teachers.Get(filters: filterExpressions.ToArray(), 
+                    includePaths: includePaths.ToArray()).ToList();
 
                 Database.FirstNames.Get(
                     f => f.Locale.Name == cultureName, new [] { "Locale" });
@@ -72,7 +83,9 @@ namespace DiplomaManager.BLL.Services
             }
             else
             {
-                teachers = Database.Teachers.Get(new [] { "FirstNames", "LastNames", "Patronymics" }).ToList();
+                includePaths.AddRange(new[] { "FirstNames", "LastNames", "Patronymics" });
+                teachers = Database.Teachers.Get(filters: filterExpressions.ToArray(),
+                    includePaths: includePaths.ToArray()).ToList();
             }
 
             Mapper.Initialize(cfg =>

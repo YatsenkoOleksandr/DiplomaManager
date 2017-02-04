@@ -63,7 +63,7 @@ namespace DiplomaManager.DAL.EF
                         {
                             i.MapLeftKey("DevelopmentAreaId");
                             i.MapRightKey("TeacherId");
-                            i.ToTable("Interest");
+                            i.ToTable("Interests");
                         });
 
             modelBuilder.Entity<Defense>()

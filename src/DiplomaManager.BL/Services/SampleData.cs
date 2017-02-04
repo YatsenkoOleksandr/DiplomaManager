@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Autofac;
@@ -95,7 +96,8 @@ namespace DiplomaManager.BLL.Services
                         Password = "123",
                         Email = "te@te.ru", 
                         PositionId = 2,
-                        StatusCreationDate = DateTime.Now
+                        StatusCreationDate = DateTime.Now,
+                        DevelopmentAreas = uow.DevelopmentAreas.Get(da => da.Id == 1).ToList()
                     });
 
                     uow.Save();
@@ -123,7 +125,8 @@ namespace DiplomaManager.BLL.Services
                         Password = "123",
                         Email = "lu@lu.ru",
                         PositionId = 1,
-                        StatusCreationDate = DateTime.Now
+                        StatusCreationDate = DateTime.Now,
+                        DevelopmentAreas = uow.DevelopmentAreas.Get(da => da.Id == 1 || da.Id == 2).ToList()
                     });
 
                     uow.Save();

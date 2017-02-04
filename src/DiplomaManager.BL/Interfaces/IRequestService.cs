@@ -14,7 +14,7 @@ namespace DiplomaManager.BLL.Interfaces
         void DeleteDevelopmentArea(int id);
 
         IEnumerable<DegreeDTO> GetDegrees(string cultureName = null);
-        IEnumerable<TeacherDTO> GetTeachers(string cultureName = null);
+        IEnumerable<TeacherDTO> GetTeachers(int? daId = null, string cultureName = null);
 
         void Dispose();
     }

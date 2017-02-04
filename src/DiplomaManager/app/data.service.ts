@@ -12,8 +12,8 @@ export class DataService {
 
     constructor(private http: Http) { }
 
-    getTeachers(): Observable<Teacher[]> {
-        return this.http.get('/Project/GetTeachers').map((resp: Response) => {
+    getTeachers(daId: number): Observable<Teacher[]> {
+        return this.http.get('/Request/GetTeachers/?daId=' + daId).map((resp: Response) => {
             let teacherList = resp.json();
             let teachers: Teacher[] = [];
             for (let index in teacherList) {
@@ -27,14 +27,14 @@ export class DataService {
     }
 
     getDegrees(): Observable<Degree[]> {
-        return this.http.get('/Project/GetDegrees').map((resp: Response) => {
+        return this.http.get('/Request/GetDegrees').map((resp: Response) => {
             let degreesList = resp.json();
             return degreesList;
         });
     }
 
     getDevelopmentAreas(): Observable<DevelopmentArea[]> {
-        return this.http.get('/Project/GetDevelopmentAreas').map((resp: Response) => {
+        return this.http.get('/Request/GetDevelopmentAreas').map((resp: Response) => {
             let developmentAreaList = resp.json();
             return developmentAreaList;
         });

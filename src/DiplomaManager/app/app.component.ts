@@ -16,15 +16,6 @@ export class AppComponent implements OnInit {
     constructor(private dataService: DataService) { }
 
     ngOnInit() {
-        this.dataService.getTeachers().subscribe((data) => {
-            this.teachers = new Array<SelectItem>(data.length);
-            let index = 0;
-            for (let teacher of data) {
-                this.teachers[index] = new SelectItem(teacher.id, teacher.toString());
-                index++;
-            }
-        });
-
         this.dataService.getDegrees().subscribe((data) => {
             this.degrees = new Array<SelectItem>(data.length);
             let index = 0;
@@ -39,6 +30,17 @@ export class AppComponent implements OnInit {
             let index = 0;
             for (let da of data) {
                 this.das[index] = new SelectItem(da.id, da.name);
+                index++;
+            }
+        });
+    }
+
+    dasSelected(event) {
+        this.dataService.getTeachers(event.id).subscribe((data) => {
+            this.teachers = new Array<SelectItem>(data.length);
+            let index = 0;
+            for (let teacher of data) {
+                this.teachers[index] = new SelectItem(teacher.id, teacher.toString());
                 index++;
             }
         });

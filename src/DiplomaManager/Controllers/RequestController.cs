@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DiplomaManager.Controllers
 {
-    public class ProjectController : Controller
+    public class RequestController : Controller
     {
         private IRequestService ProjectService { get; }
 
-        public ProjectController(IRequestService projectService)
+        public RequestController(IRequestService projectService)
         {
             ProjectService = projectService;
         }
@@ -19,9 +19,9 @@ namespace DiplomaManager.Controllers
             return View();
         }
 
-        public IActionResult GetTeachers()
+        public IActionResult GetTeachers(int? daId)
         {
-            var teachers = ProjectService.GetTeachers("ru");
+            var teachers = ProjectService.GetTeachers(daId, "ru");
             var teachersFio = teachers.Select(t =>
                 new TeacherViewModel
                 {

@@ -1,6 +1,15 @@
 ﻿<form>
     <div class="col-md-4">
         <div class="form-group">
+            <label for="developmentArea">Предметная область</label>
+            <ng-select id="developmentArea"
+                       class="ui-select"
+                       [items]="das"
+                       (selected)="dasSelected($event)"
+                       placeholder="Не выбрана предметная область">
+            </ng-select>
+        </div>
+        <div class="form-group">
             <label for="teacher">Преподаватель</label>
             <ng-select id="teacher"
                        class="ui-select"
@@ -9,7 +18,7 @@
             </ng-select>
         </div>
         <div class="form-group">
-            <label for="degree">Образовательный уровень</label>
+            <label for="degree">Образовательный уровень (бакалавр, магистр)</label>
             <ng-select id="degree"
                        class="ui-select"
                        [items]="degrees"
@@ -17,24 +26,16 @@
             </ng-select>
         </div>
         <div class="form-group">
-            <label for="developmentArea">Предметная область</label>
-            <ng-select id="developmentArea"
-                       class="ui-select"
-                       [items]="das"
-                       placeholder="Не выбрана предметная область">
-            </ng-select>
-        </div>
-        <div class="form-group">
             <label for="lastName">Фамилия</label>
-            <input type="text" id="lastName" class="form-control" placeholder="Введите фамилию" />
+            <input type="text" id="lastName" class="form-control" placeholder="Введите фамилию"/>
         </div>
         <div class="form-group">
             <label for="firstName">Имя</label>
-            <input type="text" id="firstName" class="form-control" placeholder="Введите имя" />
+            <input type="text" id="firstName" class="form-control" placeholder="Введите имя"/>
         </div>
         <div class="form-group">
             <label for="patronymic">Отчество</label>
-            <input type="text" id="patronymic" class="form-control" placeholder="Введите отчество" />
+            <input type="text" id="patronymic" class="form-control" placeholder="Введите отчество"/>
         </div>
         <div class="form-group">
             <label for="title">Тема работы</label>
@@ -42,7 +43,7 @@
                       rows="5"></textarea>
         </div>
         <div class="form-group">
-            <input type="submit" value="Подать" class="btn btn-primary" />
+            <input type="submit" value="Подать" class="btn btn-primary"/>
         </div>
     </div>
 </form>
