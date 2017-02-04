@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Response } from '@angular/http';
 import { DataService } from './data.service';
-import { Teacher } from './teacher';
+import { Degree } from './degree';
 
 @Component({
     selector: 'my-app',
@@ -17,13 +17,19 @@ import { Teacher } from './teacher';
         </div>
         <div class="form-group">
             <label for="degree">Образовательный уровень</label>
-            <select id="degree"
-                    class="form-control"></select>
+            <ng-select id="degree"
+                          class="ui-select"
+                          [items]="degrees"
+                          placeholder="Не выбран образовательный уровень">
+              </ng-select>
         </div>
         <div class="form-group">
             <label for="developmentArea">Предметная область</label>
-            <select id="developmentArea"
-                    class="form-control"></select>
+            <ng-select id="developmentArea"
+                          class="ui-select"
+                          [items]="das"
+                          placeholder="Не выбрана предметная область">
+              </ng-select>
         </div>
         <div class="form-group">
             <label for="lastName">Фамилия</label>
@@ -51,15 +57,35 @@ import { Teacher } from './teacher';
 })
 export class AppComponent implements OnInit {
     teachers: Array<SelectItem>;
-    
+    degrees: Array<SelectItem>;
+    das: Array<SelectItem>;
+
     constructor(private dataService: DataService) { }
 
     ngOnInit() {
-        this.dataService.getData().subscribe((data) => {
+        this.dataService.getTeachers().subscribe((data) => {
             this.teachers = new Array<SelectItem>(data.length);
             let index = 0;
             for (let teacher of data) {
                 this.teachers[index] = new SelectItem(teacher.id, teacher.toString());
+                index++;
+            }
+        });
+
+        this.dataService.getDegrees().subscribe((data) => {
+            this.degrees = new Array<SelectItem>(data.length);
+            let index = 0;
+            for (let degree of data) {
+                this.degrees[index] = new SelectItem(degree.id, degree.name);
+                index++;
+            }
+        });
+
+        this.dataService.getDevelopmentAreas().subscribe((data) => {
+            this.das = new Array<SelectItem>(data.length);
+            let index = 0;
+            for (let da of data) {
+                this.das[index] = new SelectItem(da.id, da.name);
                 index++;
             }
         });
