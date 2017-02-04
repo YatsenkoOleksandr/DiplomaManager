@@ -1,5 +1,6 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Response } from '@angular/http';
+import { NgForm } from '@angular/forms';
 import { DataService } from './data.service';
 import { Degree } from './degree';
 
@@ -12,6 +13,10 @@ export class AppComponent implements OnInit {
     teachers: Array<SelectItem>;
     degrees: Array<SelectItem>;
     das: Array<SelectItem>;
+    firstName: string;
+    lastName: string;
+    patronymic: string;
+    title: string;
 
     constructor(private dataService: DataService) { }
 
@@ -44,6 +49,10 @@ export class AppComponent implements OnInit {
                 index++;
             }
         });
+    }
+
+    sendRequest() {
+        console.log("submit");
     }
 }
 export class SelectItem {

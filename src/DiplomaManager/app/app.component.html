@@ -1,4 +1,4 @@
-﻿<form>
+﻿<form (ngSubmit)="sendRequest(requestForm)" #requestForm="ngForm">
     <div class="col-md-4">
         <div class="form-group">
             <label for="developmentArea">Предметная область</label>
@@ -27,23 +27,26 @@
         </div>
         <div class="form-group">
             <label for="lastName">Фамилия</label>
-            <input type="text" id="lastName" class="form-control" placeholder="Введите фамилию"/>
+            <input type="text" id="lastName" [(ngModel)]="lastName" name="lastName"
+                   class="form-control" placeholder="Введите фамилию"/>
         </div>
         <div class="form-group">
             <label for="firstName">Имя</label>
-            <input type="text" id="firstName" class="form-control" placeholder="Введите имя"/>
+            <input type="text" id="firstName" [(ngModel)]="firstName" name="firstName"
+                   class="form-control" placeholder="Введите имя"/>
         </div>
         <div class="form-group">
             <label for="patronymic">Отчество</label>
-            <input type="text" id="patronymic" class="form-control" placeholder="Введите отчество"/>
+            <input type="text" id="patronymic" [(ngModel)]="patronymic" name="patronymic"
+                   class="form-control" placeholder="Введите отчество"/>
         </div>
         <div class="form-group">
             <label for="title">Тема работы</label>
-            <textarea type="text" id="title" class="form-control" placeholder="Введите тему работы"
-                      rows="5"></textarea>
+            <textarea type="text" id="title" [(ngModel)]="title" name="title"
+                      class="form-control" placeholder="Введите тему работы" rows="5"></textarea>
         </div>
         <div class="form-group">
-            <input type="submit" value="Подать" class="btn btn-primary"/>
+            <input type="submit" value="Подать" class="btn btn-primary" />
         </div>
     </div>
 </form>
