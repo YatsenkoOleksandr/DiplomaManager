@@ -1,11 +1,12 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { Response } from '@angular/http';
+import { Response, Headers } from '@angular/http';
 import { Teacher } from './teacher';
 import { Degree } from './degree';
 import { DevelopmentArea } from './developmentArea';
 import { Observable } from 'rxjs/Observable'
 import 'rxjs/add/operator/map';
+import { Request } from './request';
 
 @Injectable()
 export class DataService {
@@ -38,5 +39,12 @@ export class DataService {
             let developmentAreaList = resp.json();
             return developmentAreaList;
         });
+    }
+
+    sendRequest(request: Request) {
+        const body = JSON.stringify(request);
+        let headers = new Headers({ 'Content-Type': 'application/json;charset=utf-8' });
+        return this.http.post('/Request/SendRequest', body, { headers: headers })
+            .map((resp: Response) => resp.json());
     }
 }

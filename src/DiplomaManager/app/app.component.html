@@ -13,6 +13,11 @@
                                placeholder="Не выбрана предметная область"
                                formControlName="das">
                     </ng-select>
+                    <div class="alert alert-danger"
+                         *ngIf="requestFGroup.get('das').hasError('required')
+                            && requestFGroup.get('das').touched">
+                        Не выбрана предметная область
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>Преподаватель</label>
@@ -21,6 +26,11 @@
                                placeholder="Не выбран преподаватель"
                                formControlName="teachers">
                     </ng-select>
+                    <div class="alert alert-danger"
+                         *ngIf="requestFGroup.get('teachers').hasError('required')
+                            && requestFGroup.get('teachers').touched">
+                        Не выбран преподаватель
+                    </div>
                 </div>
             </div>
         </div>
@@ -32,6 +42,11 @@
                     <ng-select [items]="degrees"
                                placeholder="Не выбран образовательный уровень">
                     </ng-select>
+                    <div class="alert alert-danger"
+                         *ngIf="requestFGroup.get('patronymic').hasError('required')
+                            && requestFGroup.get('patronymic').touched">
+                        Не указано отчество
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="lastName">Фамилия</label>
@@ -39,6 +54,16 @@
                            id="lastName"
                            class="form-control" placeholder="Введите фамилию" 
                            formControlName="lastName" />
+                    <div class="alert alert-danger"
+                         *ngIf="requestFGroup.get('lastName').hasError('required') 
+                            && requestFGroup.get('lastName').touched">
+                        Не указано имя
+                    </div>
+                    <div class="alert alert-danger"
+                         *ngIf="requestFGroup.get('lastName').hasError('minlength') 
+                            && requestFGroup.get('lastName').touched">
+                        Мимимум 3 символа
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="firstName">Имя</label>
@@ -46,6 +71,16 @@
                            id="firstName"
                            class="form-control" placeholder="Введите имя" 
                            formControlName="firstName" />
+                    <div class="alert alert-danger"
+                         *ngIf="requestFGroup.get('firstName').hasError('required')
+                            && requestFGroup.get('firstName').touched">
+                        Не указана фамилия
+                    </div>
+                    <div class="alert alert-danger"
+                         *ngIf="requestFGroup.get('firstName').hasError('minlength')
+                            && requestFGroup.get('firstName').touched">
+                        Мимимум 3 символа
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="patronymic">Отчество</label>
@@ -53,6 +88,16 @@
                            id="patronymic"
                            class="form-control" placeholder="Введите отчество" 
                            formControlName="patronymic" />
+                    <div class="alert alert-danger"
+                         *ngIf="requestFGroup.get('patronymic').hasError('required')
+                            && requestFGroup.get('patronymic').touched">
+                        Не указано отчество
+                    </div>
+                    <div class="alert alert-danger"
+                         *ngIf="requestFGroup.get('patronymic').hasError('minlength')
+                            && requestFGroup.get('patronymic').touched">
+                        Мимимум 3 символа
+                    </div>
                 </div>
             </div>
         </div>
@@ -64,9 +109,19 @@
                       placeholder="Введите тему работы" 
                       rows="5"
                       formControlName="title"></textarea>
+            <div class="alert alert-danger"
+                 *ngIf="requestFGroup.get('title').hasError('required')
+                            && requestFGroup.get('patronymic').touched">
+                Не указана тема работы
+            </div>
+            <div class="alert alert-danger"
+                 *ngIf="requestFGroup.get('title').hasError('minlength')
+                            && requestFGroup.get('patronymic').touched">
+                Мимимум 5 символов
+            </div>
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-primary">Подать</button>
+            <button type="submit" class="btn btn-primary" [disabled]="requestFGroup.invalid">Подать</button>
         </div>
     </div>
 </form>

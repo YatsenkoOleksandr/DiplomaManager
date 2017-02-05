@@ -54,5 +54,10 @@ namespace DiplomaManager.Controllers
 
             return Json(das);
         }
+
+        public IActionResult SendRequest([FromBody] RequestViewModel request)
+        {
+            return Json(request);
+        }
     }
 }

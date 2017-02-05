@@ -1,11 +1,10 @@
 ﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { Response } from '@angular/http';
-import { NgForm } from '@angular/forms';
 import { DataService } from './data.service';
 import { Degree } from './degree';
 import { Subscription } from 'rxjs';
 import { SelectComponent } from 'ng2-select';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RequestFormGroup, Request } from './request';
 import { SelectItem } from './selectItem';
 
@@ -45,12 +44,12 @@ export class AppComponent implements OnInit {
         });
 
         this.requestFGroup = new FormGroup({
-            das: new FormControl(''),
-            teachers: new FormControl(''),
-            firstName: new FormControl(''),
-            lastName: new FormControl(''),
-            patronymic: new FormControl(''),
-            title: new FormControl('')
+            das: new FormControl('', Validators.required),
+            teachers: new FormControl('', Validators.required),
+            firstName: new FormControl('', [Validators.required, Validators.minLength(3)]),
+            lastName: new FormControl('', [Validators.required, Validators.minLength(3)]),
+            patronymic: new FormControl('', [Validators.required, Validators.minLength(3)]),
+            title: new FormControl('', [Validators.required, Validators.minLength(5)])
         });
     }
 
@@ -72,6 +71,13 @@ export class AppComponent implements OnInit {
     }
 
     onSubmit({ value, valid }: { value: RequestFormGroup, valid: boolean }) {
+        if (value && valid) {
+            let request = new Request(value.das[0].id, value.teachers[0].id, value.firstName,
+                value.lastName, value.patronymic, value.title);
+            this.dataService.sendRequest(request).subscribe(data => {
+                console.log(data);
+            });
+        }
         console.log(value, valid);
     }
 }
