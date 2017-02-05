@@ -5,6 +5,9 @@ import { DataService } from './data.service';
 import { Degree } from './degree';
 import { Subscription } from 'rxjs';
 import { SelectComponent } from 'ng2-select';
+import { FormControl, FormGroup } from '@angular/forms';
+import { RequestFormGroup, Request } from './request';
+import { SelectItem } from './selectItem';
 
 @Component({
     selector: 'my-app',
@@ -12,16 +15,13 @@ import { SelectComponent } from 'ng2-select';
     providers: [DataService]
 })
 export class AppComponent implements OnInit {
-    teachers: Array<SelectItem>;
+    dAreasList: Array<SelectItem>;
     degrees: Array<SelectItem>;
-    das: Array<SelectItem>;
-    firstName: string;
-    lastName: string;
-    patronymic: string;
-    title: string;
+    teachersList: Array<SelectItem>;
 
     busy: Subscription;
     @ViewChild('teachersSelect') teachersSelect: SelectComponent;
+    requestFGroup: FormGroup;
 
     constructor(private dataService: DataService) { }
 
@@ -36,12 +36,21 @@ export class AppComponent implements OnInit {
         });
 
         this.busy = this.dataService.getDevelopmentAreas().subscribe((data) => {
-            this.das = new Array<SelectItem>(data.length);
+            this.dAreasList = new Array<SelectItem>(data.length);
             let index = 0;
             for (let da of data) {
-                this.das[index] = new SelectItem(da.id, da.name);
+                this.dAreasList[index] = new SelectItem(da.id, da.name);
                 index++;
             }
+        });
+
+        this.requestFGroup = new FormGroup({
+            das: new FormControl(''),
+            teachers: new FormControl(''),
+            firstName: new FormControl(''),
+            lastName: new FormControl(''),
+            patronymic: new FormControl(''),
+            title: new FormControl('')
         });
     }
 
@@ -53,25 +62,16 @@ export class AppComponent implements OnInit {
                     this.teachersSelect.remove(activeItem);
                 }
             }
-            this.teachers = new Array<SelectItem>(data.length);
+            this.teachersList = new Array<SelectItem>(data.length);
             let index = 0;
             for (let teacher of data) {
-                this.teachers[index] = new SelectItem(teacher.id, teacher.toString());
+                this.teachersList[index] = new SelectItem(teacher.id, teacher.toString());
                 index++;
             }
         });
     }
 
-    sendRequest() {
-        console.log("submit");
-    }
-}
-export class SelectItem {
-    id: number;
-    text: string;
-
-    constructor(id: number, text: string) {
-        this.id = id;
-        this.text = text;
+    onSubmit({ value, valid }: { value: RequestFormGroup, valid: boolean }) {
+        console.log(value, valid);
     }
 }

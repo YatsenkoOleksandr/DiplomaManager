@@ -1,4 +1,4 @@
-﻿<form (ngSubmit)="sendRequest(requestForm)" #requestForm>
+﻿<form (ngSubmit)="onSubmit(requestFGroup)" novalidate [formGroup]="requestFGroup">
     <div class="col-md-12">
         <div [ngBusy]="{busy: busy, message: 'Загрузка...', backdrop: false, minDuration: 2000}"></div>
     </div>
@@ -8,16 +8,18 @@
             <div class="panel-body">
                 <div class="form-group">
                     <label>Предметная область</label>
-                    <ng-select [items]="das"
+                    <ng-select [items]="dAreasList"
                                (selected)="dasSelected($event)"
-                               placeholder="Не выбрана предметная область">
+                               placeholder="Не выбрана предметная область"
+                               formControlName="das">
                     </ng-select>
                 </div>
                 <div class="form-group">
                     <label>Преподаватель</label>
-                    <ng-select [items]="teachers"
+                    <ng-select [items]="teachersList"
                                #teachersSelect
-                               placeholder="Не выбран преподаватель">
+                               placeholder="Не выбран преподаватель"
+                               formControlName="teachers">
                     </ng-select>
                 </div>
             </div>
@@ -33,28 +35,38 @@
                 </div>
                 <div class="form-group">
                     <label for="lastName">Фамилия</label>
-                    <input type="text" id="lastName" [(ngModel)]="lastName" name="lastName"
-                           class="form-control" placeholder="Введите фамилию" />
+                    <input type="text" 
+                           id="lastName"
+                           class="form-control" placeholder="Введите фамилию" 
+                           formControlName="lastName" />
                 </div>
                 <div class="form-group">
                     <label for="firstName">Имя</label>
-                    <input type="text" id="firstName" [(ngModel)]="firstName" name="firstName"
-                           class="form-control" placeholder="Введите имя" />
+                    <input type="text" 
+                           id="firstName"
+                           class="form-control" placeholder="Введите имя" 
+                           formControlName="firstName" />
                 </div>
                 <div class="form-group">
                     <label for="patronymic">Отчество</label>
-                    <input type="text" id="patronymic" [(ngModel)]="patronymic" name="patronymic"
-                           class="form-control" placeholder="Введите отчество" />
+                    <input type="text" 
+                           id="patronymic"
+                           class="form-control" placeholder="Введите отчество" 
+                           formControlName="patronymic" />
                 </div>
             </div>
         </div>
         <div class="form-group">
             <label for="title">Тема работы</label>
-            <textarea type="text" id="title" [(ngModel)]="title" name="title"
-                      class="form-control" placeholder="Введите тему работы" rows="5"></textarea>
+            <textarea type="text"
+                      id="title"
+                      class="form-control" 
+                      placeholder="Введите тему работы" 
+                      rows="5"
+                      formControlName="title"></textarea>
         </div>
         <div class="form-group">
-            <input type="submit" value="Подать" class="btn btn-primary"/>
+            <button type="submit" class="btn btn-primary">Подать</button>
         </div>
     </div>
 </form>
