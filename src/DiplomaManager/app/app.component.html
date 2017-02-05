@@ -1,44 +1,52 @@
-﻿<form (ngSubmit)="sendRequest(requestForm)" #requestForm="ngForm">
-    <div class="col-md-4">
-        <div class="form-group">
-            <label for="developmentArea">Предметная область</label>
-            <ng-select id="developmentArea"
-                       class="ui-select"
-                       [items]="das"
-                       (selected)="dasSelected($event)"
-                       placeholder="Не выбрана предметная область">
-            </ng-select>
+﻿<form (ngSubmit)="sendRequest(requestForm)" #requestForm>
+    <div class="col-md-12">
+        <div [ngBusy]="{busy: busy, message: 'Загрузка...', backdrop: false, minDuration: 2000}"></div>
+    </div>
+    <div class="col-md-5">
+        <div class="panel panel-default">
+            <div class="panel-heading">Руководитель</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label>Предметная область</label>
+                    <ng-select [items]="das"
+                               (selected)="dasSelected($event)"
+                               placeholder="Не выбрана предметная область">
+                    </ng-select>
+                </div>
+                <div class="form-group">
+                    <label>Преподаватель</label>
+                    <ng-select [items]="teachers"
+                               #teachersSelect
+                               placeholder="Не выбран преподаватель">
+                    </ng-select>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="teacher">Преподаватель</label>
-            <ng-select id="teacher"
-                       class="ui-select"
-                       [items]="teachers"
-                       placeholder="Не выбран преподаватель">
-            </ng-select>
-        </div>
-        <div class="form-group">
-            <label for="degree">Образовательный уровень (бакалавр, магистр)</label>
-            <ng-select id="degree"
-                       class="ui-select"
-                       [items]="degrees"
-                       placeholder="Не выбран образовательный уровень">
-            </ng-select>
-        </div>
-        <div class="form-group">
-            <label for="lastName">Фамилия</label>
-            <input type="text" id="lastName" [(ngModel)]="lastName" name="lastName"
-                   class="form-control" placeholder="Введите фамилию"/>
-        </div>
-        <div class="form-group">
-            <label for="firstName">Имя</label>
-            <input type="text" id="firstName" [(ngModel)]="firstName" name="firstName"
-                   class="form-control" placeholder="Введите имя"/>
-        </div>
-        <div class="form-group">
-            <label for="patronymic">Отчество</label>
-            <input type="text" id="patronymic" [(ngModel)]="patronymic" name="patronymic"
-                   class="form-control" placeholder="Введите отчество"/>
+        <div class="panel panel-default">
+            <div class="panel-heading">Студент</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label>Образовательный уровень (бакалавр, магистр)</label>
+                    <ng-select [items]="degrees"
+                               placeholder="Не выбран образовательный уровень">
+                    </ng-select>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Фамилия</label>
+                    <input type="text" id="lastName" [(ngModel)]="lastName" name="lastName"
+                           class="form-control" placeholder="Введите фамилию" />
+                </div>
+                <div class="form-group">
+                    <label for="firstName">Имя</label>
+                    <input type="text" id="firstName" [(ngModel)]="firstName" name="firstName"
+                           class="form-control" placeholder="Введите имя" />
+                </div>
+                <div class="form-group">
+                    <label for="patronymic">Отчество</label>
+                    <input type="text" id="patronymic" [(ngModel)]="patronymic" name="patronymic"
+                           class="form-control" placeholder="Введите отчество" />
+                </div>
+            </div>
         </div>
         <div class="form-group">
             <label for="title">Тема работы</label>
@@ -46,7 +54,7 @@
                       class="form-control" placeholder="Введите тему работы" rows="5"></textarea>
         </div>
         <div class="form-group">
-            <input type="submit" value="Подать" class="btn btn-primary" />
+            <input type="submit" value="Подать" class="btn btn-primary"/>
         </div>
     </div>
 </form>

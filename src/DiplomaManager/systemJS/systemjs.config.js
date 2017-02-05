@@ -6,6 +6,9 @@
     System.config({
         // map tells the System loader where to look for things
         // ASP.NET Core exposes the wwwroot folder without the need to specify "wwwroot" in the path
+        paths: {
+            'npm:': 'node_modules/'
+        },
         map: {
             // our app is within the app folder
             app: 'app',
@@ -22,6 +25,11 @@
 
             'ng2-select': 'js/ng2-select.umd.js',
 
+            'core-js': 'npm:core-js',
+            'angular2-dynamic-component': 'npm:angular2-dynamic-component',
+            'ts-metadata-helper': 'npm:ts-metadata-helper',
+            'angular2-busy': 'npm:angular2-busy',
+
             // other libraries
             'rxjs': 'js'
         },
@@ -33,7 +41,23 @@
             },
             rxjs: {
                 defaultExtension: 'js'
-            }
+            },
+            'angular2-dynamic-component': {
+                main: 'index.js',
+                defaultExtension: 'js'
+            },
+            'ts-metadata-helper': {
+                main: 'index.js',
+                defaultExtension: 'js'
+            },
+            'angular2-busy': {
+                main: 'index.js',
+                defaultExtension: 'js' 
+            },
+            'core-js': {
+                main: 'index.js',
+                defaultExtension: 'js'
+            } 
         }
     });
 })(this);

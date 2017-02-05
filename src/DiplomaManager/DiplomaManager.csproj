@@ -9,6 +9,48 @@
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wp8+wpa81;</PackageTargetFallback>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="wwwroot\css\style\**" />
+    <Compile Remove="wwwroot\js\angular2-busy\**" />
+    <Compile Remove="wwwroot\js\angular2-dynamic-component\**" />
+    <Compile Remove="wwwroot\js\core-js\**" />
+    <Compile Remove="wwwroot\js\ts-metadata-helper\**" />
+    <Compile Remove="wwwroot\node_modules\angular2-busy\**" />
+    <Compile Remove="wwwroot\node_modules\angular2-busy\style\**" />
+    <Compile Remove="wwwroot\node_modules\angular2-dynamic-component\**" />
+    <Compile Remove="wwwroot\node_modules\core-js\**" />
+    <Compile Remove="wwwroot\node_modules\ts-metadata-helper\**" />
+    <Content Remove="wwwroot\css\style\**" />
+    <Content Remove="wwwroot\js\angular2-busy\**" />
+    <Content Remove="wwwroot\js\angular2-dynamic-component\**" />
+    <Content Remove="wwwroot\js\core-js\**" />
+    <Content Remove="wwwroot\js\ts-metadata-helper\**" />
+    <Content Remove="wwwroot\node_modules\angular2-busy\**" />
+    <Content Remove="wwwroot\node_modules\angular2-busy\style\**" />
+    <Content Remove="wwwroot\node_modules\angular2-dynamic-component\**" />
+    <Content Remove="wwwroot\node_modules\core-js\**" />
+    <Content Remove="wwwroot\node_modules\ts-metadata-helper\**" />
+    <EmbeddedResource Remove="wwwroot\css\style\**" />
+    <EmbeddedResource Remove="wwwroot\js\angular2-busy\**" />
+    <EmbeddedResource Remove="wwwroot\js\angular2-dynamic-component\**" />
+    <EmbeddedResource Remove="wwwroot\js\core-js\**" />
+    <EmbeddedResource Remove="wwwroot\js\ts-metadata-helper\**" />
+    <EmbeddedResource Remove="wwwroot\node_modules\angular2-busy\**" />
+    <EmbeddedResource Remove="wwwroot\node_modules\angular2-busy\style\**" />
+    <EmbeddedResource Remove="wwwroot\node_modules\angular2-dynamic-component\**" />
+    <EmbeddedResource Remove="wwwroot\node_modules\core-js\**" />
+    <EmbeddedResource Remove="wwwroot\node_modules\ts-metadata-helper\**" />
+    <None Remove="wwwroot\css\style\**" />
+    <None Remove="wwwroot\js\angular2-busy\**" />
+    <None Remove="wwwroot\js\angular2-dynamic-component\**" />
+    <None Remove="wwwroot\js\core-js\**" />
+    <None Remove="wwwroot\js\ts-metadata-helper\**" />
+    <None Remove="wwwroot\node_modules\angular2-busy\**" />
+    <None Remove="wwwroot\node_modules\angular2-busy\style\**" />
+    <None Remove="wwwroot\node_modules\angular2-dynamic-component\**" />
+    <None Remove="wwwroot\node_modules\core-js\**" />
+    <None Remove="wwwroot\node_modules\ts-metadata-helper\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="app\app.component.js" />
     <None Remove="app\app.component.js.map" />
     <None Remove="app\app.component.ts" />
@@ -76,5 +118,9 @@
   <ItemGroup>
     <ProjectReference Include="..\DiplomaManager.BL\DiplomaManager.BLL.csproj" />
     <ProjectReference Include="..\DiplomaManager.DAL\DiplomaManager.DAL.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\node_modules\" />
+    <Folder Include="wwwroot\node_modules\" />
   </ItemGroup>
 </Project>

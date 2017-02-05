@@ -9,14 +9,11 @@ var gulp = require('gulp');
 var webRoot = "./wwwroot/";
 
 var paths = {
-    nodeModules: './node_modules/'
+    nodeModules: './node_modules/',
+    appPath: './app/'
 };
 
-gulp.task('default', function () {
-    // place code for your default task here
-});
-
-gulp.task('beforeBuild', function () {
+gulp.task('beforeBuild', ['copyNodeModules', 'copyHtml'], function () {
     // Copy node_module js files across
     gulp.src([paths.nodeModules + 'zone.js/dist/zone.js',
               paths.nodeModules + 'reflect-metadata/Reflect.js',
@@ -45,8 +42,23 @@ gulp.task('beforeBuild', function () {
     // Copy across the Reactive Extensions files, in the same structure as they are found (as this needs to be preserved)
     gulp.src([paths.nodeModules + 'rxjs/**/*.js'], { base: "node_modules/rxjs" })
         .pipe(gulp.dest(webRoot + 'js/'));
+});
 
+gulp.task('copyNodeModules', function () {
+    var assets = {
+        "angular2-dynamic-component": "angular2-dynamic-component/*.{js, map}",
+        "core-js": "core-js/**/*.{js, map}",
+        "ts-metadata-helper": "ts-metadata-helper/*.{js, map}",
+        "angular2-busy": "angular2-busy/build/src/*.{js, map}"
+    };
+    for (var destinationDir in assets) {
+        gulp.src(paths.nodeModules + assets[destinationDir])
+            .pipe(gulp.dest(webRoot + paths.nodeModules + destinationDir));
+    }
+});
+
+gulp.task('copyHtml', function () {
     // Copy HTML files from App folder
-    gulp.src(['app/*.html'])
-        .pipe(gulp.dest(webRoot + 'app/'));
+    gulp.src([paths.appPath + '**/*.html'])
+        .pipe(gulp.dest(webRoot + paths.appPath));
 });

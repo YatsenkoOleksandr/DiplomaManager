@@ -1,8 +1,10 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { Response } from '@angular/http';
 import { NgForm } from '@angular/forms';
 import { DataService } from './data.service';
 import { Degree } from './degree';
+import { Subscription } from 'rxjs';
+import { SelectComponent } from 'ng2-select';
 
 @Component({
     selector: 'my-app',
@@ -18,10 +20,13 @@ export class AppComponent implements OnInit {
     patronymic: string;
     title: string;
 
+    busy: Subscription;
+    @ViewChild('teachersSelect') teachersSelect: SelectComponent;
+
     constructor(private dataService: DataService) { }
 
     ngOnInit() {
-        this.dataService.getDegrees().subscribe((data) => {
+        this.busy = this.dataService.getDegrees().subscribe((data) => {
             this.degrees = new Array<SelectItem>(data.length);
             let index = 0;
             for (let degree of data) {
@@ -30,7 +35,7 @@ export class AppComponent implements OnInit {
             }
         });
 
-        this.dataService.getDevelopmentAreas().subscribe((data) => {
+        this.busy = this.dataService.getDevelopmentAreas().subscribe((data) => {
             this.das = new Array<SelectItem>(data.length);
             let index = 0;
             for (let da of data) {
@@ -41,7 +46,13 @@ export class AppComponent implements OnInit {
     }
 
     dasSelected(event) {
-        this.dataService.getTeachers(event.id).subscribe((data) => {
+        this.busy = this.dataService.getTeachers(event.id).subscribe((data) => {
+            if (this.teachersSelect) {
+                let activeItem = this.teachersSelect.activeOption;
+                if (activeItem) {
+                    this.teachersSelect.remove(activeItem);
+                }
+            }
             this.teachers = new Array<SelectItem>(data.length);
             let index = 0;
             for (let teacher of data) {
