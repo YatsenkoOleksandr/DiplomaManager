@@ -1,30 +1,27 @@
 ﻿import { SelectItem } from './selectItem';
+import { Student } from './student';
 
 export class RequestFormGroup {
     das: Array<SelectItem>;
     teachers: Array<SelectItem>;
 
-    firstName: string;
-    lastName: string;
-    patronymic: string;
+    student: Student;
+
     title: string;
 }
 
 export class Request {
     daId: number;
     teacherId: number;
-    firstName: string;
-    lastName: string;
-    patronymic: string;
+
+    student: Student;
+
     title: string;
 
-    constructor(daId: number, teacherId: number, firstName: string, lastName: string,
-        patronymic: string, title: string) {
+    constructor(daId: number, teacherId: number, student: Student, title: string) {
         this.daId = daId;
         this.teacherId = teacherId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.patronymic = patronymic;
+        this.student = new Student(student.firstName, student.lastName, student.patronymic, student.email, student.degreeId);
         this.title = title;
     }
 }

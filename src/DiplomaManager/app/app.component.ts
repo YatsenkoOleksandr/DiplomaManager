@@ -46,10 +46,15 @@ export class AppComponent implements OnInit {
         this.requestFGroup = new FormGroup({
             das: new FormControl('', Validators.required),
             teachers: new FormControl('', Validators.required),
-            firstName: new FormControl('', [Validators.required, Validators.minLength(3)]),
-            lastName: new FormControl('', [Validators.required, Validators.minLength(3)]),
-            patronymic: new FormControl('', [Validators.required, Validators.minLength(3)]),
-            title: new FormControl('', [Validators.required, Validators.minLength(5)])
+            title: new FormControl('', [Validators.required, Validators.minLength(5)]),
+
+            studentFGroup: new FormGroup({
+                degrees: new FormControl('', Validators.required),
+                firstName: new FormControl('', [Validators.required, Validators.minLength(3)]),
+                lastName: new FormControl('', [Validators.required, Validators.minLength(3)]),
+                patronymic: new FormControl('', [Validators.required, Validators.minLength(3)]),
+                email: new FormControl('', [Validators.required, Validators.pattern("[a-zA-Z_]+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}")])
+            })
         });
     }
 
@@ -72,8 +77,7 @@ export class AppComponent implements OnInit {
 
     onSubmit({ value, valid }: { value: RequestFormGroup, valid: boolean }) {
         if (value && valid) {
-            let request = new Request(value.das[0].id, value.teachers[0].id, value.firstName,
-                value.lastName, value.patronymic, value.title);
+            let request = new Request(value.das[0].id, value.teachers[0].id, value.student, value.title);
             this.dataService.sendRequest(request).subscribe(data => {
                 console.log(data);
             });
