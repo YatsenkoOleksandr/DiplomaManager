@@ -16,7 +16,7 @@ namespace DiplomaManager.BLL.DTOs.ProjectDTOs
         public DateTime CreationDate
         { get; set; }
 
-        public DateTime PracticeJournalPassed
+        public DateTime? PracticeJournalPassed
         { get; set; }
 
         public bool Accepted

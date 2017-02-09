@@ -38,5 +38,7 @@ namespace DiplomaManager.DAL.Interfaces
         IRepository<DegreeName> DegreeNames { get; }
 
         IRepository<Capacity> Capacities { get; }
+
+        IRepository<Group> Groups { get; }
     }
 }

@@ -1,4 +1,7 @@
 ﻿using Autofac;
+using DiplomaManager.BLL.Interfaces;
+using DiplomaManager.BLL.Services;
+using DiplomaManager.BLL.Utils;
 using DiplomaManager.DAL.Interfaces;
 using DiplomaManager.DAL.Repositories;
 
@@ -17,6 +20,14 @@ namespace DiplomaManager.BLL.Infrastructure
         {
             builder.Register(c => new EFUnitOfWork(_connectionString))
                 .As<IDiplomaManagerUnitOfWork>()
+                .InstancePerLifetimeScope();
+
+            builder.Register(c => new EmailService())
+                .As<IEmailService>()
+                .InstancePerLifetimeScope();
+
+            builder.Register(c => new TransliterationService())
+                .As<ITransliterationService>()
                 .InstancePerLifetimeScope();
         }
     }

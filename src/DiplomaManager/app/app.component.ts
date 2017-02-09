@@ -7,6 +7,7 @@ import { SelectComponent } from 'ng2-select';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RequestFormGroup, Request } from './request';
 import { SelectItem } from './selectItem';
+import { Student } from './student'
 
 @Component({
     selector: 'my-app',
@@ -46,10 +47,10 @@ export class AppComponent implements OnInit {
         this.requestFGroup = new FormGroup({
             das: new FormControl('', Validators.required),
             teachers: new FormControl('', Validators.required),
+            degrees: new FormControl('', Validators.required),
             title: new FormControl('', [Validators.required, Validators.minLength(5)]),
 
             studentFGroup: new FormGroup({
-                degrees: new FormControl('', Validators.required),
                 firstName: new FormControl('', [Validators.required, Validators.minLength(3)]),
                 lastName: new FormControl('', [Validators.required, Validators.minLength(3)]),
                 patronymic: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -77,11 +78,10 @@ export class AppComponent implements OnInit {
 
     onSubmit({ value, valid }: { value: RequestFormGroup, valid: boolean }) {
         if (value && valid) {
-            let request = new Request(value.das[0].id, value.teachers[0].id, value.student, value.title);
-            this.dataService.sendRequest(request).subscribe(data => {
+            let request = new Request(value.das[0].id, value.teachers[0].id, value.studentFGroup, value.title);
+            this.busy = this.dataService.sendRequest(request).subscribe(data => {
                 console.log(data);
             });
         }
-        console.log(value, valid);
     }
 }

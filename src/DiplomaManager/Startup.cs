@@ -6,6 +6,7 @@ using DiplomaManager.BLL.Interfaces;
 using DiplomaManager.BLL.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -31,6 +32,12 @@ namespace DiplomaManager
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddElm();
+            services.AddElm(options => {
+                options.Path = new PathString("/elm");
+                options.Filter = (name, level) => level >= LogLevel.Error;
+            });
+
             // Add framework services.
             services.AddMvc();
 
@@ -54,6 +61,14 @@ namespace DiplomaManager
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory
             , IApplicationLifetime appLifetime)
         {
+            app.Map("/HelloMVC6", map =>
+            {
+                app.UseElmPage();
+                app.UseElmCapture();
+                app.UseDeveloperExceptionPage();
+                app.UseMvcWithDefaultRoute();
+            });
+
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationScheme = "Admin",
@@ -61,9 +76,6 @@ namespace DiplomaManager
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true
             });
-
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
 
             if (env.IsDevelopment())
             {

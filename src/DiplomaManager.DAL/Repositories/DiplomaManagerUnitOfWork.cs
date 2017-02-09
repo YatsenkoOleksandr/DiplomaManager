@@ -35,6 +35,8 @@ namespace DiplomaManager.DAL.Repositories
         private EFRepository<DegreeName> _degreeNameRepository;
         private EFRepository<Capacity> _capacityRepository;
 
+        private EFRepository<Group> _groupRepository;
+
         public EFUnitOfWork(string connectionString)
         {
             _db = new DiplomaManagerContext(connectionString);
@@ -75,6 +77,9 @@ namespace DiplomaManager.DAL.Repositories
             => _degreeNameRepository ?? (_degreeNameRepository = new EFRepository<DegreeName>(_db));
         public IRepository<Capacity> Capacities
             => _capacityRepository ?? (_capacityRepository = new EFRepository<Capacity>(_db));
+
+        public IRepository<Group> Groups
+            => _groupRepository ?? (_groupRepository = new EFRepository<Group>(_db));
 
         public void Save()
         {

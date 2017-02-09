@@ -5,7 +5,7 @@ export class RequestFormGroup {
     das: Array<SelectItem>;
     teachers: Array<SelectItem>;
 
-    student: Student;
+    studentFGroup: Student;
 
     title: string;
 }
@@ -21,7 +21,7 @@ export class Request {
     constructor(daId: number, teacherId: number, student: Student, title: string) {
         this.daId = daId;
         this.teacherId = teacherId;
-        this.student = new Student(student.firstName, student.lastName, student.patronymic, student.email, student.degreeId);
+        this.student = new Student(student.firstName, student.lastName, student.patronymic, student.email, student.groupId);
         this.title = title;
     }
 }

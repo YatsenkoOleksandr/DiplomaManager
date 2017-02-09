@@ -15,7 +15,7 @@ namespace DiplomaManager.DAL.Entities.ProjectEntities
         public Student Student
         { get; set; }
 
-        public int? TeacherId { get; set; }
+        public int TeacherId { get; set; }
         public Teacher Teacher
         { get; set; }
 
@@ -26,7 +26,7 @@ namespace DiplomaManager.DAL.Entities.ProjectEntities
         public DateTime CreationDate
         { get; set; }
 
-        public DateTime PracticeJournalPassed
+        public DateTime? PracticeJournalPassed
         { get; set; }
 
         public bool Accepted

@@ -1,6 +1,4 @@
-import { SelectItem } from './selectItem';
-
-abstract class StudentInfo {
+abstract class User {
     firstName: string;
     lastName: string;
     patronymic: string;
@@ -14,23 +12,11 @@ abstract class StudentInfo {
     }
 }
 
-export class StudentFGroup extends StudentInfo {
-    firstName: string;
-    lastName: string;
-    patronymic: string;
-    email: string;
-    degrees: Array<SelectItem>;
-
-    constructor(firstName: string, lastName: string, patronymic: string, email: string) {
-        super(firstName, lastName, patronymic, email);
-    }
-}
-
-export class Student extends StudentInfo {
-    degreeId: number;
+export class Student extends User {
+    groupId: number;
     
-    constructor(firstName: string, lastName: string, patronymic: string, email: string, degreeId: number) {
+    constructor(firstName: string, lastName: string, patronymic: string, email: string, groupId: number) {
         super(firstName, lastName, patronymic, email);
-        this.degreeId = degreeId;
+        this.groupId = groupId;
     }
 }

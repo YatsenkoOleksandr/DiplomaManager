@@ -34,21 +34,21 @@
                 </div>
             </div>
         </div>
+        <div class="form-group">
+            <label>Образовательный уровень (бакалавр, магистр)</label>
+            <ng-select [items]="degrees"
+                       placeholder="Не выбран образовательный уровень"
+                       formControlName="degrees">
+            </ng-select>
+            <div class="alert alert-danger"
+                 *ngIf="requestFGroup.get('degrees').hasError('required')
+                            && requestFGroup.get('degrees').touched">
+                Не выбран образовательный уровень
+            </div>
+        </div>
         <div class="panel panel-default" formGroupName="studentFGroup">
             <div class="panel-heading">Студент</div>
             <div class="panel-body">
-                <div class="form-group">
-                    <label>Образовательный уровень (бакалавр, магистр)</label>
-                    <ng-select [items]="degrees"
-                               placeholder="Не выбран образовательный уровень"
-                               formControlName="degrees">
-                    </ng-select>
-                    <div class="alert alert-danger"
-                         *ngIf="requestFGroup.get('studentFGroup.degrees').hasError('required')
-                            && requestFGroup.get('studentFGroup.degrees').touched">
-                        Не выбран образовательный уровень
-                    </div>
-                </div>
                 <div class="form-group">
                     <label for="lastName">Фамилия</label>
                     <input type="text"

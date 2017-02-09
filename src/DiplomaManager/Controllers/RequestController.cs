@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using DiplomaManager.BLL.DTOs.StudentDTOs;
 using DiplomaManager.BLL.Interfaces;
 using DiplomaManager.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -7,11 +9,11 @@ namespace DiplomaManager.Controllers
 {
     public class RequestController : Controller
     {
-        private IRequestService ProjectService { get; }
+        private IRequestService RequestService { get; }
 
-        public RequestController(IRequestService projectService)
+        public RequestController(IRequestService requestService)
         {
-            ProjectService = projectService;
+            RequestService = requestService;
         }
 
         public IActionResult Index()
@@ -21,7 +23,7 @@ namespace DiplomaManager.Controllers
 
         public IActionResult GetTeachers(int? daId)
         {
-            var teachers = ProjectService.GetTeachers(daId, "ru");
+            var teachers = RequestService.GetTeachers(daId, "ru");
             var teachersFio = teachers.Select(t =>
                 new TeacherViewModel
                 {
@@ -37,7 +39,7 @@ namespace DiplomaManager.Controllers
 
         public IActionResult GetDegrees()
         {
-            var degrees = ProjectService.GetDegrees("ru");
+            var degrees = RequestService.GetDegrees("ru");
             var degreesNames = degrees.Select(d =>
                 new DegreeViewModel
                 {
@@ -50,14 +52,27 @@ namespace DiplomaManager.Controllers
 
         public IActionResult GetDevelopmentAreas()
         {
-            var das = ProjectService.GetDevelopmentAreas();
+            var das = RequestService.GetDevelopmentAreas();
 
             return Json(das);
         }
 
         public IActionResult SendRequest([FromBody] RequestViewModel request)
         {
-            return Json(request);
+            var student = request.Student;
+            var studentDto = new StudentDTO(
+                student.FirstName, student.LastName, student.Patronymic, 193, student.Email, DateTime.Now);
+            try
+            {
+                RequestService.CreateDiplomaRequest(studentDto, request.DaId, request.TeacherId, 193, request.Title);
+                return Json(new { Message = "Заявка отравлена" });
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.InnerException == null 
+                    ? new { Error = ex.ToString(), ErrorMessage = ex.Message } 
+                    : new { Error = ex.InnerException.ToString(), ErrorMessage = ex.InnerException.Message });
+            }
         }
     }
 }
