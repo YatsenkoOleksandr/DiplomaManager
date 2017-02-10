@@ -23,3 +23,7 @@
     display: none
   }
 }
+
+.btn-primary {
+    min-width: 75px;
+}

@@ -2,6 +2,17 @@
     <div class="col-md-12">
         <div [ngBusy]="{busy: busy, message: 'Загрузка...', backdrop: false, minDuration: 2000}"></div>
     </div>
+    <modal #reqModal>
+        <modal-header>
+            <h2>Подача заявки</h2>
+        </modal-header>
+        <modal-body>
+            {{confirmMessage}}
+        </modal-body>
+        <modal-footer>
+            <button class="btn btn-primary" (click)="reqModal.close()">OK</button>
+        </modal-footer>
+    </modal>
     <div class="col-md-5">
         <div class="panel panel-default">
             <div class="panel-heading">Руководитель</div>

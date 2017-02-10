@@ -4,10 +4,10 @@ import { DataService } from './data.service';
 import { Degree } from './degree';
 import { Subscription } from 'rxjs';
 import { SelectComponent } from 'ng2-select';
+import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RequestFormGroup, Request } from './request';
 import { SelectItem } from './selectItem';
-import { Student } from './student'
 
 @Component({
     selector: 'my-app',
@@ -21,7 +21,9 @@ export class AppComponent implements OnInit {
 
     busy: Subscription;
     @ViewChild('teachersSelect') teachersSelect: SelectComponent;
+    @ViewChild('reqModal') reqModal: ModalComponent;
     requestFGroup: FormGroup;
+    confirmMessage: string;
 
     constructor(private dataService: DataService) { }
 
@@ -80,7 +82,8 @@ export class AppComponent implements OnInit {
         if (value && valid) {
             let request = new Request(value.das[0].id, value.teachers[0].id, value.studentFGroup, value.title);
             this.busy = this.dataService.sendRequest(request).subscribe(data => {
-                console.log(data);
+                this.confirmMessage = data.message + " =)";
+                this.reqModal.open();
             });
         }
     }
