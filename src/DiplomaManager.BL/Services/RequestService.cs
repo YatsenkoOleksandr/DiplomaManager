@@ -20,12 +20,10 @@ namespace DiplomaManager.BLL.Services
     public class RequestService : IRequestService
     {
         private IDiplomaManagerUnitOfWork Database { get; }
-        private ITransliterationService Transliteration { get; }
 
         public RequestService(IDiplomaManagerUnitOfWork uow, ITransliterationService transliteration)
         {
             Database = uow;
-            Transliteration = transliteration;
         }
 
         public DevelopmentAreaDTO GetDevelopmentArea(int id)
@@ -36,8 +34,8 @@ namespace DiplomaManager.BLL.Services
 
         public IEnumerable<DevelopmentAreaDTO> GetDevelopmentAreas()
         {
-            Mapper.Initialize(cfg => cfg.CreateMap<DevelopmentArea, DevelopmentAreaDTO>());
             var das = Database.DevelopmentAreas.Get();
+            Mapper.Initialize(cfg => cfg.CreateMap<DevelopmentArea, DevelopmentAreaDTO>());
             return Mapper.Map<IEnumerable<DevelopmentArea>, IEnumerable<DevelopmentAreaDTO>>(das);
         }
 
@@ -127,6 +125,16 @@ namespace DiplomaManager.BLL.Services
 
             var degreeDtos = Mapper.Map<IEnumerable<Degree>, IEnumerable<DegreeDTO>>(degrees);
             return degreeDtos;
+        }
+
+        public CapacityDTO GetCapacity(int degreeId, int teacherId)
+        {
+            var capacity = Database.Capacities
+                .Get(c => c.DegreeId == degreeId && c.TeacherId == teacherId)
+                .SingleOrDefault();
+            Mapper.Initialize(cfg => cfg.CreateMap<Capacity, CapacityDTO>());
+            var capacityDto = Mapper.Map<Capacity, CapacityDTO>(capacity);
+            return capacityDto;
         }
 
         public void CreateDiplomaRequest(StudentDTO studentDto, int daId, int teacherId, int localeId, string title)

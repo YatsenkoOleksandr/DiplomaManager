@@ -1,6 +1,6 @@
 ﻿<form (ngSubmit)="onSubmit(requestFGroup)" novalidate [formGroup]="requestFGroup">
     <div class="col-md-12">
-        <div [ngBusy]="{busy: busy, message: 'Загрузка...', backdrop: false, minDuration: 2000}"></div>
+        <div [ngBusy]="{busy: busy, message: 'Загрузка...', backdrop: true, minDuration: 600}"></div>
     </div>
     <modal #reqModal>
         <modal-header>
@@ -49,12 +49,17 @@
             <label>Образовательный уровень (бакалавр, магистр)</label>
             <ng-select [items]="degrees"
                        placeholder="Не выбран образовательный уровень"
+                       (selected)="degreeSelected($event)"
                        formControlName="degrees">
             </ng-select>
             <div class="alert alert-danger"
                  *ngIf="requestFGroup.get('degrees').hasError('required')
                             && requestFGroup.get('degrees').touched">
                 Не выбран образовательный уровень
+            </div>
+            <div class="alert alert-info" *ngIf="capacity">
+                <h4>Свободно: {{capacity?.count - capacity?.acceptedCount}}</h4>
+                Всего мест: {{capacity?.count}}
             </div>
         </div>
         <div class="panel panel-default" formGroupName="studentFGroup">

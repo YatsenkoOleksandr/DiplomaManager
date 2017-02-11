@@ -15,7 +15,7 @@ namespace DiplomaManager.BLL.Interfaces
 
         IEnumerable<DegreeDTO> GetDegrees(string cultureName = null);
         IEnumerable<TeacherDTO> GetTeachers(int? daId = null, string cultureName = null);
-
+        CapacityDTO GetCapacity(int degreeId, int teacherId);
         void CreateDiplomaRequest(StudentDTO studentDto, int daId, int teacherId, int localeId, string title);
 
         void Dispose();

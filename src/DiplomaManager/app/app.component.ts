@@ -8,6 +8,7 @@ import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RequestFormGroup, Request } from './request';
 import { SelectItem } from './selectItem';
+import { Capacity } from './capacity';
 
 @Component({
     selector: 'my-app',
@@ -24,6 +25,7 @@ export class AppComponent implements OnInit {
     @ViewChild('reqModal') reqModal: ModalComponent;
     requestFGroup: FormGroup;
     confirmMessage: string;
+    capacity: Capacity;
 
     constructor(private dataService: DataService) { }
 
@@ -75,6 +77,15 @@ export class AppComponent implements OnInit {
                 this.teachersList[index] = new SelectItem(teacher.id, teacher.toString());
                 index++;
             }
+        });
+    }
+
+    degreeSelected(event) {
+        var degreeid = event.id;
+        var teacherId = this.requestFGroup.value.teachers[0].id;
+
+        this.busy = this.dataService.getCapacity(degreeid, teacherId).subscribe((data) => {
+            this.capacity = data;
         });
     }
 

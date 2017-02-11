@@ -7,6 +7,7 @@ import { DevelopmentArea } from './developmentArea';
 import { Observable } from 'rxjs/Observable'
 import 'rxjs/add/operator/map';
 import { Request } from './request';
+import { Capacity } from './capacity';
 
 @Injectable()
 export class DataService {
@@ -38,6 +39,13 @@ export class DataService {
         return this.http.get('/Request/GetDevelopmentAreas').map((resp: Response) => {
             let developmentAreaList = resp.json();
             return developmentAreaList;
+        });
+    }
+
+    getCapacity(degreeId: number, teacherId: number): Observable<Capacity> {
+        return this.http.get(`/Request/GetCapacity/?degreeId=${degreeId}&teacherId=${teacherId}`).map((resp: Response) => {
+            let capacity = resp.json();
+            return capacity;
         });
     }
 

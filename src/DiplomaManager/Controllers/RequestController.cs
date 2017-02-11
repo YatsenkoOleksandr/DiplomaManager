@@ -57,6 +57,12 @@ namespace DiplomaManager.Controllers
             return Json(das);
         }
 
+        public IActionResult GetCapacity(int degreeId, int teacherId)
+        {
+            var capacity = RequestService.GetCapacity(degreeId, teacherId);
+            return Json(capacity);
+        }
+
         public IActionResult SendRequest([FromBody] RequestViewModel request)
         {
             var student = request.Student;
