@@ -1,4 +1,6 @@
-﻿<form (ngSubmit)="onSubmit(requestFGroup)" novalidate [formGroup]="requestFGroup">
+﻿<h2>Подача заявки</h2>
+<hr class="col-md-12" />
+<form (ngSubmit)="onSubmit(requestFGroup)" novalidate [formGroup]="requestFGroup">
     <div class="col-md-12">
         <div [ngBusy]="{busy: busy, message: 'Загрузка...', backdrop: true, minDuration: 600}"></div>
     </div>

@@ -12,7 +12,7 @@
         },
         map: {
             // our app is within the app folder
-            app: 'app',
+            app: 'studClientApp',
 
             // angular bundles Format = ('name': 'location')
             '@angular/core': 'js/core.umd.js',

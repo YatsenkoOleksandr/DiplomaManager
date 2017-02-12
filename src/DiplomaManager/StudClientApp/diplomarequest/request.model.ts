@@ -1,5 +1,5 @@
-﻿import { SelectItem } from './selectItem';
-import { Student } from './student';
+﻿import { SelectItem } from '../shared/selectItem';
+import { Student } from './student.model';
 
 export class RequestFormGroup {
     das: Array<SelectItem>;

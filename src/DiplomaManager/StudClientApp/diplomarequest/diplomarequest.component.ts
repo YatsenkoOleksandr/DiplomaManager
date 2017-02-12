@@ -1,21 +1,22 @@
 ﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { Response } from '@angular/http';
-import { DataService } from './data.service';
-import { Degree } from './degree';
+import { DataService } from './diplomarequest.service';
+import { Degree } from './degree.model';
 import { Subscription } from 'rxjs';
 import { SelectComponent } from 'ng2-select';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { RequestFormGroup, Request } from './request';
-import { SelectItem } from './selectItem';
-import { Capacity } from './capacity';
+import { RequestFormGroup, Request } from './request.model';
+import { SelectItem } from '../shared/selectItem';
+import { Capacity } from './capacity.model';
 
 @Component({
-    selector: 'my-app',
-    templateUrl: 'app/app.component.html',
+    moduleId: module.id,
+    selector: 'diploma-request',
+    templateUrl: './diplomarequest.component.html',
     providers: [DataService]
 })
-export class AppComponent implements OnInit {
+export class DiplomaRequestComponent implements OnInit {
     dAreasList: Array<SelectItem>;
     degrees: Array<SelectItem>;
     teachersList: Array<SelectItem>;

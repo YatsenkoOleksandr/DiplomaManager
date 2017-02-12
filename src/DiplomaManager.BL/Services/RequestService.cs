@@ -188,12 +188,13 @@ namespace DiplomaManager.BLL.Services
                 {
                     studentRes.Login =
                         $"{studentDto.GetLastName(localeId)}{studentDto.GetFirstName(localeId).Substring(0, 1).ToUpper()}{studentDto.GetPatronymic(localeId).Substring(0, 1).ToUpper()}";
+                    Database.Students.Update(studentRes);
                 }
                 if (string.IsNullOrWhiteSpace(studentRes.Password))
                 {
                     studentRes.Password = CreateRandomPassword(8);
+                    Database.Students.Update(studentRes);
                 }
-                Database.Students.Update(studentRes);
             }
             return studentRes;
         }

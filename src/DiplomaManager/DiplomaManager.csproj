@@ -9,24 +9,28 @@
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wp8+wpa81;</PackageTargetFallback>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="app\**" />
     <Compile Remove="wwwroot\css\style\**" />
     <Compile Remove="wwwroot\js\angular2-busy\**" />
     <Compile Remove="wwwroot\js\angular2-dynamic-component\**" />
     <Compile Remove="wwwroot\js\core-js\**" />
     <Compile Remove="wwwroot\js\ts-metadata-helper\**" />
     <Compile Remove="wwwroot\node_modules\**" />
+    <Content Remove="app\**" />
     <Content Remove="wwwroot\css\style\**" />
     <Content Remove="wwwroot\js\angular2-busy\**" />
     <Content Remove="wwwroot\js\angular2-dynamic-component\**" />
     <Content Remove="wwwroot\js\core-js\**" />
     <Content Remove="wwwroot\js\ts-metadata-helper\**" />
     <Content Remove="wwwroot\node_modules\**" />
+    <EmbeddedResource Remove="app\**" />
     <EmbeddedResource Remove="wwwroot\css\style\**" />
     <EmbeddedResource Remove="wwwroot\js\angular2-busy\**" />
     <EmbeddedResource Remove="wwwroot\js\angular2-dynamic-component\**" />
     <EmbeddedResource Remove="wwwroot\js\core-js\**" />
     <EmbeddedResource Remove="wwwroot\js\ts-metadata-helper\**" />
     <EmbeddedResource Remove="wwwroot\node_modules\**" />
+    <None Remove="app\**" />
     <None Remove="wwwroot\css\style\**" />
     <None Remove="wwwroot\js\angular2-busy\**" />
     <None Remove="wwwroot\js\angular2-dynamic-component\**" />
@@ -35,44 +39,6 @@
     <None Remove="wwwroot\node_modules\**" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="app\app.component.js" />
-    <None Remove="app\app.component.js.map" />
-    <None Remove="app\app.component.ts" />
-    <None Remove="app\app.module.js" />
-    <None Remove="app\app.module.js.map" />
-    <None Remove="app\app.module.ts" />
-    <None Remove="app\main.js" />
-    <None Remove="app\main.js.map" />
-    <None Remove="app\main.ts" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="app\app.component.js">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="app\app.component.js.map">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="app\app.component.ts">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="app\app.module.js">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="app\app.module.js.map">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="app\app.module.ts">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="app\main.js">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="app\main.js.map">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="app\main.ts">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
     <Content Include="wwwroot\js\systemjs.config.js" />
     <Content Include="wwwroot\request.json" />
   </ItemGroup>
@@ -100,5 +66,8 @@
   <ItemGroup>
     <ProjectReference Include="..\DiplomaManager.BL\DiplomaManager.BLL.csproj" />
     <ProjectReference Include="..\DiplomaManager.DAL\DiplomaManager.DAL.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="StudClientApp\shared\" />
   </ItemGroup>
 </Project>

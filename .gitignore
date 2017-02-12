@@ -261,3 +261,4 @@ __pycache__/
 *.pyc
 /src/DiplomaManager/wwwroot/app
 /src/DiplomaManager/wwwroot/js
+/src/DiplomaManager/wwwroot/studClientApp
