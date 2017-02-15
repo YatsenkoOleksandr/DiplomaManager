@@ -31,6 +31,7 @@
             'ts-metadata-helper': 'npm:ts-metadata-helper',
             'angular2-busy': 'npm:angular2-busy',
             "ng2-bs3-modal": "npm:ng2-bs3-modal",
+            "ng2-table": "npm:ng2-table",
 
             // other libraries
             'rxjs': 'js'

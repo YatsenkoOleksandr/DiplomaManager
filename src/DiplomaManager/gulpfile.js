@@ -50,7 +50,8 @@ gulp.task('copyNodeModules', function () {
         "core-js": "core-js/**/*.{js, map}",
         "ts-metadata-helper": "ts-metadata-helper/*.{js, map}",
         "angular2-busy": "angular2-busy/build/src/*.{js, map}",
-        "ng2-bs3-modal": "ng2-bs3-modal/**/*.{js, map}"
+        "ng2-bs3-modal": "ng2-bs3-modal/**/*.{js, map}",
+        "ng2-table": "ng2-table/**/*.{js, map}"
     };
     for (var destinationDir in assets) {
         gulp.src(paths.nodeModules + assets[destinationDir])
