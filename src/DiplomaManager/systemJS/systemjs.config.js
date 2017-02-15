@@ -7,12 +7,12 @@
         // map tells the System loader where to look for things
         // ASP.NET Core exposes the wwwroot folder without the need to specify "wwwroot" in the path
         defaultJSExtensions: true,
+        transpiler: 'typescript',
+        typescriptOptions: { emitDecoratorMetadata: true }, 
         paths: {
             'npm:': 'node_modules/'
         },
         map: {
-            // our app is within the app folder
-            app: 'studClientApp',
 
             // angular bundles Format = ('name': 'location')
             '@angular/core': 'js/core.umd.js',
@@ -37,10 +37,9 @@
         },
         // packages tells the System loader how to load when no filename and/or no extension
         packages: {
-            app: {
-                main: './main.js',
-                defaultExtension: 'js'
-            },
+            'student-app': { defaultExtension: 'ts' },
+            'teacher-app': { defaultExtension: 'ts' },
+
             rxjs: {
                 defaultExtension: 'js'
             },

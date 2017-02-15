@@ -10,7 +10,7 @@ var webRoot = "./wwwroot/";
 
 var paths = {
     nodeModules: './node_modules/',
-    appPath: './studClientApp/'
+    appPath: './clientApp/'
 };
 
 gulp.task('beforeBuild', ['copyNodeModules', 'copyHtml'], function () {

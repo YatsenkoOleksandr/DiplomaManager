@@ -48,7 +48,7 @@
     <!-- 2. Configure SystemJS -->
     <script src="~/js/systemjs.config.js"></script>
     <script>
-        System.import('app').catch(function (err) { console.error(err); });
+        System.import('clientApp/student/main').then(null, console.error.bind(console));
     </script>
     @RenderSection("scripts", required: false)
 </body>

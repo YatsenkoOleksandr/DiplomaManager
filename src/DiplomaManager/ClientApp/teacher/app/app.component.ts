@@ -2,8 +2,8 @@
 
 @Component({
     moduleId: module.id,
-    selector: 'stud-app',
+    selector: 'teacher-app',
     templateUrl: './app.component.html'
 })
-export class AppComponent {
+export class TeacherComponent {
 }

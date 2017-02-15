@@ -9,8 +9,8 @@
     "removeComments": false,
     "sourceMap": true,
     "target": "es5",
-    "rootDir": "studClientApp",
-    "outDir": "wwwroot/studClientApp"
+    "rootDir": "clientApp",
+    "outDir": "wwwroot/clientApp"
   },
   "exclude": [
     "node_modules",

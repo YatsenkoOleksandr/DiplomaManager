@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import { routes } from './app.routes';
+import { routes } from './student.routes';
 import { AppComponent } from './app/app.component';
 import { HomeComponent } from './home/home.component';
 import { DiplomaRequestComponent } from './diplomarequest/diplomarequest.component';
@@ -14,7 +14,7 @@ import { SelectModule } from 'ng2-select';
 import { BusyModule } from 'angular2-busy';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 
-@NgModule({
+@NgModule(({
     imports: [
         BrowserModule,
         FormsModule,
@@ -30,5 +30,5 @@ import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
         DiplomaRequestComponent
     ],
     bootstrap: [AppComponent]
-})
-export class AppModule { }
+}) as any)
+export class StudentModule { }
