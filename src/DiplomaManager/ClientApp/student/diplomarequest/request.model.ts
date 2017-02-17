@@ -1,5 +1,5 @@
-﻿import { SelectItem } from '../shared/selectItem';
-import { Student } from './student.model';
+﻿import { SelectItem } from '../../shared/selectItem';
+import { Student } from '../../shared/student.model';
 
 export class RequestFormGroup {
     das: Array<SelectItem>;
@@ -20,7 +20,7 @@ export class Request {
     constructor(daId: number, teacherId: number, student: Student, title: string) {
         this.daId = daId;
         this.teacherId = teacherId;
-        this.student = new Student(student.firstName, student.lastName, student.patronymic, student.email, student.groupId);
+        this.student = new Student(0, student.firstName, student.lastName, student.patronymic, student.email, student.groupId);
         this.title = title;
     }
 }

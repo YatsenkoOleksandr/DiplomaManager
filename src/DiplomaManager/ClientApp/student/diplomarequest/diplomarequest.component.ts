@@ -1,20 +1,22 @@
 ﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { Response } from '@angular/http';
-import { DataService } from './diplomarequest.service';
-import { Degree } from './degree.model';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+
 import { SelectComponent } from 'ng2-select';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { SelectItem } from '../../shared/selectItem';
+
+import { DiplomaRequestService } from './diplomarequest.service';
+import { Degree } from './degree.model';
 import { RequestFormGroup, Request } from './request.model';
-import { SelectItem } from '../shared/selectItem';
 import { Capacity } from './capacity.model';
 
 @Component({
     moduleId: module.id,
     selector: 'diploma-request',
     templateUrl: './diplomarequest.component.html',
-    providers: [DataService]
+    providers: [DiplomaRequestService]
 })
 export class DiplomaRequestComponent implements OnInit {
     dAreasList: Array<SelectItem>;
@@ -28,7 +30,7 @@ export class DiplomaRequestComponent implements OnInit {
     confirmMessage: string;
     capacity: Capacity;
 
-    constructor(private dataService: DataService) { }
+    constructor(private dataService: DiplomaRequestService) { }
 
     ngOnInit() {
         this.busy = this.dataService.getDegrees().subscribe((data) => {

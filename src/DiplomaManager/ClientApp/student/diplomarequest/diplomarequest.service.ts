@@ -1,16 +1,17 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Response, Headers } from '@angular/http';
-import { Teacher } from './teacher.model';
-import { Degree } from './degree.model';
-import { DevelopmentArea } from './developmentArea.model';
 import { Observable } from 'rxjs/Observable'
 import 'rxjs/add/operator/map';
+
+import { Teacher } from '../../shared/teacher.model';
+import { Degree } from './degree.model';
+import { DevelopmentArea } from './developmentArea.model';
 import { Request } from './request.model';
 import { Capacity } from './capacity.model';
 
 @Injectable()
-export class DataService {
+export class DiplomaRequestService {
 
     constructor(private http: Http) { }
 
@@ -21,7 +22,7 @@ export class DataService {
             for (let index in teacherList) {
                 let teacher = teacherList[index];
                 teachers.push(
-                    new Teacher(teacher.id, teacher.firstName, teacher.lastName, teacher.patronymic, teacher.positionName)
+                    new Teacher(teacher.id, teacher.firstName, teacher.lastName, teacher.patronymic, teacher.positionName, teacher.email)
                 );
             }
             return teachers;

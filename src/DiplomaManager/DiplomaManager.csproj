@@ -10,7 +10,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="app\**" />
-    <Compile Remove="ClientApp\shared\**" />
     <Compile Remove="wwwroot\css\style\**" />
     <Compile Remove="wwwroot\js\angular2-busy\**" />
     <Compile Remove="wwwroot\js\angular2-dynamic-component\**" />
@@ -18,7 +17,6 @@
     <Compile Remove="wwwroot\js\ts-metadata-helper\**" />
     <Compile Remove="wwwroot\node_modules\**" />
     <Content Remove="app\**" />
-    <Content Remove="ClientApp\shared\**" />
     <Content Remove="wwwroot\css\style\**" />
     <Content Remove="wwwroot\js\angular2-busy\**" />
     <Content Remove="wwwroot\js\angular2-dynamic-component\**" />
@@ -26,7 +24,6 @@
     <Content Remove="wwwroot\js\ts-metadata-helper\**" />
     <Content Remove="wwwroot\node_modules\**" />
     <EmbeddedResource Remove="app\**" />
-    <EmbeddedResource Remove="ClientApp\shared\**" />
     <EmbeddedResource Remove="wwwroot\css\style\**" />
     <EmbeddedResource Remove="wwwroot\js\angular2-busy\**" />
     <EmbeddedResource Remove="wwwroot\js\angular2-dynamic-component\**" />
@@ -34,7 +31,6 @@
     <EmbeddedResource Remove="wwwroot\js\ts-metadata-helper\**" />
     <EmbeddedResource Remove="wwwroot\node_modules\**" />
     <None Remove="app\**" />
-    <None Remove="ClientApp\shared\**" />
     <None Remove="wwwroot\css\style\**" />
     <None Remove="wwwroot\js\angular2-busy\**" />
     <None Remove="wwwroot\js\angular2-dynamic-component\**" />

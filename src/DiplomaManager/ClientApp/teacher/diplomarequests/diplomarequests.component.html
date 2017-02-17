@@ -1,3 +1,22 @@
-﻿<ng-table [config]="config"
-          [rows]="rows" [columns]="columns">
-</ng-table>
+﻿<div >
+    <table class="table table-striped">
+        <tr>
+            <th>№ заявки</th>
+            <th>ФИО студента</th>
+            <th>Тема</th>
+            <th>Дата подачи</th>
+            <th>Принята?</th>
+            <th></th>
+        </tr>
+        <tr *ngFor="let request of requests">
+            <td>{{request.id}}</td>
+            <td>{{request.student.toString()}}</td>
+            <td>{{request.projectTitle}}</td>
+            <td>{{request.creationDate}}</td>
+            <td>{{request.accepted}}</td>
+            <td>
+                <button class="btn btn-default" type="button">Edit</button>
+            </td>
+        </tr>
+    </table>
+</div>
