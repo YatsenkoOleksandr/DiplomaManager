@@ -32,7 +32,7 @@ namespace DiplomaManager.DAL.Entities.ProjectEntities
         public bool Accepted
         { get; set; }
 
-        public List<ProjectTitle> ProjectsTitles
+        public List<ProjectTitle> ProjectTitles
         { get; set; }
     }
 }

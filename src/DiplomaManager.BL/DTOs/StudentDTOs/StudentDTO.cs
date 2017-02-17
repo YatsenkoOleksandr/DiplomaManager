@@ -6,6 +6,7 @@ namespace DiplomaManager.BLL.DTOs.StudentDTOs
     public class StudentDTO : UserDTO
     {
         public int GroupId { get; set; }
+        public GroupDTO Group { get; set; }
 
         public StudentDTO() { }
 

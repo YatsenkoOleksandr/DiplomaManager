@@ -1,4 +1,6 @@
-﻿namespace DiplomaManager.ViewModels
+﻿using DiplomaManager.Areas.Teacher.ViewModels;
+
+namespace DiplomaManager.ViewModels
 {
     public class RequestViewModel
     {

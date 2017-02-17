@@ -10,8 +10,8 @@ namespace DiplomaManager.BLL.DTOs.TeacherDTOs
         public TeacherDTO() { }
 
         public TeacherDTO(string firstName, string lastName, string patronymic, int localeId, string email,
-            DateTime creadionDate) 
-            : base(firstName, lastName, patronymic, localeId, email, creadionDate)
+            DateTime creationDate) 
+            : base(firstName, lastName, patronymic, localeId, email, creationDate)
         { }
     }
 }

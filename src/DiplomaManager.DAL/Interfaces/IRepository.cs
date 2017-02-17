@@ -16,16 +16,16 @@ namespace DiplomaManager.DAL.Interfaces
 
         IEnumerable<TEntity> Get(
            Expression<Func<TEntity, bool>> filter,
-           string[] includePaths);
+           IncludeExpression<TEntity>[] includePaths);
 
         IEnumerable<TEntity> Get(
            Expression<Func<TEntity, bool>> filter,
-           string[] includePaths,
+           IncludeExpression<TEntity>[] includePaths,
            int? page,
            int? pageSize = null);
 
         IEnumerable<TEntity> Get(
-            string[] includePaths = null,
+            IncludeExpression<TEntity>[] includePaths = null,
             int? page = 0,
             int? pageSize = null,
             FilterExpression<TEntity>[] filters = null,

@@ -115,6 +115,7 @@ namespace DiplomaManager
 
             builder.RegisterType<RequestService>().As<IRequestService>();
             builder.RegisterType<UserService>().As<IUserService>();
+            builder.RegisterType<TeacherService>().As<ITeacherService>();
         }
     }
 }

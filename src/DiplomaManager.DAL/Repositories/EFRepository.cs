@@ -33,14 +33,14 @@ namespace DiplomaManager.DAL.Repositories
 
         public IEnumerable<TEntity> Get(
             Expression<Func<TEntity, bool>> filter,
-            string[] includePaths)
+            IncludeExpression<TEntity>[] includePaths)
         {
             return Get(filter, includePaths, null);
         }
 
         public IEnumerable<TEntity> Get(
            Expression<Func<TEntity, bool>> filter,
-           string[] includePaths,
+           IncludeExpression<TEntity>[] includePaths,
            int? page,
            int? pageSize = null)
         {
@@ -48,7 +48,7 @@ namespace DiplomaManager.DAL.Repositories
         }
 
         public IEnumerable<TEntity> Get(
-            string[] includePaths = null, 
+            IncludeExpression<TEntity>[] includePaths = null, 
             int? page = 0, 
             int? pageSize = null,
             FilterExpression<TEntity>[] filters = null,
@@ -67,9 +67,9 @@ namespace DiplomaManager.DAL.Repositories
 
             if (includePaths != null)
             {
-                for (var i = 0; i < includePaths.Count(); i++)
+                foreach (var p in includePaths)
                 {
-                    query = query.Include(includePaths[i]);
+                    query = query.Include(p.Property);
                 }
             }
 

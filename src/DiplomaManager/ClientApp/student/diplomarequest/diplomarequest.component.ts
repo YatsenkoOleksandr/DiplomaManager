@@ -94,7 +94,11 @@ export class DiplomaRequestComponent implements OnInit {
         if (value && valid) {
             let request = new Request(value.das[0].id, value.teachers[0].id, value.studentFGroup, value.title);
             this.busy = this.dataService.sendRequest(request).subscribe(data => {
-                this.confirmMessage = data.message + " =)";
+                if (data.message) {
+                    this.confirmMessage = data.message + " =)";
+                } else {
+                    this.confirmMessage = data.errorMessage;
+                }
                 this.reqModal.open();
             });
         }

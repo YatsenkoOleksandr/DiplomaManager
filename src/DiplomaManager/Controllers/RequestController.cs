@@ -16,11 +16,6 @@ namespace DiplomaManager.Controllers
             RequestService = requestService;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         public IActionResult GetTeachers(int? daId)
         {
             var teachers = RequestService.GetTeachers(daId, "ru");

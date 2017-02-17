@@ -21,7 +21,7 @@ namespace DiplomaManager.BLL.Services
     {
         private IDiplomaManagerUnitOfWork Database { get; }
 
-        public RequestService(IDiplomaManagerUnitOfWork uow, ITransliterationService transliteration)
+        public RequestService(IDiplomaManagerUnitOfWork uow)
         {
             Database = uow;
         }
@@ -64,10 +64,10 @@ namespace DiplomaManager.BLL.Services
             List<Teacher> teachers;
             var filterExpressions = new List<FilterExpression<Teacher>>
             { new FilterExpression<Teacher>(t => !(t is Admin)) };
-            var includePaths = new List<string>();
+            var includePaths = new List<IncludeExpression<Teacher>>();
             if (daId != null)
             {
-                includePaths.Add("DevelopmentAreas");
+                includePaths.Add(new IncludeExpression<Teacher>(t => t.DevelopmentAreas));
                 filterExpressions.Add(new FilterExpression<Teacher>(
                     t => t.DevelopmentAreas.Any(da => da.Id == daId.Value)));
             }
@@ -77,15 +77,20 @@ namespace DiplomaManager.BLL.Services
                     includePaths: includePaths.ToArray()).ToList();
 
                 Database.FirstNames.Get(
-                    f => f.Locale.Name == cultureName, new [] { "Locale" });
+                    f => f.Locale.Name == cultureName, new[] { new IncludeExpression<FirstName>(p => p.Locale) });
                 Database.LastNames.Get(
-                    l => l.Locale.Name == cultureName, new[] { "Locale" });
+                    l => l.Locale.Name == cultureName, new[] { new IncludeExpression<LastName>(p => p.Locale) });
                 Database.Patronymics.Get(
-                    p => p.Locale.Name == cultureName, new[] { "Locale" });
+                    p => p.Locale.Name == cultureName, new[] { new IncludeExpression<Patronymic>(p => p.Locale) });
             }
             else
             {
-                includePaths.AddRange(new[] { "FirstNames", "LastNames", "Patronymics" });
+                includePaths.AddRange(new[] 
+                {
+                    new IncludeExpression<Teacher>(p => p.FirstNames),
+                    new IncludeExpression<Teacher>(p => p.LastNames),
+                    new IncludeExpression<Teacher>(p => p.Patronymics)
+                });
                 teachers = Database.Teachers.Get(filters: filterExpressions.ToArray(),
                     includePaths: includePaths.ToArray()).ToList();
             }
@@ -109,11 +114,11 @@ namespace DiplomaManager.BLL.Services
             if (!string.IsNullOrWhiteSpace(cultureName))
             {
                 degrees = Database.Degrees.Get().ToList();
-                Database.DegreeNames.Get(dn => dn.Locale.Name == cultureName, new[] { "Locale" });
+                Database.DegreeNames.Get(dn => dn.Locale.Name == cultureName, new[] { new IncludeExpression<DegreeName>(d => d.Locale),  });
             }
             else
             {
-                degrees = Database.Degrees.Get(new[] { "DegreeNames" }).ToList();
+                degrees = Database.Degrees.Get(new[] { new IncludeExpression<Degree>(d => d.DegreeNames),  }).ToList();
             }
 
             Mapper.Initialize(cfg =>
