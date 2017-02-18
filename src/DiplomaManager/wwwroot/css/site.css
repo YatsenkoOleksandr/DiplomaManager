@@ -10,20 +10,6 @@
     padding-right: 15px;
 }
 
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
-}
-
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-  /* Hide captions */
-  .carousel-caption {
-    display: none
-  }
-}
-
 .btn-primary {
     min-width: 75px;
 }
@@ -35,4 +21,11 @@
     left: 0px;
     right: 0px;
     bottom: 0px;
+}
+
+table .btn {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 125px;
 }
