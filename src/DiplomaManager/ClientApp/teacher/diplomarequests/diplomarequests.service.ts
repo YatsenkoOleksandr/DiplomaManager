@@ -4,7 +4,7 @@ import { Response, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
-import { RequestTeacher } from './requestteacher';
+import { RequestTeacher } from './requestTeacher.model';
 import { Student } from '../../shared/student.model';
 
 @Injectable()

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using DiplomaManager.BLL.DTOs.ProjectDTOs;
 using DiplomaManager.ViewModels;
 
 namespace DiplomaManager.Areas.Teacher.ViewModels
@@ -7,7 +9,7 @@ namespace DiplomaManager.Areas.Teacher.ViewModels
     {
         public int Id;
 
-        public string ProjectTitle { get; set; }
+        public List<ProjectTitleDTO> ProjectTitles { get; set; }
 
         public UserViewModel Student { get; set; }
 

@@ -31,13 +31,17 @@
         <tr *ngFor="let request of requests">
             <td>{{request.id}}</td>
             <td>{{request.student.toString()}}</td>
-            <td>{{request.projectTitle}}</td>
+            <td>
+                <div *ngFor="let projectTitle of request.projectTitles">
+                    {{projectTitle.title}}
+                </div>
+            </td>
             <td>{{request.creationDate | date: "dd.MM.yyyy"}}</td>
             <td>{{request.accepted | accepted}}</td>
             <td>
-                <button *ngIf="!request.accepted" class="btn btn-primary" type="button">Принять</button>
-                <button *ngIf="request.accepted" class="btn btn-success" type="button" (click)="editRequest(request)">Редактировать</button>
-                <button *ngIf="request.accepted" class="btn btn-danger" type="button">Отклонить</button>
+                <button *ngIf="!request.accepted" class="btn btn-success" type="button">Принять</button>
+                <button *ngIf="!request.accepted" class="btn btn-danger" type="button">Отклонить</button>
+                <button *ngIf="request.accepted" class="btn btn-primary" type="button" (click)="editRequest(request)">Редактировать</button>
             </td>
         </tr>
     </table>

@@ -3,7 +3,7 @@ import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { Subscription } from 'rxjs';
 
 import { TeacherService } from './diplomarequests.service';
-import { RequestTeacher } from './requestteacher';
+import { RequestTeacher } from './requestTeacher.model';
 
 @Component({
     moduleId: module.id,

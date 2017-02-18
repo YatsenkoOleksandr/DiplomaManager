@@ -18,7 +18,7 @@ namespace DiplomaManager.Areas.Teacher.Controllers
         public IActionResult GetDiplomaRequests(int? teacherId)
         {
             if (teacherId == null) return NotFound();
-            var projects = TeacherService.GetDiplomaRequests(teacherId.Value, "ru");
+            var projects = TeacherService.GetDiplomaRequests(teacherId.Value);
             var projectVms = projects.Select(p =>
                 new RequestTeacherViewModel
                 {
@@ -34,7 +34,7 @@ namespace DiplomaManager.Areas.Teacher.Controllers
                     },
                     Accepted = p.Accepted,
                     CreationDate = p.CreationDate,
-                    ProjectTitle = p.ProjectTitles[0].Title
+                    ProjectTitles = p.ProjectTitles
                 });
             return Json(projectVms);
         }

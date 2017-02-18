@@ -14,6 +14,7 @@ using DiplomaManager.DAL.Entities.TeacherEntities;
 using DiplomaManager.DAL.Entities.UserEnitites;
 using DiplomaManager.DAL.Interfaces;
 using DiplomaManager.DAL.Utils;
+using Group = System.Text.RegularExpressions.Group;
 
 namespace DiplomaManager.BLL.Services
 {
@@ -149,7 +150,7 @@ namespace DiplomaManager.BLL.Services
                 cfg.CreateMap<FirstNameDTO, FirstName>();
                 cfg.CreateMap<LastNameDTO, LastName>();
                 cfg.CreateMap<PatronymicDTO, Patronymic>();
-
+                cfg.CreateMap<GroupDTO, Group>();
                 cfg.CreateMap<StudentDTO, Student>();
             });
 
