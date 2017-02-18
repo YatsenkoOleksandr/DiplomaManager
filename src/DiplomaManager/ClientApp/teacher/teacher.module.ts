@@ -8,6 +8,7 @@ import { routes } from './teacher.routes';
 import { TeacherComponent } from './app/app.component';
 import { HomeComponent } from './home/home.component';
 import { DiplomaRequestsComponent } from './diplomarequests/diplomarequests.component'
+import { AcceptedPipe } from '../shared/accepted.pipe';
 
 import { HttpModule } from '@angular/http';
 import { SelectModule } from 'ng2-select';
@@ -30,7 +31,8 @@ import { Ng2TableModule } from 'ng2-table/ng2-table';
     declarations: [
         TeacherComponent,
         HomeComponent,
-        DiplomaRequestsComponent
+        DiplomaRequestsComponent,
+        AcceptedPipe
     ],
     bootstrap: [TeacherComponent]
 }) as any)

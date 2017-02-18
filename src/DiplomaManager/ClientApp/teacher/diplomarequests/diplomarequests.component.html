@@ -30,8 +30,8 @@
             <td>{{request.id}}</td>
             <td>{{request.student.toString()}}</td>
             <td>{{request.projectTitle}}</td>
-            <td>{{request.creationDate}}</td>
-            <td>{{request.accepted}}</td>
+            <td>{{request.creationDate | date: "dd.MM.yyyy"}}</td>
+            <td>{{request.accepted | accepted}}</td>
             <td>
                 <button class="btn btn-default" type="button" (click)="editRequest(request)">Редактировать</button>
             </td>
