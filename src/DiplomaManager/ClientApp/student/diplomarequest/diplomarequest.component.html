@@ -1,9 +1,7 @@
 ﻿<h2>Подача заявки</h2>
 <hr class="col-md-12" />
-<form (ngSubmit)="onSubmit(requestFGroup)" novalidate [formGroup]="requestFGroup">
-    <div class="col-md-12">
-        <div [ngBusy]="{busy: busy, message: 'Загрузка...', backdrop: true, minDuration: 600}"></div>
-    </div>
+<form (ngSubmit)="onSubmit(requestFGroup)" novalidate [formGroup]="requestFGroup"
+      [ngBusy]="{busy: busy}">
     <modal #reqModal>
         <modal-header>
             <h4>Подача заявки</h4>
@@ -125,7 +123,7 @@
                            class="form-control" placeholder="Введите E-mail"
                            formControlName="email" />
                     <div class="alert alert-danger"
-                         *ngIf="requestFGroup.get('studentFGroup.email').invalid 
+                         *ngIf="requestFGroup.get('studentFGroup.email').invalid
                             && requestFGroup.get('studentFGroup.email').touched">
                         Некорректный E-mail
                     </div>
@@ -136,8 +134,8 @@
             <label for="title">Тема работы</label>
             <textarea type="text"
                       id="title"
-                      class="form-control" 
-                      placeholder="Введите тему работы" 
+                      class="form-control"
+                      placeholder="Введите тему работы"
                       rows="5"
                       formControlName="title"></textarea>
             <div class="alert alert-danger"

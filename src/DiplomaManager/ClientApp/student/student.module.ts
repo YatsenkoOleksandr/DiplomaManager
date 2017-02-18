@@ -11,7 +11,7 @@ import { DiplomaRequestComponent } from './diplomarequest/diplomarequest.compone
 
 import { HttpModule } from '@angular/http';
 import { SelectModule } from 'ng2-select';
-import { BusyModule } from 'angular2-busy';
+import { BusyModule, BusyConfig } from 'angular2-busy';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 
 @NgModule(({
@@ -22,7 +22,15 @@ import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
         HttpModule,
         RouterModule.forRoot(routes),
         SelectModule,
-        BusyModule,
+        BusyModule.forRoot(
+            new BusyConfig({
+                message: 'Загрузка...',
+                backdrop: true,
+                delay: 200,
+                minDuration: 600,
+                wrapperClass: 'loading'
+            })
+        ),
         Ng2Bs3ModalModule],
     declarations: [
         AppComponent,

@@ -27,3 +27,12 @@
 .btn-primary {
     min-width: 75px;
 }
+
+.loading {
+    position: fixed;
+    z-index: 1002;
+    top: 50px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+}
