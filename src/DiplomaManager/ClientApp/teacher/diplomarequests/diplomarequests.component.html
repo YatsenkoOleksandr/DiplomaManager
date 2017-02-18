@@ -1,4 +1,22 @@
 ﻿<div >
+    <modal #diplomaRequestModal>
+        <form #diplomaRequestForm="ngForm">
+            <modal-header [show-close]="true">
+                <h4>Редактирование заявки</h4>
+            </modal-header>
+            <modal-body>
+                <div class="form-group">
+                    <label for="title">Тема работы</label>
+                    <input type="text" class="form-control" required
+                           id="title">
+                </div>
+            </modal-body>
+            <modal-footer>
+                <button type="button" class="btn btn-default" data-dismiss="diplomaRequestModal" (click)="diplomaRequestModal.dismiss()">Отмена</button>
+                <button type="button" class="btn btn-primary" (click)="diplomaRequestModal.close()">Сохранить</button>
+            </modal-footer>
+        </form>
+    </modal>
     <table class="table table-striped">
         <tr>
             <th>№ заявки</th>
@@ -15,7 +33,7 @@
             <td>{{request.creationDate}}</td>
             <td>{{request.accepted}}</td>
             <td>
-                <button class="btn btn-default" type="button">Edit</button>
+                <button class="btn btn-default" type="button" (click)="editRequest(request)">Редактировать</button>
             </td>
         </tr>
     </table>

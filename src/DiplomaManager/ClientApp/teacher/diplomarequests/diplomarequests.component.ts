@@ -1,4 +1,5 @@
 ﻿import { Component, OnInit, ViewChild, Input, Output, ChangeDetectionStrategy, EventEmitter } from '@angular/core';
+import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 
 import { TeacherService } from './diplomarequests.service'
 import { RequestTeacher } from './requestteacher'
@@ -12,6 +13,7 @@ import { RequestTeacher } from './requestteacher'
 export class DiplomaRequestsComponent implements OnInit {
 
     public requests: Array<RequestTeacher> = [];
+    @ViewChild('diplomaRequestModal') diplomaRequestModal: ModalComponent;
 
     constructor(private dataService: TeacherService) { }
 
@@ -19,5 +21,9 @@ export class DiplomaRequestsComponent implements OnInit {
         this.dataService.getDiplomaRequests(2).subscribe((data) => {
             this.requests = data;
         });
+    }
+
+    editRequest(request: RequestTeacher) {
+        this.diplomaRequestModal.open();
     }
 }
