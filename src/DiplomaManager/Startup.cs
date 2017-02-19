@@ -27,7 +27,7 @@ namespace DiplomaManager
 
         public IContainer ApplicationContainer { get; private set; }
 
-        public IConfigurationRoot Configuration { get; }
+        public static IConfigurationRoot Configuration { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
@@ -121,7 +121,7 @@ namespace DiplomaManager
         private static void RegisterServices(ContainerBuilder builder)
         {
             builder.RegisterModule(
-                new ServiceModule("Server=(local);Database=diplomamanagerdb;Trusted_Connection=True;"));
+                new ServiceModule(Configuration.GetConnectionString("DefaultConnection")));
 
             builder.RegisterType<RequestService>().As<IRequestService>();
             builder.RegisterType<UserService>().As<IUserService>();
