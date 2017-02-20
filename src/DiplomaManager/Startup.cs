@@ -4,6 +4,7 @@ using Autofac.Extensions.DependencyInjection;
 using DiplomaManager.BLL.Infrastructure;
 using DiplomaManager.BLL.Interfaces;
 using DiplomaManager.BLL.Services;
+using DiplomaManager.Modules;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -61,7 +62,7 @@ namespace DiplomaManager
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory
             , IApplicationLifetime appLifetime)
         {
-            app.Map("/HelloMVC6", map =>
+            app.Map("/elm", map =>
             {
                 app.UseElmPage();
                 app.UseElmCapture();
@@ -122,6 +123,7 @@ namespace DiplomaManager
         {
             builder.RegisterModule(
                 new ServiceModule(Configuration.GetConnectionString("DefaultConnection")));
+            builder.RegisterModule(new ConfigurationModule());
 
             builder.RegisterType<RequestService>().As<IRequestService>();
             builder.RegisterType<UserService>().As<IUserService>();
