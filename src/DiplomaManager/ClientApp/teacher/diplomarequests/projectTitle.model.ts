@@ -1,7 +1,8 @@
-﻿export class ProjectTitle {
+﻿import { Locale } from '../../shared/locale.model'
+
+export class ProjectTitle {
     id : number;
-    projectId: number;
-    localeId: number;
+    locale: Locale;
     title: string;
     creationDate: Date;
 }

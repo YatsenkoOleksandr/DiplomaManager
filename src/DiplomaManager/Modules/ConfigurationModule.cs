@@ -10,6 +10,7 @@ namespace DiplomaManager.Modules
         protected override void Load(ContainerBuilder builder)
         {
             builder.Register(CreateSmtpConfiguration).SingleInstance();
+            builder.Register(CreateAppConfiguration).SingleInstance();
         }
 
         private static SmtpConfiguration CreateSmtpConfiguration(IComponentContext context)
@@ -19,6 +20,18 @@ namespace DiplomaManager.Modules
             var result = new SmtpConfiguration();
 
             new ConfigureFromConfigurationOptions<SmtpConfiguration>(configuration.GetSection("Smtp"))
+                .Configure(result);
+
+            return result;
+        }
+
+        private static AppConfiguration CreateAppConfiguration(IComponentContext context)
+        {
+            var configuration = context.Resolve<IConfiguration>();
+
+            var result = new AppConfiguration();
+
+            new ConfigureFromConfigurationOptions<AppConfiguration>(configuration.GetSection("AppConfiguration"))
                 .Configure(result);
 
             return result;

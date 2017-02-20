@@ -12,14 +12,14 @@ namespace DiplomaManager.DAL.Interfaces
         TEntity Get(int id);
 
         IEnumerable<TEntity> Get(
-           Expression<Func<TEntity, bool>> filter);
+           FilterExpression<TEntity> filter);
 
         IEnumerable<TEntity> Get(
-           Expression<Func<TEntity, bool>> filter,
+           FilterExpression<TEntity> filter,
            IncludeExpression<TEntity>[] includePaths);
 
         IEnumerable<TEntity> Get(
-           Expression<Func<TEntity, bool>> filter,
+           FilterExpression<TEntity> filter,
            IncludeExpression<TEntity>[] includePaths,
            int? page,
            int? pageSize = null);

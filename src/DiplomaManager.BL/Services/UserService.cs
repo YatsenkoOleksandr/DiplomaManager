@@ -8,6 +8,7 @@ using DiplomaManager.BLL.Interfaces;
 using DiplomaManager.DAL.Entities.StudentEntities;
 using DiplomaManager.DAL.Entities.TeacherEntities;
 using DiplomaManager.DAL.Interfaces;
+using DiplomaManager.DAL.Utils;
 
 namespace DiplomaManager.BLL.Services
 {
@@ -29,7 +30,7 @@ namespace DiplomaManager.BLL.Services
             {
                 case nameof(AdminDTO):
                 {
-                    var user = Database.Admins.Get(u => u.Login == login && u.Password == password)
+                    var user = Database.Admins.Get(new FilterExpression<Admin>(u => u.Login == login && u.Password == password))
                         .SingleOrDefault();
                     Mapper.Initialize(cfg => cfg.CreateMap<Admin, AdminDTO>());
                     var userDto = Mapper.Map<Admin, AdminDTO>(user);
@@ -37,7 +38,7 @@ namespace DiplomaManager.BLL.Services
                 }
                 case nameof(TeacherDTO):
                 {
-                    var user = Database.Teachers.Get(u => u.Login == login && u.Password == password)
+                    var user = Database.Teachers.Get(new FilterExpression<Teacher>(u => u.Login == login && u.Password == password))
                         .SingleOrDefault();
                     Mapper.Initialize(cfg => cfg.CreateMap<Teacher, TeacherDTO>());
                     var userDto = Mapper.Map<Teacher, TeacherDTO>(user);
@@ -45,7 +46,7 @@ namespace DiplomaManager.BLL.Services
                 }
                 case nameof(StudentDTO):
                 {
-                    var user = Database.Students.Get(u => u.Login == login && u.Password == password)
+                    var user = Database.Students.Get(new FilterExpression<Student>(u => u.Login == login && u.Password == password))
                         .SingleOrDefault();
                     Mapper.Initialize(cfg => cfg.CreateMap<Student, StudentDTO>());
                     var userDto = Mapper.Map<Student, StudentDTO>(user);

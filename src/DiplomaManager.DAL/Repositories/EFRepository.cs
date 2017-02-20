@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
-using System.Linq.Expressions;
 using DiplomaManager.DAL.Interfaces;
 using DiplomaManager.DAL.Utils;
 
@@ -26,25 +24,25 @@ namespace DiplomaManager.DAL.Repositories
         }
 
         public IEnumerable<TEntity> Get(
-            Expression<Func<TEntity, bool>> filter)
+            FilterExpression<TEntity> filter)
         {
             return Get(filter, null, null);
         }
 
         public IEnumerable<TEntity> Get(
-            Expression<Func<TEntity, bool>> filter,
+           FilterExpression<TEntity> filter,
             IncludeExpression<TEntity>[] includePaths)
         {
             return Get(filter, includePaths, null);
         }
 
         public IEnumerable<TEntity> Get(
-           Expression<Func<TEntity, bool>> filter,
+           FilterExpression<TEntity> filter,
            IncludeExpression<TEntity>[] includePaths,
            int? page,
            int? pageSize = null)
         {
-            return Get(includePaths, page, pageSize, new[] { new FilterExpression<TEntity>(filter) });
+            return Get(includePaths, page, pageSize, new[] { new FilterExpression<TEntity>(filter.Filter) });
         }
 
         public IEnumerable<TEntity> Get(

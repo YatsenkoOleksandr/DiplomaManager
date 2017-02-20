@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using DiplomaManager.BLL.DTOs.ProjectDTOs;
 using DiplomaManager.BLL.DTOs.StudentDTOs;
@@ -6,6 +7,7 @@ using DiplomaManager.BLL.DTOs.TeacherDTOs;
 using DiplomaManager.BLL.DTOs.UserDTOs;
 using DiplomaManager.BLL.Interfaces;
 using DiplomaManager.DAL.Entities.ProjectEntities;
+using DiplomaManager.DAL.Entities.SharedEntities;
 using DiplomaManager.DAL.Entities.StudentEntities;
 using DiplomaManager.DAL.Entities.TeacherEntities;
 using DiplomaManager.DAL.Entities.UserEnitites;
@@ -35,6 +37,7 @@ namespace DiplomaManager.BLL.Services
                 cfg.CreateMap<Group, GroupDTO>();
                 cfg.CreateMap<Student, StudentDTO>();
 
+                cfg.CreateMap<Locale, LocaleDTO>();
                 cfg.CreateMap<ProjectTitle, ProjectTitleDTO>();
                 cfg.CreateMap<Project, ProjectDTO>();
             });
@@ -52,14 +55,14 @@ namespace DiplomaManager.BLL.Services
             if (!string.IsNullOrWhiteSpace(cultureName))
             {
                 Database.FirstNames.Get(
-                    f => f.Locale.Name == cultureName, new[] {new IncludeExpression<FirstName>(p => p.Locale)});
+                    new FilterExpression<FirstName>(f => f.Locale.Name == cultureName), new[] {new IncludeExpression<FirstName>(p => p.Locale)});
                 Database.LastNames.Get(
-                    l => l.Locale.Name == cultureName, new[] {new IncludeExpression<LastName>(p => p.Locale)});
+                    new FilterExpression<LastName>(l => l.Locale.Name == cultureName), new[] {new IncludeExpression<LastName>(p => p.Locale)});
                 Database.Patronymics.Get(
-                    p => p.Locale.Name == cultureName, new[] {new IncludeExpression<Patronymic>(p => p.Locale)});
+                    new FilterExpression<Patronymic>(p => p.Locale.Name == cultureName), new[] {new IncludeExpression<Patronymic>(p => p.Locale)});
 
                 Database.ProjectTitles.Get(
-                    t => t.Locale.Name == cultureName, new[] {new IncludeExpression<ProjectTitle>(p => p.Locale)});
+                    new FilterExpression<ProjectTitle>(t => t.Locale.Name == cultureName), new[] {new IncludeExpression<ProjectTitle>(p => p.Locale)});
             }
             else
             {
@@ -67,7 +70,7 @@ namespace DiplomaManager.BLL.Services
                 includePaths.Add(new IncludeExpression<Project>(p => p.Student.LastNames));
                 includePaths.Add(new IncludeExpression<Project>(p => p.Student.Patronymics));
 
-                includePaths.Add(new IncludeExpression<Project>(p => p.ProjectTitles));
+                includePaths.Add(new IncludeExpression<Project>(p => p.ProjectTitles.Select(t => t.Locale)));
             }
 
             var projects = Database.Projects.Get(filters: filterExprs.ToArray(), includePaths: includePaths.ToArray());

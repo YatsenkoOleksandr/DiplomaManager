@@ -1,4 +1,5 @@
 ﻿using System;
+using DiplomaManager.BLL.DTOs.UserDTOs;
 
 namespace DiplomaManager.BLL.DTOs.ProjectDTOs
 {
@@ -11,6 +12,8 @@ namespace DiplomaManager.BLL.DTOs.ProjectDTOs
 
         public int LocaleId
         { get; set; }
+
+        public LocaleDTO Locale { get; set; }
 
         public string Title
         { get; set; }

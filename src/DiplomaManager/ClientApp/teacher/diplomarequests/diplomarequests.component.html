@@ -33,7 +33,7 @@
             <td>{{request.student.toString()}}</td>
             <td>
                 <div *ngFor="let projectTitle of request.projectTitles">
-                    {{projectTitle.title}}
+                    "{{projectTitle.title}}" ({{projectTitle.locale.nativeName}})
                 </div>
             </td>
             <td>{{request.creationDate | date: "dd.MM.yyyy"}}</td>

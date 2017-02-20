@@ -78,11 +78,11 @@ namespace DiplomaManager.BLL.Services
                     includePaths: includePaths.ToArray()).ToList();
 
                 Database.FirstNames.Get(
-                    f => f.Locale.Name == cultureName, new[] { new IncludeExpression<FirstName>(p => p.Locale) });
+                    new FilterExpression<FirstName>(f => f.Locale.Name == cultureName), new[] { new IncludeExpression<FirstName>(p => p.Locale) });
                 Database.LastNames.Get(
-                    l => l.Locale.Name == cultureName, new[] { new IncludeExpression<LastName>(p => p.Locale) });
+                    new FilterExpression<LastName>(l => l.Locale.Name == cultureName), new[] { new IncludeExpression<LastName>(p => p.Locale) });
                 Database.Patronymics.Get(
-                    p => p.Locale.Name == cultureName, new[] { new IncludeExpression<Patronymic>(p => p.Locale) });
+                    new FilterExpression<Patronymic>(p => p.Locale.Name == cultureName), new[] { new IncludeExpression<Patronymic>(p => p.Locale) });
             }
             else
             {
@@ -115,7 +115,8 @@ namespace DiplomaManager.BLL.Services
             if (!string.IsNullOrWhiteSpace(cultureName))
             {
                 degrees = Database.Degrees.Get().ToList();
-                Database.DegreeNames.Get(dn => dn.Locale.Name == cultureName, new[] { new IncludeExpression<DegreeName>(d => d.Locale),  });
+                Database.DegreeNames.Get(new FilterExpression<DegreeName>(dn => dn.Locale.Name == cultureName), 
+                    new[] { new IncludeExpression<DegreeName>(d => d.Locale) });
             }
             else
             {
@@ -136,7 +137,7 @@ namespace DiplomaManager.BLL.Services
         public CapacityDTO GetCapacity(int degreeId, int teacherId)
         {
             var capacity = Database.Capacities
-                .Get(c => c.DegreeId == degreeId && c.TeacherId == teacherId)
+                .Get(new FilterExpression<Capacity>(c => c.DegreeId == degreeId && c.TeacherId == teacherId))
                 .SingleOrDefault();
             Mapper.Initialize(cfg => cfg.CreateMap<Capacity, CapacityDTO>());
             var capacityDto = Mapper.Map<Capacity, CapacityDTO>(capacity);
@@ -174,7 +175,7 @@ namespace DiplomaManager.BLL.Services
 
         private Student CreateStudent(StudentDTO studentDto, int localeId)
         {
-            var studentRes = Database.Students.Get(s => s.Email == studentDto.Email).FirstOrDefault();
+            var studentRes = Database.Students.Get(new FilterExpression<Student>(s => s.Email == studentDto.Email)).FirstOrDefault();
             if (studentRes == null)
             {
                 var student = Mapper.Map<StudentDTO, Student>(studentDto);

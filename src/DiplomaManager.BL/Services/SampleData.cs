@@ -97,7 +97,7 @@ namespace DiplomaManager.BLL.Services
                         Email = "te@te.ru", 
                         PositionId = 2,
                         StatusCreationDate = DateTime.Now,
-                        DevelopmentAreas = uow.DevelopmentAreas.Get(da => da.Id == 1).ToList()
+                        DevelopmentAreas = uow.DevelopmentAreas.Get(new FilterExpression<DevelopmentArea>(da => da.Id == 1)).ToList()
                     });
 
                     uow.Save();
@@ -126,7 +126,7 @@ namespace DiplomaManager.BLL.Services
                         Email = "lu@lu.ru",
                         PositionId = 1,
                         StatusCreationDate = DateTime.Now,
-                        DevelopmentAreas = uow.DevelopmentAreas.Get(da => da.Id == 1 || da.Id == 2).ToList()
+                        DevelopmentAreas = uow.DevelopmentAreas.Get(new FilterExpression<DevelopmentArea>(da => da.Id == 1 || da.Id == 2)).ToList()
                     });
 
                     uow.Save();
