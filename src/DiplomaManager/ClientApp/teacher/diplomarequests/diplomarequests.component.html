@@ -2,15 +2,20 @@
 <hr class="col-md-12" />
 <div>
     <modal #diplomaRequestModal>
-        <form #diplomaRequestForm="ngForm">
+        <form #diplomaRequestForm="ngForm" [formGroup]="projectTitlesFGroup">
             <modal-header [show-close]="true">
                 <h4>Редактирование заявки</h4>
             </modal-header>
             <modal-body>
                 <div class="form-group">
                     <label for="title">Тема работы</label>
-                    <input type="text" class="form-control" required
-                           id="title">
+                    <input type="text" class="form-control"
+                           id="title" formControlName="title">
+                    <div class="alert alert-danger"
+                         *ngIf="projectTitlesFGroup.get('title').hasError('required')
+                            && projectTitlesFGroup.get('title').touched">
+                        Не задана тема (язык: 1234)
+                    </div>
                 </div>
             </modal-body>
             <modal-footer>

@@ -1,6 +1,6 @@
-﻿using DiplomaManager.BLL.Configuration;
-using DiplomaManager.BLL.Interfaces;
+﻿using DiplomaManager.BLL.Interfaces;
 using DiplomaManager.BLL.Utils;
+using DiplomaManager.Modules;
 using NUnit.Framework;
 
 namespace DiplomaManager.Tests
@@ -13,7 +13,7 @@ namespace DiplomaManager.Tests
         [SetUp]
         public void Setup()
         {
-            var cfg = new SmtpConfiguration
+            var cfg = new ConfigurationModule.SmtpConfiguration
             {
                 AuthorName = "TestAuthor",
                 Host = "smtp.meta.ua",

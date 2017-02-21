@@ -8,9 +8,9 @@ namespace DiplomaManager.BLL.Utils
 {
     public class EmailService : IEmailService
     {
-        private readonly SmtpConfiguration _configuration;
+        private readonly ISmtpConfiguration _configuration;
 
-        public EmailService(SmtpConfiguration configuration)
+        public EmailService(ISmtpConfiguration configuration)
         {
             _configuration = configuration;
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using DiplomaManager.DAL.Configuration;
 using DiplomaManager.DAL.EF;
 using DiplomaManager.DAL.Entities.ProjectEntities;
 using DiplomaManager.DAL.Entities.RequestEntities;
@@ -37,9 +38,9 @@ namespace DiplomaManager.DAL.Repositories
 
         private EFRepository<Group> _groupRepository;
 
-        public EFUnitOfWork(string connectionString)
+        public EFUnitOfWork(IDatabaseConnectionConfiguration databaseConnectionConfiguration)
         {
-            _db = new DiplomaManagerContext(connectionString);
+            _db = new DiplomaManagerContext(databaseConnectionConfiguration.ConnectionString);
         }
 
         public IRepository<Locale> Locales

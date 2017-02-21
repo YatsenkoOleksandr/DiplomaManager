@@ -1,16 +1,16 @@
 ﻿using System;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using DiplomaManager.BLL.Infrastructure;
-using DiplomaManager.BLL.Interfaces;
 using DiplomaManager.BLL.Services;
-using DiplomaManager.Modules;
+using DiplomaManager.Common.Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Serialization;
 
 namespace DiplomaManager
 {
@@ -23,12 +23,12 @@ namespace DiplomaManager
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
-            Configuration = builder.Build();
+            _configuration = builder.Build();
         }
 
         public IContainer ApplicationContainer { get; private set; }
 
-        public static IConfigurationRoot Configuration { get; set; }
+        private readonly IConfigurationRoot _configuration;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
@@ -39,23 +39,17 @@ namespace DiplomaManager
                 options.Filter = (name, level) => level >= LogLevel.Error;
             });
 
-            // Add framework services.
-            services.AddMvc();
+            services.AddMvc()
+                .AddJsonOptions(ConfigureJsonOptions);
 
-            // Create the Autofac container builder.
-            var builder = new ContainerBuilder();
-
-            // Add any Autofac modules or registrations.
-            RegisterServices(builder);
-
-            // Populate the services.
-            builder.Populate(services);
-
-            // Build the container.
-            ApplicationContainer = builder.Build();
-
-            // Create and return the service provider.
+            ApplicationContainer = services.AddAutofac(_configuration);
+           
             return new AutofacServiceProvider(ApplicationContainer);
+        }
+
+        private static void ConfigureJsonOptions(MvcJsonOptions options)
+        {
+            options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -117,17 +111,6 @@ namespace DiplomaManager
             // If you want to dispose of resources that have been resolved in the
             // application container, register for the "ApplicationStopped" event.
             appLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
-        }
-
-        private static void RegisterServices(ContainerBuilder builder)
-        {
-            builder.RegisterModule(
-                new ServiceModule(Configuration.GetConnectionString("DefaultConnection")));
-            builder.RegisterModule(new ConfigurationModule());
-
-            builder.RegisterType<RequestService>().As<IRequestService>();
-            builder.RegisterType<UserService>().As<IUserService>();
-            builder.RegisterType<TeacherService>().As<ITeacherService>();
         }
     }
 }

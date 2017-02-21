@@ -5,6 +5,6 @@ namespace DiplomaManager.BLL.Interfaces
 {
     public interface ITeacherService
     {
-        IEnumerable<ProjectDTO> GetDiplomaRequests(int teacherId, string cultureName = null);
+        IEnumerable<ProjectDTO> GetDiplomaRequests(int teacherId);
     }
 }

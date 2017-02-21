@@ -61,7 +61,7 @@ export class DiplomaRequestComponent implements OnInit {
                 firstName: new FormControl('', [Validators.required, Validators.minLength(3)]),
                 lastName: new FormControl('', [Validators.required, Validators.minLength(3)]),
                 patronymic: new FormControl('', [Validators.required, Validators.minLength(3)]),
-                email: new FormControl('', [Validators.required, Validators.pattern("[a-zA-Z_]+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}")])
+                email: new FormControl('', [Validators.required, Validators.pattern("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A - Za - z0 - 9 -]+(\\.[A - Za - z0 - 9] +)*(\\.[A - Za - z]{2,})$")])
             })
         });
     }

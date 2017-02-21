@@ -21,10 +21,12 @@ namespace DiplomaManager.BLL.Services
     public class RequestService : IRequestService
     {
         private IDiplomaManagerUnitOfWork Database { get; }
+        private IEmailService EmailService { get; }
 
-        public RequestService(IDiplomaManagerUnitOfWork uow)
+        public RequestService(IDiplomaManagerUnitOfWork uow, IEmailService emailService)
         {
             Database = uow;
+            EmailService = emailService;
         }
 
         public DevelopmentAreaDTO GetDevelopmentArea(int id)
@@ -171,6 +173,7 @@ namespace DiplomaManager.BLL.Services
             Database.ProjectTitles.Add(projTitle);
 
             Database.Save();
+            EmailService.SendEmailAsync("teland94@mail.ru", "Test", "Test!");
         }
 
         private Student CreateStudent(StudentDTO studentDto, int localeId)
