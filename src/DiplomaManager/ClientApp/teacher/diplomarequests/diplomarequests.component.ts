@@ -35,9 +35,12 @@ export class DiplomaRequestsComponent implements OnInit {
 
     editRequest(request: RequestTeacher) {
         this.selectedRequest = request;
+        let titleControls = this.projectTitlesFGroup.controls["projectTitles"] as FormArray;
+        while (titleControls.length) {
+            titleControls.removeAt(titleControls.length - 1);
+        }
         for (let pTitle of request.projectTitles) {
-            (this.projectTitlesFGroup.controls["projectTitles"] as FormArray)
-                .push(new FormControl(pTitle.title, Validators.required));
+            titleControls.push(new FormControl(pTitle.title, Validators.required));
         }
         this.diplomaRequestModal.open();
     }
