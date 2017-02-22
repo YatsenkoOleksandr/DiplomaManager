@@ -7,20 +7,27 @@
                 <h4>Редактирование заявки</h4>
             </modal-header>
             <modal-body>
-                <div class="form-group">
-                    <label for="title">Тема работы</label>
-                    <input type="text" class="form-control"
-                           id="title" formControlName="title">
-                    <div class="alert alert-danger"
-                         *ngIf="projectTitlesFGroup.get('title').hasError('required')
-                            && projectTitlesFGroup.get('title').touched">
-                        Не задана тема (язык: 1234)
+                <form [formGroup]="projectTitlesFGroup">
+                    <div class="well">
+                        {{selectedRequest?.student.toString()}}
                     </div>
-                </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Многоязычная тема диплома</div>
+                        <div class="panel-body">
+                            <div formArrayName="projectTitles">
+                                <div class="form-group"
+                                     *ngFor="let title of projectTitlesFGroup.controls['projectTitles'].controls; let i = index">
+                                    <label>{{selectedRequest.projectTitles[i].locale.nativeName | capitalizeFirst}}</label>
+                                    <input class="form-control" formControlName="{{i}}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </modal-body>
             <modal-footer>
-                <button type="button" class="btn btn-default" data-dismiss="diplomaRequestModal" (click)="diplomaRequestModal.dismiss()">Отмена</button>
                 <button type="button" class="btn btn-primary" (click)="diplomaRequestModal.close()">Сохранить</button>
+                <button type="button" class="btn btn-default" data-dismiss="diplomaRequestModal" (click)="diplomaRequestModal.dismiss()">Отмена</button>
             </modal-footer>
         </form>
     </modal>

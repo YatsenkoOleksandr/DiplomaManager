@@ -8,7 +8,8 @@ import { routes } from './teacher.routes';
 import { TeacherComponent } from './app/app.component';
 import { HomeComponent } from './home/home.component';
 import { DiplomaRequestsComponent } from './diplomarequests/diplomarequests.component'
-import { AcceptedPipe } from '../shared/accepted.pipe';
+import { AcceptedPipe } from '../shared/pipes/accepted.pipe';
+import { CapitalizeFirstPipe } from '../shared/pipes/capitalizeFirst.pipe';
 
 import { HttpModule } from '@angular/http';
 import { SelectModule } from 'ng2-select';
@@ -40,7 +41,9 @@ import { Ng2TableModule } from 'ng2-table/ng2-table';
         TeacherComponent,
         HomeComponent,
         DiplomaRequestsComponent,
-        AcceptedPipe
+
+        AcceptedPipe,
+        CapitalizeFirstPipe
     ],
     bootstrap: [TeacherComponent]
 }) as any)
