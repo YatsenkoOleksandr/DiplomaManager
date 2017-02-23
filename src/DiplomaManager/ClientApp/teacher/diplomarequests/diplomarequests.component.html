@@ -1,7 +1,7 @@
 ﻿<h2>Редактирование заявок</h2>
 <hr class="col-md-12" />
 <div>
-    <modal #diplomaRequestModal>
+    <modal #diplomaRequestModal (onClose)="requestWindowClosed()">
         <form #diplomaRequestForm="ngForm" [formGroup]="projectTitlesFGroup">
             <modal-header [show-close]="true">
                 <h4>Редактирование заявки</h4>

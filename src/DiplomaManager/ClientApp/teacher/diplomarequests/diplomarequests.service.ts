@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map';
 
 import { RequestTeacher } from './requestTeacher.model';
 import { Student } from '../../shared/student.model';
+import { ProjectTitle } from './projectTitle.model';
 
 @Injectable()
 export class TeacherService {
@@ -25,5 +26,22 @@ export class TeacherService {
             }
             return requestsList;
         });
+    }
+
+    editProjectTitles(projectEditTitles: Array<ProjectEditTitle>) {
+        const body = JSON.stringify(projectEditTitles);
+        let headers = new Headers({ 'Content-Type': 'application/json;charset=utf-8' });
+        return this.http.post('/Teacher/Request/EditProjectTitles', body, { headers: headers })
+            .map((resp: Response) => resp.json());
+    }
+}
+
+export class ProjectEditTitle {
+    id: number;
+    title: string;
+
+    constructor(id: number, title: string) {
+        this.id = id;
+        this.title = title;
     }
 }

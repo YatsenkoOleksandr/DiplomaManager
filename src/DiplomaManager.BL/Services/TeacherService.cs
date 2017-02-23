@@ -69,6 +69,17 @@ namespace DiplomaManager.BLL.Services
             return projectDtos;
         }
 
+        public void EditDiplomaProjectTitles(IEnumerable<ProjectEditTitle> projectTitles)
+        {
+            foreach (var projectTitle in projectTitles)
+            {
+                var pTitle = Database.ProjectTitles.Get(projectTitle.Id);
+                pTitle.Title = projectTitle.Title;
+                Database.ProjectTitles.Update(pTitle);
+            }
+            Database.Save();
+        }
+
         private static void CreateProjectMapping()
         {
             Mapper.Initialize(cfg =>
@@ -86,5 +97,11 @@ namespace DiplomaManager.BLL.Services
                 cfg.CreateMap<Project, ProjectDTO>();
             });
         }
+    }
+
+    public class ProjectEditTitle
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
     }
 }

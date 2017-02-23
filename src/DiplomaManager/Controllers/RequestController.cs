@@ -58,6 +58,7 @@ namespace DiplomaManager.Controllers
             return Json(capacity);
         }
 
+        [HttpPost]
         public IActionResult SendRequest([FromBody] RequestViewModel request)
         {
             var student = request.Student;
