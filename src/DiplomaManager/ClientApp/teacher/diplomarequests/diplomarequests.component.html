@@ -51,9 +51,15 @@
             <td>{{request.creationDate | date: "dd.MM.yyyy"}}</td>
             <td>{{request.accepted | accepted}}</td>
             <td>
-                <button *ngIf="!request.accepted" class="btn btn-success" type="button">Принять</button>
-                <button *ngIf="!request.accepted" class="btn btn-danger" type="button">Отклонить</button>
-                <button *ngIf="request.accepted" class="btn btn-primary" type="button" (click)="editRequest(request)">Редактировать</button>
+                <button *ngIf="!request.accepted" class="btn btn-success" type="button">
+                    <i class="glyphicon glyphicon-ok-sign"></i>&nbsp;Принять
+                </button>
+                <button *ngIf="!request.accepted" class="btn btn-danger" type="button">
+                    <i class="glyphicon glyphicon-remove-sign"></i>&nbsp;Отклонить
+                </button>
+                <button *ngIf="request.accepted" class="btn btn-primary" type="button" (click)="editRequest(request)">
+                    <i class="glyphicon glyphicon-edit"></i>&nbsp;Редактировать
+                </button>
             </td>
         </tr>
     </table>
