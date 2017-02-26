@@ -59,28 +59,64 @@ namespace DiplomaManager.BLL.Services
                 includePaths.Add(new IncludeExpression<Project>(p => p.Student.Patronymics));
             }
 
-            var cultureFilterExprs = CultureConfiguration.LocaleNames.Select(c =>
-                new FilterExpression<ProjectTitle>(p => p.Locale.Name == c)).ToArray();
             Database.ProjectTitles.Get(
-                filters: cultureFilterExprs, includePaths: new[] { new IncludeExpression<ProjectTitle>(p => p.Locale) });
-            includePaths.Add(new IncludeExpression<Project>(p => p.ProjectTitles.Select(t => t.Locale)));
+                new FilterExpression<ProjectTitle>(t => CultureConfiguration.LocaleNames.Contains(t.Locale.Name)), 
+                new[] { new IncludeExpression<ProjectTitle>(p => p.Locale) });
 
             var projects = Database.Projects.Get(filters: filterExprs.ToArray(), includePaths: includePaths.ToArray());
-            var projectDtos = Mapper.Map<IEnumerable<Project>, IEnumerable<ProjectDTO>>(projects);
+            var projectDtos = Mapper.Map<IEnumerable<Project>, IEnumerable<ProjectDTO>>(projects).ToList();
+
+            var locales =
+                Database.Locales.Get(
+                    new FilterExpression<Locale>(l => CultureConfiguration.LocaleNames.Contains(l.Name)));
+
+            var localesDto = Mapper.Map<IEnumerable<Locale>, IEnumerable<LocaleDTO>>(locales).ToList();
+
+            foreach (var projectDto in projectDtos)
+            {
+                var localeNamesExists = projectDto.ProjectTitles.Select(p => p.Locale.Name);
+                var localesRest = localesDto.Where(l => !localeNamesExists.Contains(l.Name));
+
+                foreach (var locale in localesRest)
+                {
+                    var localeDto = localesDto.FirstOrDefault(l => l.Id == locale.Id);
+                    projectDto.ProjectTitles.Add(new ProjectTitleDTO
+                    {
+                        CreationDate = DateTime.Now,
+                        Locale = localeDto
+                    });
+                }
+            }
+
             return projectDtos;
         }
 
         public void EditDiplomaProject(ProjectEdit project)
         {
             var proj = Database.Projects.Get(project.Id);
+            proj.CreationDate = DateTime.Now;
             proj.PracticeJournalPassed = proj.PracticeJournalPassed;
             Database.Projects.Update(proj);
 
             foreach (var projectTitle in project.ProjectTitles)
             {
-                var pTitle = Database.ProjectTitles.Get(projectTitle.Id);
-                pTitle.Title = projectTitle.Title;
-                Database.ProjectTitles.Update(pTitle);
+                if (projectTitle.Id > 0)
+                {
+                    var pTitle = Database.ProjectTitles.Get(projectTitle.Id);
+                    pTitle.Title = projectTitle.Title;
+                    Database.ProjectTitles.Update(pTitle);
+                }
+                else
+                {
+                    var pTitle = new ProjectTitle
+                    {
+                        CreationDate = DateTime.Now,
+                        ProjectId = project.Id,
+                        LocaleId = projectTitle.LocaleId,
+                        Title = projectTitle.Title
+                    };
+                    Database.ProjectTitles.Add(pTitle);
+                }
             }
 
             Database.Save();
@@ -116,5 +152,6 @@ namespace DiplomaManager.BLL.Services
     {
         public int Id { get; set; }
         public string Title { get; set; }
+        public int LocaleId { get; set; }
     }
 }

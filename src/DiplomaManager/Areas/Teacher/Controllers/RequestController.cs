@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using DiplomaManager.Areas.Teacher.ViewModels;
-using DiplomaManager.BLL.DTOs.ProjectDTOs;
 using DiplomaManager.BLL.Interfaces;
 using DiplomaManager.BLL.Services;
 using Microsoft.AspNetCore.Mvc;

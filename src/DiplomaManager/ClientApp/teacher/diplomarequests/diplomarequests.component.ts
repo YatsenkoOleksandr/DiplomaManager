@@ -59,14 +59,14 @@ export class DiplomaRequestsComponent implements OnInit {
         projectEdit.id = selectedProject.id;
         projectEdit.practiceJournalPassed = projectFGroup.controls["practiceJournalPassed"].value;
 
-        console.log(projectFGroup.controls["practiceJournalPassed"].value);
-
         let titleControls = projectFGroup.controls["projectTitles"] as FormArray;
         let selectedProjectTitles = selectedProject.projectTitles;
 
         let projectEditTitles = new Array<ProjectEditTitle>();
         for (let i = 0; i < titleControls.length; i++) {
-            projectEditTitles.push(new ProjectEditTitle(selectedProjectTitles[i].id, titleControls.controls[i].value));
+            let selectedProjTitle = selectedProjectTitles[i];
+            projectEditTitles.push(new ProjectEditTitle(selectedProjTitle.id,
+                titleControls.controls[i].value, selectedProjTitle.locale.id));
         }
         projectEdit.projectTitles = projectEditTitles;
 

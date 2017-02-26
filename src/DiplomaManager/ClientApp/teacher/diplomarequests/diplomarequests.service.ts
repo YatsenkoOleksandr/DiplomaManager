@@ -45,9 +45,11 @@ export class ProjectEdit {
 export class ProjectEditTitle {
     id: number;
     title: string;
+    localeId: number;
 
-    constructor(id: number, title: string) {
+    constructor(id: number, title: string, localeId: number) {
         this.id = id;
         this.title = title;
+        this.localeId = localeId;
     }
 }

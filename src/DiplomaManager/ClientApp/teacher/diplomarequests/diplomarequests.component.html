@@ -47,7 +47,8 @@
             <td>{{request.student.toString()}}</td>
             <td>
                 <div *ngFor="let projectTitle of request.projectTitles">
-                    "{{projectTitle.title}}" ({{projectTitle.locale.nativeName}})
+                    <span *ngIf="projectTitle.title">"{{projectTitle.title}}" ({{projectTitle.locale.nativeName}})</span>
+                    <span *ngIf="!projectTitle.title" style="color: red">Не задано! ({{projectTitle.locale.nativeName}})</span>
                 </div>
             </td>
             <td>{{request.creationDate | date: "dd.MM.yyyy"}}</td>

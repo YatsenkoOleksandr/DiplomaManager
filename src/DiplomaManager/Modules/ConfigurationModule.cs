@@ -13,7 +13,7 @@ namespace DiplomaManager.Modules
         {
             builder.Register(CreateSmtpConfiguration).SingleInstance();
             builder.Register(CreateAppConfiguration).SingleInstance();
-            builder.Register(CreateDatabaseConnectionConfiguration);
+            builder.Register(CreateDatabaseConnectionConfiguration).SingleInstance();
         }
 
         private static ISmtpConfiguration CreateSmtpConfiguration(IComponentContext context)
