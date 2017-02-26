@@ -39,6 +39,9 @@
     <None Remove="wwwroot\node_modules\**" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="npm-debug.log" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="wwwroot\js\systemjs.config.js" />
     <Content Include="wwwroot\request.json" />
   </ItemGroup>

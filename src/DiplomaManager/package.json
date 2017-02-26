@@ -22,7 +22,8 @@
     "ng2-select": "^1.2.0",
     "angular2-busy": "^1.0.2",
     "ng2-bs3-modal": "0.10.4",
-    "ng2-table": "^1.0.2"
+    "ng2-table": "^1.0.2",
+    "angular-date-value-accessor": "0.0.2"
   },
   "devDependencies": {
     "@types/core-js": "^0.9.35",

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using DiplomaManager.BLL.Configuration;
@@ -69,14 +70,19 @@ namespace DiplomaManager.BLL.Services
             return projectDtos;
         }
 
-        public void EditDiplomaProjectTitles(IEnumerable<ProjectEditTitle> projectTitles)
+        public void EditDiplomaProject(ProjectEdit project)
         {
-            foreach (var projectTitle in projectTitles)
+            var proj = Database.Projects.Get(project.Id);
+            proj.PracticeJournalPassed = proj.PracticeJournalPassed;
+            Database.Projects.Update(proj);
+
+            foreach (var projectTitle in project.ProjectTitles)
             {
                 var pTitle = Database.ProjectTitles.Get(projectTitle.Id);
                 pTitle.Title = projectTitle.Title;
                 Database.ProjectTitles.Update(pTitle);
             }
+
             Database.Save();
         }
 
@@ -97,6 +103,13 @@ namespace DiplomaManager.BLL.Services
                 cfg.CreateMap<Project, ProjectDTO>();
             });
         }
+    }
+
+    public class ProjectEdit
+    {
+        public int Id { get; set; }
+        public DateTime PracticeJournalPassed { get; set; }
+        public IEnumerable<ProjectEditTitle> ProjectTitles { get; set; }
     }
 
     public class ProjectEditTitle

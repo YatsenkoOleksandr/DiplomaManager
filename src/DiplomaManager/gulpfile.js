@@ -45,19 +45,24 @@ gulp.task('beforeBuild', ['copyNodeModules', 'copyHtml'], function () {
 });
 
 gulp.task('copyNodeModules', function () {
-    var assets = {
+    var libs = {
         "angular2-dynamic-component": "angular2-dynamic-component/*.{js, map}",
         "core-js": "core-js/**/*.{js, map}",
         "ts-metadata-helper": "ts-metadata-helper/*.{js, map}",
         "angular2-busy": "angular2-busy/build/src/*.{js, map}",
         "ng2-bs3-modal": "ng2-bs3-modal/**/*.{js, map}",
-        "ng2-table": "ng2-table/**/*.{js, map}"
+        "ng2-table": "ng2-table/**/*.{js, map}",
+        "angular-date-value-accessor": "angular-date-value-accessor/*.{js, map}"
     };
+    setSrc(libs);
+});
+
+function setSrc(assets) {
     for (var destinationDir in assets) {
         gulp.src(paths.nodeModules + assets[destinationDir])
             .pipe(gulp.dest(webRoot + paths.nodeModules + destinationDir));
     }
-});
+};
 
 gulp.task('copyHtml', function () {
     // Copy HTML files from App folder

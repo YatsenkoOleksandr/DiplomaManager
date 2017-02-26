@@ -28,12 +28,18 @@ export class TeacherService {
         });
     }
 
-    editProjectTitles(projectEditTitles: Array<ProjectEditTitle>) {
-        const body = JSON.stringify(projectEditTitles);
+    editProject(projectEdit: ProjectEdit) {
+        const body = JSON.stringify(projectEdit);
         let headers = new Headers({ 'Content-Type': 'application/json;charset=utf-8' });
-        return this.http.post('/Teacher/Request/EditProjectTitles', body, { headers: headers })
+        return this.http.post('/Teacher/Request/EditDiplomaProject', body, { headers: headers })
             .map((resp: Response) => resp.json());
     }
+}
+
+export class ProjectEdit {
+    id: number;
+    practiceJournalPassed: Date;
+    projectTitles: Array<ProjectEditTitle>;
 }
 
 export class ProjectEditTitle {

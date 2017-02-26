@@ -2,21 +2,24 @@
 <hr class="col-md-12" />
 <div>
     <modal #diplomaRequestModal (onClose)="requestWindowClosed()">
-        <form #diplomaRequestForm="ngForm" [formGroup]="projectTitlesFGroup">
             <modal-header [show-close]="true">
                 <h4>Редактирование заявки</h4>
             </modal-header>
             <modal-body>
-                <form [formGroup]="projectTitlesFGroup">
+                <form [formGroup]="projectFGroup">
                     <div class="well">
                         {{selectedRequest?.student.toString()}}
+                    </div>
+                    <div class="form-group">
+                        <label for="practiceDate">Дата сдачи журнала по практике</label>
+                        <input id="practiceDate" type="date" class="form-control" formControlName="practiceJournalPassed" useValueAsDate />
                     </div>
                     <div class="panel panel-default">
                         <div class="panel-heading">Многоязычная тема диплома</div>
                         <div class="panel-body">
                             <div formArrayName="projectTitles">
                                 <div class="form-group"
-                                     *ngFor="let title of projectTitlesFGroup.controls['projectTitles'].controls; let i = index">
+                                     *ngFor="let title of projectFGroup.controls['projectTitles'].controls; let i = index">
                                     <label>{{selectedRequest.projectTitles[i].locale.nativeName | capitalizeFirst}}</label>
                                     <input class="form-control" formControlName="{{i}}" />
                                 </div>
@@ -29,7 +32,6 @@
                 <button type="button" class="btn btn-primary" (click)="diplomaRequestModal.close()">Сохранить</button>
                 <button type="button" class="btn btn-default" data-dismiss="diplomaRequestModal" (click)="diplomaRequestModal.dismiss()">Отмена</button>
             </modal-footer>
-        </form>
     </modal>
     <table class="table table-striped" [ngBusy]="{busy: busy}">
         <tr>
@@ -37,7 +39,7 @@
             <th>ФИО студента</th>
             <th>Тема</th>
             <th>Дата подачи</th>
-            <th>Принята?</th>
+            <th>Дата сдачи журнала по практике</th>
             <th></th>
         </tr>
         <tr *ngFor="let request of requests">
@@ -49,7 +51,7 @@
                 </div>
             </td>
             <td>{{request.creationDate | date: "dd.MM.yyyy"}}</td>
-            <td>{{request.accepted | accepted}}</td>
+            <td>{{request.practiceJournalPassed ? (request.practiceJournalPassed | date: "dd.MM.yyyy") : "Не сдан" }}</td>
             <td>
                 <button *ngIf="!request.accepted" class="btn btn-success" type="button">
                     <i class="glyphicon glyphicon-ok-sign"></i>&nbsp;Принять

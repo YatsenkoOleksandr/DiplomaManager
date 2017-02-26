@@ -15,6 +15,8 @@ namespace DiplomaManager.Areas.Teacher.ViewModels
 
         public DateTime CreationDate { get; set; }
 
+        public DateTime? PracticeJournalPassed { get; set; }
+
         public bool Accepted { get; set; }
     }
 }

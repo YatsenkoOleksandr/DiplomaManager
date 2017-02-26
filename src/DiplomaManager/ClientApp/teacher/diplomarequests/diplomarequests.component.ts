@@ -3,7 +3,7 @@ import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { Subscription } from 'rxjs';
 import { FormControl, FormGroup, Validators, FormArray, FormBuilder } from '@angular/forms';
 
-import { TeacherService, ProjectEditTitle } from './diplomarequests.service';
+import { TeacherService, ProjectEdit, ProjectEditTitle } from './diplomarequests.service';
 import { RequestTeacher } from './requestTeacher.model';
 import { ProjectTitle } from './projectTitle.model';
 
@@ -18,11 +18,12 @@ export class DiplomaRequestsComponent implements OnInit {
     requests: Array<RequestTeacher> = [];
     @ViewChild('diplomaRequestModal') diplomaRequestModal: ModalComponent;
     busy: Subscription;
-    projectTitlesFGroup: FormGroup;
+    projectFGroup: FormGroup;
     selectedRequest: RequestTeacher;
 
     constructor(private dataService: TeacherService, private formBuilder: FormBuilder) {
-        this.projectTitlesFGroup = formBuilder.group({
+        this.projectFGroup = formBuilder.group({
+            practiceJournalPassed: formBuilder.control(''),
             projectTitles: formBuilder.array([])
         });
     }
@@ -35,30 +36,44 @@ export class DiplomaRequestsComponent implements OnInit {
 
     editRequest(request: RequestTeacher) {
         this.selectedRequest = request;
-        let titleControls = this.projectTitlesFGroup.controls["projectTitles"] as FormArray;
+        let titleControls = this.projectFGroup.controls["projectTitles"] as FormArray;
+
+       this.projectFGroup.controls["practiceJournalPassed"]
+            .setValue(new Date(this.selectedRequest.practiceJournalPassed));
         while (titleControls.length) {
             titleControls.removeAt(titleControls.length - 1);
         }
         for (let pTitle of request.projectTitles) {
             titleControls.push(new FormControl(pTitle.title, Validators.required));
         }
+
         this.diplomaRequestModal.open();
     }
 
     requestWindowClosed() {
-        let titleControls = this.projectTitlesFGroup.controls["projectTitles"] as FormArray;
-        let selectedProjectTitles = this.selectedRequest.projectTitles;
-        this.saveEditedProjectTitles(titleControls, selectedProjectTitles);
+        this.saveEditedProject(this.projectFGroup, this.selectedRequest);
     }
 
-    private saveEditedProjectTitles(titleControls: FormArray, selectedProjectTitles: Array<ProjectTitle>) {
+    private saveEditedProject(projectFGroup: FormGroup, selectedProject:RequestTeacher) {
+        let projectEdit = new ProjectEdit();
+        projectEdit.id = selectedProject.id;
+        projectEdit.practiceJournalPassed = projectFGroup.controls["practiceJournalPassed"].value;
+
+        console.log(projectFGroup.controls["practiceJournalPassed"].value);
+
+        let titleControls = projectFGroup.controls["projectTitles"] as FormArray;
+        let selectedProjectTitles = selectedProject.projectTitles;
+
         let projectEditTitles = new Array<ProjectEditTitle>();
         for (let i = 0; i < titleControls.length; i++) {
             projectEditTitles.push(new ProjectEditTitle(selectedProjectTitles[i].id, titleControls.controls[i].value));
         }
-        this.busy = this.dataService.editProjectTitles(projectEditTitles).subscribe(data => {
+        projectEdit.projectTitles = projectEditTitles;
+
+        this.busy = this.dataService.editProject(projectEdit).subscribe(data => {
             if (data.message) {
                 console.info(data.message);
+                selectedProject.practiceJournalPassed = projectEdit.practiceJournalPassed;
                 for (let i = 0; i < titleControls.length; i++) {
                     selectedProjectTitles[i].title = projectEditTitles[i].title;
                 }

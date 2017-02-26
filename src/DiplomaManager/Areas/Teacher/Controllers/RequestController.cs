@@ -38,20 +38,18 @@ namespace DiplomaManager.Areas.Teacher.Controllers
                     },
                     Accepted = p.Accepted,
                     CreationDate = p.CreationDate,
+                    PracticeJournalPassed = p.PracticeJournalPassed,
                     ProjectTitles = p.ProjectTitles
                 });
             return Json(projectVms);
         }
 
         [HttpPost]
-        public IActionResult EditProjectTitles([FromBody] IEnumerable<ProjectEditTitle> projectTitles)
+        public IActionResult EditDiplomaProject([FromBody] ProjectEdit project)
         {
-            if (projectTitles == null) return NotFound();
-            var projectTitleDtos = projectTitles.ToList();
-            if (projectTitleDtos.Count == 0) return NotFound();
             try
             {
-                TeacherService.EditDiplomaProjectTitles(projectTitleDtos);
+                TeacherService.EditDiplomaProject(project);
                 return Json(new { Message = "Заявка успешно отредактирована" });
             }
             catch (Exception ex)

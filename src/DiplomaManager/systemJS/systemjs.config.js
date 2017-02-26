@@ -32,6 +32,7 @@
             'angular2-busy': 'npm:angular2-busy',
             "ng2-bs3-modal": "npm:ng2-bs3-modal",
             "ng2-table": "npm:ng2-table",
+            "angular-date-value-accessor": "npm:angular-date-value-accessor",
 
             // other libraries
             'rxjs': 'js'
@@ -57,6 +58,10 @@
                 defaultExtension: 'js' 
             },
             'core-js': {
+                main: 'index.js',
+                defaultExtension: 'js'
+            },
+            "angular-date-value-accessor": {
                 main: 'index.js',
                 defaultExtension: 'js'
             }
