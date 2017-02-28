@@ -22,11 +22,13 @@ namespace DiplomaManager.BLL.Services
     {
         private IDiplomaManagerUnitOfWork Database { get; }
         private ILocaleConfiguration CultureConfiguration { get; }
+        private IEmailService EmailService { get; }
 
-        public TeacherService(IDiplomaManagerUnitOfWork uow, ILocaleConfiguration configuration)
+        public TeacherService(IDiplomaManagerUnitOfWork uow, ILocaleConfiguration configuration, IEmailService emailService)
         {
             Database = uow;
             CultureConfiguration = configuration;
+            EmailService = emailService;
         }
 
         public IEnumerable<ProjectDTO> GetDiplomaRequests(int teacherId)
@@ -122,6 +124,24 @@ namespace DiplomaManager.BLL.Services
             Database.Save();
         }
 
+        public void RespondDiplomaRequest(int projectId, bool? accepted, string comment = null)
+        {
+            var project = Database.Projects.Get(projectId);
+            if (project != null)
+            {
+                project.Accepted = accepted;
+                Database.Projects.Update(project);
+                Database.Save();
+
+                string body = "EDITING TEST!";
+                if (!string.IsNullOrWhiteSpace(comment))
+                    body += " " + comment;
+                EmailService.SendEmailAsync("teland94@mail.ru", "Test", body);
+            }
+            else
+                throw new InvalidOperationException("Project not found");
+        }
+
         private static void CreateProjectMapping()
         {
             Mapper.Initialize(cfg =>
@@ -153,5 +173,12 @@ namespace DiplomaManager.BLL.Services
         public int Id { get; set; }
         public string Title { get; set; }
         public int LocaleId { get; set; }
+    }
+
+    public class RespondProjectRequest
+    {
+        public int ProjectId { get; set; }
+        public bool? Accepted { get; set; }
+        public string Comment { get; set; }
     }
 }

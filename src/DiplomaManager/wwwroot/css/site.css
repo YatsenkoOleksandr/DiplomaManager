@@ -10,7 +10,7 @@
     padding-right: 15px;
 }
 
-.btn-primary {
+.btn-primary, .btn-success, .btn-danger {
     min-width: 75px;
 }
 
@@ -28,4 +28,8 @@ table .btn {
     white-space: nowrap;
     text-overflow: ellipsis;
     width: 140px;
+}
+
+tr.strikeout td {
+    text-decoration: line-through;
 }

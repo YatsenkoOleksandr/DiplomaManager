@@ -24,7 +24,7 @@ namespace DiplomaManager.BLL.DTOs.ProjectDTOs
         public DateTime? PracticeJournalPassed
         { get; set; }
 
-        public bool Accepted
+        public bool? Accepted
         { get; set; }
 
         public List<ProjectTitleDTO> ProjectTitles { get; set; }

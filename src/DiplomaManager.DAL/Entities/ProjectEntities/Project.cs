@@ -29,7 +29,7 @@ namespace DiplomaManager.DAL.Entities.ProjectEntities
         public DateTime? PracticeJournalPassed
         { get; set; }
 
-        public bool Accepted
+        public bool? Accepted
         { get; set; }
 
         public List<ProjectTitle> ProjectTitles

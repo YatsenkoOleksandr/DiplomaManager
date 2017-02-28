@@ -14,7 +14,6 @@ using DiplomaManager.DAL.Entities.TeacherEntities;
 using DiplomaManager.DAL.Entities.UserEnitites;
 using DiplomaManager.DAL.Interfaces;
 using DiplomaManager.DAL.Utils;
-using Group = System.Text.RegularExpressions.Group;
 
 namespace DiplomaManager.BLL.Services
 {
@@ -164,8 +163,7 @@ namespace DiplomaManager.BLL.Services
                 Student = studentRes,
                 TeacherId = teacherId,
                 CreationDate = DateTime.Now,
-                DevelopmentAreaId = daId,
-                Accepted = false
+                DevelopmentAreaId = daId
             };
             Database.Projects.Add(project);
 

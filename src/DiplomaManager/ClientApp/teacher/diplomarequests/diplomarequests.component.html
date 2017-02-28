@@ -2,36 +2,72 @@
 <hr class="col-md-12" />
 <div>
     <modal #diplomaRequestModal (onClose)="requestWindowClosed()">
-            <modal-header [show-close]="true">
-                <h4>Редактирование заявки</h4>
-            </modal-header>
-            <modal-body>
-                <form [formGroup]="projectFGroup">
-                    <div class="well">
-                        {{selectedRequest?.student.toString()}}
-                    </div>
-                    <div class="form-group">
-                        <label for="practiceDate">Дата сдачи журнала по практике</label>
-                        <input id="practiceDate" type="date" class="form-control" formControlName="practiceJournalPassed" useValueAsDate />
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Многоязычная тема диплома</div>
-                        <div class="panel-body">
-                            <div formArrayName="projectTitles">
-                                <div class="form-group"
-                                     *ngFor="let title of projectFGroup.controls['projectTitles'].controls; let i = index">
-                                    <label>{{selectedRequest.projectTitles[i].locale.nativeName | capitalizeFirst}}</label>
-                                    <input class="form-control" formControlName="{{i}}" />
-                                </div>
+        <modal-header [show-close]="true">
+            <h4>Редактирование заявки</h4>
+        </modal-header>
+        <modal-body>
+            <form [formGroup]="projectFGroup">
+                <div class="well">
+                    {{selectedRequest?.student.toString()}}
+                </div>
+                <div class="form-group">
+                    <label for="practiceDate">Дата сдачи журнала по практике</label>
+                    <input id="practiceDate" type="date" class="form-control" formControlName="practiceJournalPassed" useValueAsDate />
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Многоязычная тема диплома</div>
+                    <div class="panel-body">
+                        <div formArrayName="projectTitles">
+                            <div class="form-group"
+                                 *ngFor="let title of projectFGroup.controls['projectTitles'].controls; let i = index">
+                                <label>{{selectedRequest.projectTitles[i].locale.nativeName | capitalizeFirst}}</label>
+                                <input class="form-control" formControlName="{{i}}" />
                             </div>
                         </div>
                     </div>
-                </form>
-            </modal-body>
-            <modal-footer>
-                <button type="button" class="btn btn-primary" (click)="diplomaRequestModal.close()">Сохранить</button>
-                <button type="button" class="btn btn-default" data-dismiss="diplomaRequestModal" (click)="diplomaRequestModal.dismiss()">Отмена</button>
-            </modal-footer>
+                </div>
+            </form>
+        </modal-body>
+        <modal-footer>
+            <button type="button" class="btn btn-primary" (click)="diplomaRequestModal.close()">Сохранить</button>
+            <button type="button" class="btn btn-default" data-dismiss="diplomaRequestModal" (click)="diplomaRequestModal.dismiss()">Отмена</button>
+        </modal-footer>
+    </modal>
+    <modal #acceptModal (onClose)="acceptModalClosed()">
+        <modal-header [show-close]="true">
+            <h4>Принять заявку</h4>
+        </modal-header>
+        <modal-body>
+            <div class="well">
+                {{selectedRequest?.student.toString()}}
+            </div>
+            <div class="form-group">
+                <label for="comment">Комментарий</label>
+                <textarea id="comment" class="form-control" rows="5" [(ngModel)]="comment"></textarea>
+            </div>
+        </modal-body>
+        <modal-footer>
+            <button type="button" class="btn btn-success" (click)="acceptModal.close()">ОК</button>
+            <button type="button" class="btn btn-default" data-dismiss="acceptModal" (click)="acceptModal.dismiss()">Отмена</button>
+        </modal-footer>
+    </modal>
+    <modal #declineModal (onClose)="declineModalClosed()">
+        <modal-header [show-close]="true">
+            <h4>Отклонить заявку</h4>
+        </modal-header>
+        <modal-body>
+            <div class="well">
+                <span style="color: red">{{selectedRequest?.student.toString()}}</span>
+            </div>
+            <div class="form-group">
+                <label for="commentDecline">Комментарий</label>
+                <textarea id="commentDecline" class="form-control" rows="5" [(ngModel)]="comment"></textarea>
+            </div>
+        </modal-body>
+        <modal-footer>
+            <button type="button" class="btn btn-danger" (click)="declineModal.close()">ОК</button>
+            <button type="button" class="btn btn-default" data-dismiss="declineModal" (click)="declineModal.dismiss()">Отмена</button>
+        </modal-footer>
     </modal>
     <table class="table table-striped" [ngBusy]="{busy: busy}">
         <tr>
@@ -42,7 +78,7 @@
             <th>Дата сдачи журнала по практике</th>
             <th></th>
         </tr>
-        <tr *ngFor="let request of requests">
+        <tr *ngFor="let request of requests" [ngClass]="{'strikeout': request.accepted === false }">
             <td>{{request.id}}</td>
             <td>{{request.student.toString()}}</td>
             <td>
@@ -54,13 +90,13 @@
             <td>{{request.creationDate | date: "dd.MM.yyyy"}}</td>
             <td>{{request.practiceJournalPassed ? (request.practiceJournalPassed | date: "dd.MM.yyyy") : "Не сдан" }}</td>
             <td>
-                <button *ngIf="!request.accepted" class="btn btn-success" type="button">
+                <button *ngIf="request.accepted === null" class="btn btn-success" type="button" (click)="acceptDiplomaRequest(request)">
                     <i class="glyphicon glyphicon-ok-sign"></i>&nbsp;Принять
                 </button>
-                <button *ngIf="!request.accepted" class="btn btn-danger" type="button">
+                <button *ngIf="request.accepted === null" class="btn btn-danger" type="button" (click)="declineDiplomaRequest(request)">
                     <i class="glyphicon glyphicon-remove-sign"></i>&nbsp;Отклонить
                 </button>
-                <button *ngIf="request.accepted" class="btn btn-primary" type="button" (click)="editRequest(request)">
+                <button *ngIf="request.accepted === true" class="btn btn-primary" type="button" (click)="editRequest(request)">
                     <i class="glyphicon glyphicon-edit"></i>&nbsp;Редактировать
                 </button>
             </td>

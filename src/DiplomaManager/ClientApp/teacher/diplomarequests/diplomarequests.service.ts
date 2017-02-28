@@ -34,6 +34,13 @@ export class TeacherService {
         return this.http.post('/Teacher/Request/EditDiplomaProject', body, { headers: headers })
             .map((resp: Response) => resp.json());
     }
+
+    respondDiplomaRequest(respondProjectRequest: RespondProjectRequest) {
+        const body = JSON.stringify(respondProjectRequest);
+        let headers = new Headers({ 'Content-Type': 'application/json;charset=utf-8' });
+        return this.http.post('/Teacher/Request/RespondDiplomaRequest', body, { headers: headers })
+            .map((resp: Response) => resp.json());
+    }
 }
 
 export class ProjectEdit {
@@ -51,5 +58,17 @@ export class ProjectEditTitle {
         this.id = id;
         this.title = title;
         this.localeId = localeId;
+    }
+}
+
+export class RespondProjectRequest {
+    projectId: number;
+    accepted: boolean;
+    comment: string;
+
+    constructor(projectId: number, accepted: boolean, comment: string) {
+        this.projectId = projectId;
+        this.accepted = accepted;
+        this.comment = comment;
     }
 }

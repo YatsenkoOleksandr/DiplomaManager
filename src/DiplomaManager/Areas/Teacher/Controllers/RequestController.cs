@@ -21,24 +21,23 @@ namespace DiplomaManager.Areas.Teacher.Controllers
         {
             if (teacherId == null) return NotFound();
             var projects = TeacherService.GetDiplomaRequests(teacherId.Value);
-            var projectVms = projects.Select(p =>
-                new RequestTeacherViewModel
+            var projectVms = projects.Select(p => new RequestTeacherViewModel
+            {
+                Id = p.Id,
+                Student = new StudentViewModel
                 {
-                    Id = p.Id,
-                    Student = new StudentViewModel
-                    {
-                        Id = p.StudentId,
-                        FirstName = p.Student.FirstNames[0].Name,
-                        LastName = p.Student.LastNames[0].Name,
-                        Patronymic = p.Student.Patronymics[0].Name,
-                        GroupName = p.Student.Group.Name,
-                        Email = p.Student.Email
-                    },
-                    Accepted = p.Accepted,
-                    CreationDate = p.CreationDate,
-                    PracticeJournalPassed = p.PracticeJournalPassed,
-                    ProjectTitles = p.ProjectTitles
-                });
+                    Id = p.StudentId,
+                    FirstName = p.Student.FirstNames[0].Name,
+                    LastName = p.Student.LastNames[0].Name,
+                    Patronymic = p.Student.Patronymics[0].Name,
+                    GroupName = p.Student.Group.Name,
+                    Email = p.Student.Email
+                },
+                Accepted = p.Accepted,
+                CreationDate = p.CreationDate,
+                PracticeJournalPassed = p.PracticeJournalPassed,
+                ProjectTitles = p.ProjectTitles
+            });
             return Json(projectVms);
         }
 
@@ -57,5 +56,31 @@ namespace DiplomaManager.Areas.Teacher.Controllers
                     : new { Error = ex.InnerException.ToString(), ErrorMessage = ex.InnerException.Message });
             }
         }
+
+        [HttpPost]
+        public IActionResult RespondDiplomaRequest([FromBody] RespondProjectRequest respondProjectRequest)
+        {
+            try
+            {
+                if (respondProjectRequest.ProjectId == null) return NotFound();
+                TeacherService.RespondDiplomaRequest(respondProjectRequest.ProjectId.Value, respondProjectRequest.Accepted,
+                    respondProjectRequest.Comment);
+                return Json(new { Message = "Заявка успешно обработана" });
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.InnerException == null
+                    ? new { Error = ex.ToString(), ErrorMessage = ex.Message }
+                    : new { Error = ex.InnerException.ToString(), ErrorMessage = ex.InnerException.Message });
+            }
+        }
     }
+
+    public class RespondProjectRequest
+    {
+        public int? ProjectId { get; set; }
+        public bool? Accepted { get; set; }
+        public string Comment { get; set; }
+    }
+
 }
