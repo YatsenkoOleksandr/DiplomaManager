@@ -148,5 +148,7 @@ namespace DiplomaManager.DAL.Repositories
         {
             return !_db.Set<TEntity>().Any(expression.Filter);
         }
+
+        public IEnumerable<TEntity> Local => _dbSet.Local;
     }
 }

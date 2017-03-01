@@ -93,14 +93,18 @@ namespace DiplomaManager.BLL.Services
             return projectDtos;
         }
 
-        public void EditDiplomaProject(ProjectEdit project)
+        public ProjectEdit EditDiplomaProject(ProjectEdit project)
         {
             var proj = Database.Projects.Get(project.Id);
             proj.CreationDate = DateTime.Now;
-            proj.PracticeJournalPassed = proj.PracticeJournalPassed;
+
+            if (project.PracticeJournalPassed < DateTime.MinValue)
+                proj.PracticeJournalPassed = project.PracticeJournalPassed;
+
             Database.Projects.Update(proj);
 
-            foreach (var projectTitle in project.ProjectTitles)
+            var projTitles = project.ProjectTitles.ToList();
+            foreach (var projectTitle in projTitles)
             {
                 if (projectTitle.Id > 0)
                 {
@@ -120,8 +124,14 @@ namespace DiplomaManager.BLL.Services
                     Database.ProjectTitles.Add(pTitle);
                 }
             }
-
             Database.Save();
+
+            var projTitlelDb = Database.ProjectTitles.Local.ToList();
+            for (var i = 0; i < projTitles.Count; i++)
+            {
+                projTitles[i].Id = projTitlelDb[i].Id;
+            }
+            return project;
         }
 
         public void RespondDiplomaRequest(int projectId, bool? accepted, string comment = null)

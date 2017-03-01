@@ -65,7 +65,6 @@ export class DiplomaRequestsComponent implements OnInit {
     acceptModalClosed() {
         let respondDiplomaRequest = new RespondProjectRequest(this.selectedRequest.id, true, this.commentModal);
         this.busy = this.dataService.respondDiplomaRequest(respondDiplomaRequest).subscribe(data => {
-            console.log(data);
             this.selectedRequest.accepted = true;
         });
     }
@@ -99,15 +98,15 @@ export class DiplomaRequestsComponent implements OnInit {
         }
         projectEdit.projectTitles = projectEditTitles;
 
-        this.busy = this.dataService.editProject(projectEdit).subscribe(data => {
-            if (data.message) {
-                console.info(data.message);
-                selectedProject.practiceJournalPassed = projectEdit.practiceJournalPassed;
+        this.busy = this.dataService.editProject(projectEdit).subscribe(project => {
+            if (!project.errorMessage) {
+                selectedProject.practiceJournalPassed = project.practiceJournalPassed;
                 for (let i = 0; i < titleControls.length; i++) {
-                    selectedProjectTitles[i].title = projectEditTitles[i].title;
+                    selectedProjectTitles[i].id = project.projectTitles[i].id;
+                    selectedProjectTitles[i].title = project.projectTitles[i].title;
                 }
             } else {
-                console.error(data.errorMessage);
+                console.error(project.errorMessage);
             }
         });
     }

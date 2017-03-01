@@ -42,5 +42,7 @@ namespace DiplomaManager.DAL.Interfaces
         bool IsEmpty();
 
         bool IsEmpty(FilterExpression<TEntity> expression);
+
+        IEnumerable<TEntity> Local { get; }
     }
 }

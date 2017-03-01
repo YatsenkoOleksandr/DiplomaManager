@@ -46,8 +46,8 @@ namespace DiplomaManager.Areas.Teacher.Controllers
         {
             try
             {
-                TeacherService.EditDiplomaProject(project);
-                return Json(new { Message = "Заявка успешно отредактирована" });
+                var updatedProject = TeacherService.EditDiplomaProject(project);
+                return Json(updatedProject);
             }
             catch (Exception ex)
             {
