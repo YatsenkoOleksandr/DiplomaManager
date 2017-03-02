@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { SelectComponent } from 'ng2-select';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { SelectItem } from '../../shared/selectItem';
+import { CustomValidators } from 'ng2-validation';
 
 import { DiplomaRequestService } from './diplomarequest.service';
 import { Degree } from './degree.model';
@@ -61,7 +62,7 @@ export class DiplomaRequestComponent implements OnInit {
                 firstName: new FormControl('', [Validators.required, Validators.minLength(3)]),
                 lastName: new FormControl('', [Validators.required, Validators.minLength(3)]),
                 patronymic: new FormControl('', [Validators.required, Validators.minLength(3)]),
-                email: new FormControl('', [Validators.required, Validators.pattern("[a-zA-Z_]+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}")])
+                email: new FormControl('', [Validators.required, CustomValidators.email])
             })
         });
     }

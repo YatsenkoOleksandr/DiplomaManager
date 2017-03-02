@@ -13,6 +13,7 @@ import { HttpModule } from '@angular/http';
 import { SelectModule } from 'ng2-select';
 import { BusyModule, BusyConfig } from 'angular2-busy';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { CustomFormsModule } from 'ng2-validation';
 
 @NgModule(({
     imports: [
@@ -31,7 +32,9 @@ import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
                 wrapperClass: 'loading'
             })
         ),
-        Ng2Bs3ModalModule],
+        Ng2Bs3ModalModule,
+        CustomFormsModule
+    ],
     declarations: [
         AppComponent,
         HomeComponent,

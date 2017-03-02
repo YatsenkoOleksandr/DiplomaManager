@@ -26,6 +26,7 @@
 
             'ng2-select': 'js/ng2-select.umd.js',
             "ngx-mydatepicker": "js/ngx-mydatepicker.umd.js",
+            "ng2-validation": "js/ng2-validation.umd.js",
 
             'core-js': 'npm:core-js',
             'angular2-dynamic-component': 'npm:angular2-dynamic-component',
