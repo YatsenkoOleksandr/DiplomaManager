@@ -69,7 +69,7 @@
         </modal-header>
         <modal-body>
             <div class="well">
-                <span style="color: red">{{selectedRequest?.student.toString()}}</span>
+                <span class="text-danger">{{selectedRequest?.student.toString()}}</span>
             </div>
             <div class="form-group">
                 <label for="commentDecline">Комментарий</label>
@@ -96,7 +96,7 @@
             <td>
                 <div *ngFor="let projectTitle of request.projectTitles">
                     <span *ngIf="projectTitle.title">"{{projectTitle.title}}" ({{projectTitle.locale.nativeName}})</span>
-                    <span *ngIf="!projectTitle.title" style="color: red">Не задано! ({{projectTitle.locale.nativeName}})</span>
+                    <span *ngIf="!projectTitle.title" class="text-danger">Не задано! ({{projectTitle.locale.nativeName}})</span>
                 </div>
             </td>
             <td>{{request.creationDate | date: "dd.MM.yyyy"}}</td>
