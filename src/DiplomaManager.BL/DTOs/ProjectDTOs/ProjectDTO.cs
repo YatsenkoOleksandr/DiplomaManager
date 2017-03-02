@@ -27,6 +27,9 @@ namespace DiplomaManager.BLL.DTOs.ProjectDTOs
         public bool? Accepted
         { get; set; }
 
+        public string Comment
+        { get; set; }
+
         public List<ProjectTitleDTO> ProjectTitles { get; set; }
     }
 }

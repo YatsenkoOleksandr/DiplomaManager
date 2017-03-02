@@ -73,7 +73,7 @@
             </div>
             <div class="form-group">
                 <label for="commentDecline">Комментарий</label>
-                <textarea id="commentDecline" class="form-control" rows="5" [(ngModel)]="comment"></textarea>
+                <textarea id="commentDecline" class="form-control" rows="5" [(ngModel)]="commentModal"></textarea>
             </div>
         </modal-body>
         <modal-footer>
@@ -105,11 +105,11 @@
                 <button *ngIf="request.accepted === null" class="btn btn-success" type="button" (click)="acceptDiplomaRequest(request)">
                     <i class="glyphicon glyphicon-ok-sign"></i>&nbsp;Принять
                 </button>
-                <button *ngIf="request.accepted === null" class="btn btn-danger" type="button" (click)="declineDiplomaRequest(request)">
-                    <i class="glyphicon glyphicon-remove-sign"></i>&nbsp;Отклонить
-                </button>
                 <button *ngIf="request.accepted === true" class="btn btn-primary" type="button" (click)="editRequest(request)">
                     <i class="glyphicon glyphicon-edit"></i>&nbsp;Редактировать
+                </button>
+                <button *ngIf="request.accepted === null || request.accepted === true" class="btn btn-danger" type="button" (click)="declineDiplomaRequest(request)">
+                    <i class="glyphicon glyphicon-remove-sign"></i>&nbsp;Отклонить
                 </button>
             </td>
         </tr>

@@ -139,6 +139,7 @@ namespace DiplomaManager.BLL.Services
             if (project != null)
             {
                 project.Accepted = accepted;
+                project.Comment = comment;
                 Database.Projects.Update(project);
                 Database.Save();
 
