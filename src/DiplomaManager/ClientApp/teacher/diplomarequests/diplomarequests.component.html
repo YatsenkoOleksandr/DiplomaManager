@@ -12,7 +12,19 @@
                 </div>
                 <div class="form-group">
                     <label for="practiceDate">Дата сдачи журнала по практике</label>
-                    <input id="practiceDate" type="date" class="form-control" formControlName="practiceJournalPassed" useValueAsDate />
+                    <div class="input-group">
+                        <input id="practiceDate" class="form-control" style="float:none" placeholder="Выберите дату" ngx-mydatepicker 
+                               name="practiceJournalPassed" [options]="myOptions" #dp="ngx-mydatepicker" formControlName="practiceJournalPassed" />
+
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" (click)="dp.clearDate();$event.stopPropagation()">
+                                <i class="glyphicon glyphicon-remove"></i>
+                            </button>
+                            <button type="button" class="btn btn-default" (click)="dp.toggleCalendar();$event.stopPropagation()">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                            </button>
+                        </span>
+                    </div>
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">Многоязычная тема диплома</div>

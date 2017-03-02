@@ -16,7 +16,8 @@ import { SelectModule } from 'ng2-select';
 import { BusyModule, BusyConfig } from 'angular2-busy';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { Ng2TableModule } from 'ng2-table/ng2-table';
-import { DateValueAccessorModule } from 'angular-date-value-accessor';
+import { MyDatePickerModule } from 'mydatepicker';
+import { NgxMyDatePickerModule } from 'ngx-mydatepicker';
 
 @NgModule(({
     imports: [
@@ -37,7 +38,7 @@ import { DateValueAccessorModule } from 'angular-date-value-accessor';
         ),
         Ng2Bs3ModalModule,
         Ng2TableModule,
-        DateValueAccessorModule
+        NgxMyDatePickerModule
     ],
     declarations: [
         TeacherComponent,

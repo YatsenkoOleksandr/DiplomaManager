@@ -98,8 +98,7 @@ namespace DiplomaManager.BLL.Services
             var proj = Database.Projects.Get(project.Id);
             proj.CreationDate = DateTime.Now;
 
-            if (project.PracticeJournalPassed < DateTime.MinValue)
-                proj.PracticeJournalPassed = project.PracticeJournalPassed;
+            proj.PracticeJournalPassed = project.PracticeJournalPassed;
 
             Database.Projects.Update(proj);
 
@@ -174,7 +173,7 @@ namespace DiplomaManager.BLL.Services
     public class ProjectEdit
     {
         public int Id { get; set; }
-        public DateTime PracticeJournalPassed { get; set; }
+        public DateTime? PracticeJournalPassed { get; set; }
         public IEnumerable<ProjectEditTitle> ProjectTitles { get; set; }
     }
 

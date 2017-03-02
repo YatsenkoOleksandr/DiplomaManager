@@ -2,6 +2,7 @@
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { Subscription } from 'rxjs';
 import { FormControl, FormGroup, Validators, FormArray, FormBuilder } from '@angular/forms';
+import { IMyOptions, IMyDate, IMyDateModel } from 'ngx-mydatepicker';
 
 import { TeacherService, ProjectEdit, ProjectEditTitle, RespondProjectRequest } from './diplomarequests.service';
 import { RequestTeacher } from './requestTeacher.model';
@@ -24,9 +25,18 @@ export class DiplomaRequestsComponent implements OnInit {
     selectedRequest: RequestTeacher;
     commentModal: string;
 
+    private myOptions: IMyOptions = {
+        dayLabels: { su: "Вс", mo: "Пн", tu: "Вт", we: "Ср", th: "Чт", fr: "Пт", sa: "Сб" },
+        monthLabels: { 1: "Янв", 2: "Фев", 3: "Март", 4: "Апр", 5: "Май", 6: "Июнь", 7: "Июль", 8: "Авг", 9: "Сент", 10: "Окт", 11: "Ноя", 12: "Дек" },
+        dateFormat: "dd.mm.yyyy",
+        todayBtnTxt: "Сегодня",
+        firstDayOfWeek: "mo",
+        sunHighlight: true
+    };
+
     constructor(private dataService: TeacherService, private formBuilder: FormBuilder) {
         this.projectFGroup = formBuilder.group({
-            practiceJournalPassed: formBuilder.control(''),
+            practiceJournalPassed: [''],
             projectTitles: formBuilder.array([])
         });
     }
@@ -41,8 +51,18 @@ export class DiplomaRequestsComponent implements OnInit {
         this.selectedRequest = request;
         let titleControls = this.projectFGroup.controls["projectTitles"] as FormArray;
 
-       this.projectFGroup.controls["practiceJournalPassed"]
-            .setValue(new Date(this.selectedRequest.practiceJournalPassed));
+        let practiceJournalPassedDate = request.practiceJournalPassed;
+        if (practiceJournalPassedDate != null) {
+            practiceJournalPassedDate = new Date(practiceJournalPassedDate);
+            this.projectFGroup.controls["practiceJournalPassed"].setValue({
+                date: {
+                    year: practiceJournalPassedDate.getFullYear(),
+                    month: practiceJournalPassedDate.getMonth() + 1,
+                    day: practiceJournalPassedDate.getDate()
+                }
+            });
+        }
+
         while (titleControls.length) {
             titleControls.removeAt(titleControls.length - 1);
         }
@@ -77,7 +97,6 @@ export class DiplomaRequestsComponent implements OnInit {
     declineModalClosed() {
         let respondDiplomaRequest = new RespondProjectRequest(this.selectedRequest.id, false, this.commentModal);
         this.busy = this.dataService.respondDiplomaRequest(respondDiplomaRequest).subscribe(data => {
-            console.log(data);
             this.selectedRequest.accepted = false;
         });
     }
@@ -85,7 +104,12 @@ export class DiplomaRequestsComponent implements OnInit {
     private saveEditedProject(projectFGroup: FormGroup, selectedProject:RequestTeacher) {
         let projectEdit = new ProjectEdit();
         projectEdit.id = selectedProject.id;
-        projectEdit.practiceJournalPassed = projectFGroup.controls["practiceJournalPassed"].value;
+        let pDate = projectFGroup.controls["practiceJournalPassed"].value as IMyDateModel;
+
+        if (pDate && pDate.date.year > 1)
+            projectEdit.practiceJournalPassed = pDate.jsdate;
+        else
+            projectEdit.practiceJournalPassed = null;
 
         let titleControls = projectFGroup.controls["projectTitles"] as FormArray;
         let selectedProjectTitles = selectedProject.projectTitles;

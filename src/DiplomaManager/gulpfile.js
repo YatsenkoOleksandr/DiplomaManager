@@ -36,7 +36,8 @@ gulp.task('beforeBuild', ['copyNodeModules', 'copyHtml'], function () {
               paths.nodeModules + '@angular/http/bundles/http.umd.js',
               paths.nodeModules + '@angular/router/bundles/router.umd.js',
               paths.nodeModules + '@angular/forms/bundles/forms.umd.js',
-              paths.nodeModules + 'ng2-select/bundles/ng2-select.umd.js'])
+              paths.nodeModules + 'ng2-select/bundles/ng2-select.umd.js',
+              paths.nodeModules + 'ngx-mydatepicker/bundles/ngx-mydatepicker.umd.js'])
         .pipe(gulp.dest(webRoot + 'js/'));
 
     // Copy across the Reactive Extensions files, in the same structure as they are found (as this needs to be preserved)
@@ -51,8 +52,7 @@ gulp.task('copyNodeModules', function () {
         "ts-metadata-helper": "ts-metadata-helper/*.{js, map}",
         "angular2-busy": "angular2-busy/build/src/*.{js, map}",
         "ng2-bs3-modal": "ng2-bs3-modal/**/*.{js, map}",
-        "ng2-table": "ng2-table/**/*.{js, map}",
-        "angular-date-value-accessor": "angular-date-value-accessor/*.{js, map}"
+        "ng2-table": "ng2-table/**/*.{js, map}"
     };
     setSrc(libs);
 });
