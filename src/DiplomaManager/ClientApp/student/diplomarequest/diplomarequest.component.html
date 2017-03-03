@@ -66,11 +66,23 @@
             <div class="panel-heading">Студент</div>
             <div class="panel-body">
                 <div class="form-group">
+                    <label>Группа</label>
+                    <ng-select [items]="groupsList"
+                               placeholder="Не выбрана группа"
+                               formControlName="groups">
+                    </ng-select>
+                    <div class="alert alert-danger"
+                         *ngIf="requestFGroup.get('degrees').hasError('required')
+                            && requestFGroup.get('degrees').touched">
+                        Не выбрана группа
+                    </div>
+                </div>
+                <div class="form-group">
                     <label for="lastName">Фамилия</label>
                     <input type="text"
                            id="lastName"
                            class="form-control" placeholder="Введите фамилию"
-                           formControlName="lastName" />
+                           formControlName="lastName"/>
                     <div class="alert alert-danger"
                          *ngIf="requestFGroup.get('studentFGroup.lastName').hasError('required')
                             && requestFGroup.get('studentFGroup.lastName').touched">
@@ -87,7 +99,7 @@
                     <input type="text"
                            id="firstName"
                            class="form-control" placeholder="Введите имя"
-                           formControlName="firstName" />
+                           formControlName="firstName"/>
                     <div class="alert alert-danger"
                          *ngIf="requestFGroup.get('studentFGroup.firstName').hasError('required')
                             && requestFGroup.get('studentFGroup.firstName').touched">
@@ -104,7 +116,7 @@
                     <input type="text"
                            id="patronymic"
                            class="form-control" placeholder="Введите отчество"
-                           formControlName="patronymic" />
+                           formControlName="patronymic"/>
                     <div class="alert alert-danger"
                          *ngIf="requestFGroup.get('studentFGroup.patronymic').hasError('required')
                             && requestFGroup.get('studentFGroup.patronymic').touched">
@@ -121,7 +133,7 @@
                     <input type="text"
                            id="email"
                            class="form-control" placeholder="Введите E-mail"
-                           formControlName="email" />
+                           formControlName="email"/>
                     <div class="alert alert-danger"
                          *ngIf="requestFGroup.get('studentFGroup.email').invalid
                             && requestFGroup.get('studentFGroup.email').touched">

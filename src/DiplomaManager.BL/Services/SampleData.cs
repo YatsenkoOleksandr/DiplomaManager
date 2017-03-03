@@ -196,6 +196,7 @@ namespace DiplomaManager.BLL.Services
                     uow.Groups.Add(new Group { Name = "641П", DegreeId = 1 });
                     uow.Groups.Add(new Group { Name = "642П", DegreeId = 1 });
                     uow.Groups.Add(new Group { Name = "631ПСТ", DegreeId = 1 });
+                    uow.Groups.Add(new Group { Name = "651П", DegreeId = 2 });
 
                     uow.Save();
                 }

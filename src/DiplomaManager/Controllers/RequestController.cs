@@ -52,10 +52,18 @@ namespace DiplomaManager.Controllers
             return Json(das);
         }
 
-        public IActionResult GetCapacity(int degreeId, int teacherId)
+        public IActionResult GetCapacity(int? degreeId, int? teacherId)
         {
-            var capacity = RequestService.GetCapacity(degreeId, teacherId);
+            if (degreeId == null || teacherId == null) return NotFound();
+            var capacity = RequestService.GetCapacity(degreeId.Value, teacherId.Value);
             return Json(capacity);
+        }
+
+        public IActionResult GetGroups(int? degreeId)
+        {
+            if (degreeId == null) return NotFound();
+            var groups = RequestService.GetGroups(degreeId.Value);
+            return Json(groups);
         }
 
         [HttpPost]

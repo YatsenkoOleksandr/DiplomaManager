@@ -9,6 +9,7 @@ import { Degree } from './degree.model';
 import { DevelopmentArea } from './developmentArea.model';
 import { Request } from './request.model';
 import { Capacity } from './capacity.model';
+import { Group } from '../../shared/group.model'
 
 @Injectable()
 export class DiplomaRequestService {
@@ -47,6 +48,13 @@ export class DiplomaRequestService {
         return this.http.get(`/Request/GetCapacity/?degreeId=${degreeId}&teacherId=${teacherId}`).map((resp: Response) => {
             let capacity = resp.json();
             return capacity;
+        });
+    }
+
+    getGroups(degreeId: number): Observable<Group[]> {
+        return this.http.get(`/Request/GetGroups/?degreeId=${degreeId}`).map((resp: Response) => {
+            let groups = resp.json();
+            return groups;
         });
     }
 

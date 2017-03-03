@@ -145,6 +145,14 @@ namespace DiplomaManager.BLL.Services
             return capacityDto;
         }
 
+        public IEnumerable<GroupDTO> GetGroups(int degreeId)
+        {
+            var groups = Database.Groups.Get(new FilterExpression<Group>(g => g.DegreeId == degreeId));
+            Mapper.Initialize(cfg => cfg.CreateMap<Group, GroupDTO>());
+            var groupDtos = Mapper.Map<IEnumerable<Group>, IEnumerable<GroupDTO>>(groups);
+            return groupDtos;
+        }
+
         public void CreateDiplomaRequest(StudentDTO studentDto, int daId, int teacherId, int localeId, string title)
         {
             Mapper.Initialize(cfg =>

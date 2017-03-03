@@ -23,6 +23,7 @@ export class DiplomaRequestComponent implements OnInit {
     dAreasList: Array<SelectItem>;
     degrees: Array<SelectItem>;
     teachersList: Array<SelectItem>;
+    groupsList: Array<SelectItem>;
 
     busy: Subscription;
     @ViewChild('teachersSelect') teachersSelect: SelectComponent;
@@ -59,6 +60,7 @@ export class DiplomaRequestComponent implements OnInit {
             title: new FormControl('', [Validators.required, Validators.minLength(5)]),
 
             studentFGroup: new FormGroup({
+                groups: new FormControl('', Validators.required),
                 firstName: new FormControl('', [Validators.required, Validators.minLength(3)]),
                 lastName: new FormControl('', [Validators.required, Validators.minLength(3)]),
                 patronymic: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -85,11 +87,23 @@ export class DiplomaRequestComponent implements OnInit {
     }
 
     degreeSelected(event) {
-        var degreeid = event.id;
-        var teacherId = this.requestFGroup.value.teachers[0].id;
+        let degreeid = event.id;
 
-        this.busy = this.dataService.getCapacity(degreeid, teacherId).subscribe((data) => {
-            this.capacity = data;
+        if (this.requestFGroup.value.teachers) {
+            let teacherId = this.requestFGroup.value.teachers[0].id;
+            this.busy = this.dataService.getCapacity(degreeid, teacherId).subscribe((data) => {
+                this.capacity = data;
+            });
+        }
+
+        this.busy = this.dataService.getGroups(degreeid).subscribe((data) => {
+            let groupsList = new Array<SelectItem>(data.length);
+            let index = 0;
+            for (let group of data) {
+                groupsList[index] = new SelectItem(group.id, group.name);
+                index++;
+            }
+            this.groupsList = groupsList;
         });
     }
 
