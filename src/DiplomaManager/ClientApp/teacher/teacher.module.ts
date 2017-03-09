@@ -18,6 +18,8 @@ import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { Ng2TableModule } from 'ng2-table/ng2-table';
 import { NgxMyDatePickerModule } from 'ngx-mydatepicker';
 
+import { PaginationModule } from 'ng2-bootstrap';
+
 @NgModule(({
     imports: [
         BrowserModule,
@@ -37,7 +39,8 @@ import { NgxMyDatePickerModule } from 'ngx-mydatepicker';
         ),
         Ng2Bs3ModalModule,
         Ng2TableModule,
-        NgxMyDatePickerModule
+        NgxMyDatePickerModule,
+        PaginationModule.forRoot()
     ],
     declarations: [
         TeacherComponent,

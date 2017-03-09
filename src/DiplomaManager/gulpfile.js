@@ -38,7 +38,8 @@ gulp.task('beforeBuild', ['copyNodeModules', 'copyHtml'], function () {
               paths.nodeModules + '@angular/forms/bundles/forms.umd.js',
               paths.nodeModules + 'ng2-select/bundles/ng2-select.umd.js',
               paths.nodeModules + 'ngx-mydatepicker/bundles/ngx-mydatepicker.umd.js',
-              paths.nodeModules + 'ng2-validation/bundles/ng2-validation.umd.js'])
+              paths.nodeModules + 'ng2-validation/bundles/ng2-validation.umd.js',
+              paths.nodeModules + 'ng2-bootstrap/bundles/ng2-bootstrap.umd.js'])
         .pipe(gulp.dest(webRoot + 'js/'));
 
     // Copy across the Reactive Extensions files, in the same structure as they are found (as this needs to be preserved)

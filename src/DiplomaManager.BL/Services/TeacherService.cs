@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using AutoMapper;
 using DiplomaManager.BLL.Configuration;
@@ -31,43 +32,42 @@ namespace DiplomaManager.BLL.Services
             EmailService = emailService;
         }
 
-        public IEnumerable<ProjectDTO> GetDiplomaRequests(int teacherId)
+        public IEnumerable<ProjectDTO> GetDiplomaRequests(int teacherId, string query = "", int currentPage = 1, int itemsPerPage = 10)
         {
             CreateProjectMapping();
 
-            var filterExprs = new List<FilterExpression<Project>>
-            {
-                new FilterExpression<Project>(p => p.TeacherId == teacherId)
-            };
-            var includePaths = new List<IncludeExpression<Project>>
-            {
-                new IncludeExpression<Project>(p => p.Student),
-                new IncludeExpression<Project>(p => p.Student.Group)
-            };
-
-            if (!string.IsNullOrWhiteSpace(CultureConfiguration.DefaultLocaleName))
-            {
-                Database.FirstNames.Get(
-                    new FilterExpression<FirstName>(f => f.Locale.Name == CultureConfiguration.DefaultLocaleName), new[] {new IncludeExpression<FirstName>(p => p.Locale)});
-                Database.LastNames.Get(
-                    new FilterExpression<LastName>(l => l.Locale.Name == CultureConfiguration.DefaultLocaleName), new[] {new IncludeExpression<LastName>(p => p.Locale)});
-                Database.Patronymics.Get(
-                    new FilterExpression<Patronymic>(p => p.Locale.Name == CultureConfiguration.DefaultLocaleName), new[] {new IncludeExpression<Patronymic>(p => p.Locale)});
-            }
-            else
-            {
-                includePaths.Add(new IncludeExpression<Project>(p => p.Student.FirstNames));
-                includePaths.Add(new IncludeExpression<Project>(p => p.Student.LastNames));
-                includePaths.Add(new IncludeExpression<Project>(p => p.Student.Patronymics));
-            }
+            var filterExprs = FilterDiplomaRequests(teacherId, query);
 
             Database.ProjectTitles.Get(
                 new FilterExpression<ProjectTitle>(t => CultureConfiguration.LocaleNames.Contains(t.Locale.Name)), 
                 new[] { new IncludeExpression<ProjectTitle>(p => p.Locale) });
 
-            var projects = Database.Projects.Get(filters: filterExprs.ToArray(), includePaths: includePaths.ToArray());
-            var projectDtos = Mapper.Map<IEnumerable<Project>, IEnumerable<ProjectDTO>>(projects).ToList();
+            var includePaths = GetIncludeProjectFio();
+            var projects = Database.Projects.Get(filterExprs.ToArray(), includePaths.ToArray(),
+                currentPage, itemsPerPage, new SortExpression<Project, DateTime>(p => p.CreationDate, ListSortDirection.Descending));
 
+            var projectDtos = Mapper.Map<IEnumerable<Project>, IEnumerable<ProjectDTO>>(projects).ToList();
+            SetProjectTitlesToProject(projectDtos);
+
+            return projectDtos;
+        }
+
+        private static IEnumerable<FilterExpression<Project>> FilterDiplomaRequests(int teacherId, string query)
+        {
+            var filterExprs = new List<FilterExpression<Project>>
+            {
+                new FilterExpression<Project>(p => p.TeacherId == teacherId)
+            };
+            if (!string.IsNullOrWhiteSpace(query))
+            {
+                filterExprs.Add(new FilterExpression<Project>(p => p.ProjectTitles.Any(pt =>
+                    !string.IsNullOrEmpty(pt.Title) && pt.Title.Contains(query))));
+            }
+            return filterExprs;
+        }
+
+        private void SetProjectTitlesToProject(IEnumerable<ProjectDTO> projectDtos)
+        {
             var locales =
                 Database.Locales.Get(
                     new FilterExpression<Locale>(l => CultureConfiguration.LocaleNames.Contains(l.Name)));
@@ -89,8 +89,40 @@ namespace DiplomaManager.BLL.Services
                     });
                 }
             }
+        }
 
-            return projectDtos;
+        private IEnumerable<IncludeExpression<Project>> GetIncludeProjectFio()
+        {
+            var includePaths = new List<IncludeExpression<Project>>
+            {
+                new IncludeExpression<Project>(p => p.Student),
+                new IncludeExpression<Project>(p => p.Student.Group)
+            };
+
+            if (!string.IsNullOrWhiteSpace(CultureConfiguration.DefaultLocaleName))
+            {
+                Database.FirstNames.Get(
+                    new FilterExpression<FirstName>(f => f.Locale.Name == CultureConfiguration.DefaultLocaleName),
+                    new[] {new IncludeExpression<FirstName>(p => p.Locale)});
+                Database.LastNames.Get(
+                    new FilterExpression<LastName>(l => l.Locale.Name == CultureConfiguration.DefaultLocaleName),
+                    new[] {new IncludeExpression<LastName>(p => p.Locale)});
+                Database.Patronymics.Get(
+                    new FilterExpression<Patronymic>(p => p.Locale.Name == CultureConfiguration.DefaultLocaleName),
+                    new[] {new IncludeExpression<Patronymic>(p => p.Locale)});
+            }
+            else
+            {
+                includePaths.Add(new IncludeExpression<Project>(p => p.Student.FirstNames));
+                includePaths.Add(new IncludeExpression<Project>(p => p.Student.LastNames));
+                includePaths.Add(new IncludeExpression<Project>(p => p.Student.Patronymics));
+            }
+            return includePaths;
+        }
+
+        public int GetDiplomaRequestsCount(int teacherId, string query = "")
+        {
+            return Database.Projects.Count(FilterDiplomaRequests(teacherId, query).ToArray());
         }
 
         public ProjectEdit EditDiplomaProject(ProjectEdit project)
@@ -183,12 +215,5 @@ namespace DiplomaManager.BLL.Services
         public int Id { get; set; }
         public string Title { get; set; }
         public int LocaleId { get; set; }
-    }
-
-    public class RespondProjectRequest
-    {
-        public int ProjectId { get; set; }
-        public bool? Accepted { get; set; }
-        public string Comment { get; set; }
     }
 }

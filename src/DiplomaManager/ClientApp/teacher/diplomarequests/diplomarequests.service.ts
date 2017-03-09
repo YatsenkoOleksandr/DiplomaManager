@@ -4,26 +4,31 @@ import { Response, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
-import { RequestTeacher } from './requestTeacher.model';
+import { RequestTeacher } from './requestTeacherResponse.model';
 import { Student } from '../../shared/student.model';
 import { ProjectTitle } from './projectTitle.model';
+import { GetProjectsRequest } from './getProjectsRequest.model';
+import { IPagedResponse } from '../../shared/pagedResponse.model';
 
 @Injectable()
 export class TeacherService {
 
     constructor(private http: Http) { }
 
-    getDiplomaRequests(teacherId: number): Observable<RequestTeacher[]> {
-        return this.http.get('/Teacher/Request/GetDiplomaRequests?teacherId=' + teacherId).map((resp: Response) => {
-            let requestsList = resp.json();
-            for (let request of requestsList) {
-                request.student = new Student(request.student.id,
-                    request.student.firstName,
-                    request.student.lastName,
-                    request.student.patronymic,
-                    request.student.email,
-                    request.groupId);
-            }
+    getDiplomaRequests(getProjectsRequest: GetProjectsRequest): Observable<IPagedResponse<RequestTeacher>> {
+        const body = JSON.stringify(getProjectsRequest);
+        let headers = new Headers({ 'Content-Type': 'application/json;charset=utf-8' });
+        return this.http.post('/Teacher/Request/GetDiplomaRequests', body, { headers: headers })
+            .map((resp: Response) => {
+                let requestsList = resp.json();
+                for (let request of requestsList.data) {
+                    request.student = new Student(request.student.id,
+                        request.student.firstName,
+                        request.student.lastName,
+                        request.student.patronymic,
+                        request.student.email,
+                        request.groupId);
+                }
             return requestsList;
         });
     }

@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Linq;
+using DiplomaManager.Areas.Teacher.Requests;
 using DiplomaManager.Areas.Teacher.ViewModels;
 using DiplomaManager.BLL.Interfaces;
 using DiplomaManager.BLL.Services;
+using DiplomaManager.Requests;
+using DiplomaManager.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DiplomaManager.Areas.Teacher.Controllers
@@ -17,10 +20,12 @@ namespace DiplomaManager.Areas.Teacher.Controllers
             TeacherService = teacherService;
         }
 
-        public IActionResult GetDiplomaRequests(int? teacherId)
+        [HttpPost]
+        public IActionResult GetDiplomaRequests([FromBody] GetProjectsRequest getProjectsRequest)
         {
-            if (teacherId == null) return NotFound();
-            var projects = TeacherService.GetDiplomaRequests(teacherId.Value);
+            if (getProjectsRequest.TeacherId == null) return NotFound();
+            var projects = TeacherService.GetDiplomaRequests(getProjectsRequest.TeacherId.Value, 
+                getProjectsRequest.Query, getProjectsRequest.CurrentPage, getProjectsRequest.Limit);
             var projectVms = projects.Select(p => new RequestTeacherViewModel
             {
                 Id = p.Id,
@@ -38,7 +43,10 @@ namespace DiplomaManager.Areas.Teacher.Controllers
                 PracticeJournalPassed = p.PracticeJournalPassed,
                 ProjectTitles = p.ProjectTitles
             });
-            return Json(projectVms);
+            var projectsCount = TeacherService.GetDiplomaRequestsCount(getProjectsRequest.TeacherId.Value,
+                getProjectsRequest.Query);
+            var pagedResponse = new PagedResponse<RequestTeacherViewModel>(projectVms, projectsCount);
+            return Json(pagedResponse);
         }
 
         [HttpPost]
@@ -75,12 +83,4 @@ namespace DiplomaManager.Areas.Teacher.Controllers
             }
         }
     }
-
-    public class RespondProjectRequest
-    {
-        public int? ProjectId { get; set; }
-        public bool? Accepted { get; set; }
-        public string Comment { get; set; }
-    }
-
 }

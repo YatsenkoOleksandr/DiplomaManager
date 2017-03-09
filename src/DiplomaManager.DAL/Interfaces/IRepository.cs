@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
+﻿using System.Collections.Generic;
 using DiplomaManager.DAL.Utils;
 
 namespace DiplomaManager.DAL.Interfaces
@@ -15,21 +13,22 @@ namespace DiplomaManager.DAL.Interfaces
            FilterExpression<TEntity> filter);
 
         IEnumerable<TEntity> Get(
+            IncludeExpression<TEntity> includePath);
+
+        IEnumerable<TEntity> Get(
            FilterExpression<TEntity> filter,
            IncludeExpression<TEntity>[] includePaths);
 
         IEnumerable<TEntity> Get(
-           FilterExpression<TEntity> filter,
-           IncludeExpression<TEntity>[] includePaths,
-           int? page,
-           int? pageSize = null);
+           FilterExpression<TEntity>[] filters,
+           IncludeExpression<TEntity>[] includePaths);
 
-        IEnumerable<TEntity> Get(
-            IncludeExpression<TEntity>[] includePaths = null,
-            int? page = 0,
+        IEnumerable<TEntity> Get<TKey>(
+            FilterExpression<TEntity>[] filters,
+            IncludeExpression<TEntity>[] includePaths,
+            int? page = null,
             int? pageSize = null,
-            FilterExpression<TEntity>[] filters = null,
-            params SortExpression<TEntity>[] sortExpressions);
+            params SortExpression<TEntity, TKey>[] sortExpressions);
 
         void Add(TEntity entity);
 
@@ -42,6 +41,8 @@ namespace DiplomaManager.DAL.Interfaces
         bool IsEmpty();
 
         bool IsEmpty(FilterExpression<TEntity> expression);
+
+        int Count(FilterExpression<TEntity>[] filters);
 
         IEnumerable<TEntity> Local { get; }
     }

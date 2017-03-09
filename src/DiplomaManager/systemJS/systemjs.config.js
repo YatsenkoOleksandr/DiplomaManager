@@ -27,6 +27,7 @@
             'ng2-select': 'js/ng2-select.umd.js',
             "ngx-mydatepicker": "js/ngx-mydatepicker.umd.js",
             "ng2-validation": "js/ng2-validation.umd.js",
+            "ng2-bootstrap": "js/ng2-bootstrap.umd.js",
 
             'core-js': 'npm:core-js',
             'angular2-dynamic-component': 'npm:angular2-dynamic-component',
@@ -34,6 +35,7 @@
             'angular2-busy': 'npm:angular2-busy',
             "ng2-bs3-modal": "npm:ng2-bs3-modal",
             "ng2-table": "npm:ng2-table",
+
             // other libraries
             'rxjs': 'js'
         },

@@ -5,8 +5,9 @@ import { FormControl, FormGroup, Validators, FormArray, FormBuilder } from '@ang
 import { IMyOptions, IMyDate, IMyDateModel } from 'ngx-mydatepicker';
 
 import { TeacherService, ProjectEdit, ProjectEditTitle, RespondProjectRequest } from './diplomarequests.service';
-import { RequestTeacher } from './requestTeacher.model';
+import { RequestTeacher } from './requestTeacherResponse.model';
 import { ProjectTitle } from './projectTitle.model';
+import { GetProjectsRequest } from './getProjectsRequest.model';
 
 @Component({
     moduleId: module.id,
@@ -17,6 +18,15 @@ import { ProjectTitle } from './projectTitle.model';
 export class DiplomaRequestsComponent implements OnInit {
 
     requests: Array<RequestTeacher> = [];
+
+    totalItems: number;
+    currentPage = 1;
+    itemsPerPage = 5;
+
+    query: string;
+    queryFieldControl = new FormControl('');
+    isSearchActive: boolean;
+
     @ViewChild('diplomaRequestModal') diplomaRequestModal: ModalComponent;
     @ViewChild('acceptModal') acceptModal: ModalComponent;
     @ViewChild('declineModal') declineModal: ModalComponent;
@@ -39,12 +49,26 @@ export class DiplomaRequestsComponent implements OnInit {
             practiceJournalPassed: [''],
             projectTitles: formBuilder.array([])
         });
+
+        this.queryFieldControl.valueChanges
+            .debounceTime(100)
+            .subscribe(newValue => {
+                if (newValue && newValue.length > 2) {
+                    this.query = newValue;
+                    this.getProjects();
+                    this.isSearchActive = true;
+                } else {
+                    if (this.isSearchActive) {
+                        this.query = null;
+                        this.getProjects();
+                        this.isSearchActive = false;
+                    }
+                }
+            });
     }
 
     ngOnInit() {
-        this.busy = this.dataService.getDiplomaRequests(2).subscribe((data) => {
-            this.requests = data;
-        });
+        this.getProjects();
     }
 
     editRequest(request: RequestTeacher) {
@@ -71,6 +95,14 @@ export class DiplomaRequestsComponent implements OnInit {
         }
 
         this.diplomaRequestModal.open();
+    }
+
+    getProjects() {
+        let request = new GetProjectsRequest(2, this.query, this.itemsPerPage, this.currentPage);
+        this.busy = this.dataService.getDiplomaRequests(request).subscribe((response) => {
+            this.totalItems = response.total;
+            this.requests = response.data;
+        });
     }
 
     requestWindowClosed() {
@@ -133,6 +165,11 @@ export class DiplomaRequestsComponent implements OnInit {
                 console.error(project.errorMessage);
             }
         });
+    }
+
+    pageChanged(event: any): void {
+        this.currentPage = event.page;
+        this.getProjects();
     }
 }
 

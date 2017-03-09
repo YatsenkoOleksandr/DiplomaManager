@@ -75,8 +75,7 @@ namespace DiplomaManager.BLL.Services
             }
             if (!string.IsNullOrWhiteSpace(cultureName))
             {
-                teachers = Database.Teachers.Get(filters: filterExpressions.ToArray(), 
-                    includePaths: includePaths.ToArray()).ToList();
+                teachers = Database.Teachers.Get(filterExpressions.ToArray(), includePaths.ToArray()).ToList();
 
                 Database.FirstNames.Get(
                     new FilterExpression<FirstName>(f => f.Locale.Name == cultureName), new[] { new IncludeExpression<FirstName>(p => p.Locale) });
@@ -93,8 +92,7 @@ namespace DiplomaManager.BLL.Services
                     new IncludeExpression<Teacher>(p => p.LastNames),
                     new IncludeExpression<Teacher>(p => p.Patronymics)
                 });
-                teachers = Database.Teachers.Get(filters: filterExpressions.ToArray(),
-                    includePaths: includePaths.ToArray()).ToList();
+                teachers = Database.Teachers.Get(filterExpressions.ToArray(), includePaths.ToArray()).ToList();
             }
 
             Mapper.Initialize(cfg =>
@@ -121,7 +119,7 @@ namespace DiplomaManager.BLL.Services
             }
             else
             {
-                degrees = Database.Degrees.Get(new[] { new IncludeExpression<Degree>(d => d.DegreeNames),  }).ToList();
+                degrees = Database.Degrees.Get(new IncludeExpression<Degree>(d => d.DegreeNames)).ToList();
             }
 
             Mapper.Initialize(cfg =>

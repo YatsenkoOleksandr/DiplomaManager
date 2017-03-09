@@ -81,7 +81,20 @@
             <button type="button" class="btn btn-default" data-dismiss="declineModal" (click)="declineModal.dismiss()">Отмена</button>
         </modal-footer>
     </modal>
-    <table class="table table-striped" [ngBusy]="{busy: busy}">
+    <div class="input-group">
+        <input type="text" #queryField [formControl]="queryFieldControl" class="form-control" placeholder="Поиск..."
+               />
+        <span class="input-group-btn">
+            <button class="btn btn-danger" type="button" (click)="queryFieldControl.reset()" 
+                    *ngIf="queryFieldControl.value">
+                <span class="glyphicon glyphicon-remove"></span>
+            </button>
+            <button class="btn btn-info" type="button" (click)="getProjects()">
+                <span class="glyphicon glyphicon-search"></span>
+            </button>
+        </span>
+    </div>    
+    <table class="table table-striped" style="margin-top: 10px" [ngBusy]="{busy: busy}">
         <tr>
             <th>№ заявки</th>
             <th>ФИО студента</th>
@@ -114,4 +127,7 @@
             </td>
         </tr>
     </table>
+    <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)"
+                [boundaryLinks]="true" [itemsPerPage]="itemsPerPage"
+                previousText="Пред." nextText="След." firstText="Первая" lastText="Последняя"></pagination>
 </div>
