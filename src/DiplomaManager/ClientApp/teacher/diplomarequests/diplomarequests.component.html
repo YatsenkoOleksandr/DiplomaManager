@@ -85,7 +85,7 @@
         <input type="text" #queryField [formControl]="queryFieldControl" class="form-control" placeholder="Поиск..."
                />
         <span class="input-group-btn">
-            <button class="btn btn-danger" type="button" (click)="queryFieldControl.reset()" 
+            <button class="btn btn-danger" type="button" (click)="queryFieldControl.reset(); queryFieldControl.focus()" 
                     *ngIf="queryFieldControl.value">
                 <span class="glyphicon glyphicon-remove"></span>
             </button>
