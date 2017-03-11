@@ -3,6 +3,7 @@ import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { Subscription } from 'rxjs';
 import { FormControl, FormGroup, Validators, FormArray, FormBuilder } from '@angular/forms';
 import { IMyOptions, IMyDate, IMyDateModel } from 'ngx-mydatepicker';
+import { ToastrService } from 'ngx-toastr';
 
 import { TeacherService, ProjectEdit, ProjectEditTitle, RespondProjectRequest } from './diplomarequests.service';
 import { RequestTeacher } from './requestTeacherResponse.model';
@@ -44,7 +45,7 @@ export class DiplomaRequestsComponent implements OnInit {
         sunHighlight: true
     };
 
-    constructor(private dataService: TeacherService, private formBuilder: FormBuilder) {
+    constructor(private dataService: TeacherService, private formBuilder: FormBuilder, private toastrService: ToastrService) {
         this.projectFGroup = formBuilder.group({
             practiceJournalPassed: [''],
             projectTitles: formBuilder.array([])
@@ -54,7 +55,7 @@ export class DiplomaRequestsComponent implements OnInit {
             .debounceTime(100)
             .subscribe(newValue => {
                 if (newValue && newValue.length > 2) {
-                    this.query = newValue;
+                    this.query = String(newValue);
                     this.getProjects();
                     this.isSearchActive = true;
                 } else {
@@ -118,6 +119,7 @@ export class DiplomaRequestsComponent implements OnInit {
         let respondDiplomaRequest = new RespondProjectRequest(this.selectedRequest.id, true, this.commentModal);
         this.busy = this.dataService.respondDiplomaRequest(respondDiplomaRequest).subscribe(data => {
             this.selectedRequest.accepted = true;
+            this.toastrService.success('Заявка успешно принята');
         });
     }
 
@@ -130,6 +132,7 @@ export class DiplomaRequestsComponent implements OnInit {
         let respondDiplomaRequest = new RespondProjectRequest(this.selectedRequest.id, false, this.commentModal);
         this.busy = this.dataService.respondDiplomaRequest(respondDiplomaRequest).subscribe(data => {
             this.selectedRequest.accepted = false;
+            this.toastrService.success('Заявка успешно отклонена');
         });
     }
     
@@ -161,7 +164,9 @@ export class DiplomaRequestsComponent implements OnInit {
                     selectedProjectTitles[i].id = project.projectTitles[i].id;
                     selectedProjectTitles[i].title = project.projectTitles[i].title;
                 }
+                this.toastrService.success('Заявка успешно отредактирована');
             } else {
+                this.toastrService.error('Ошибка редактирования заявки');
                 console.error(project.errorMessage);
             }
         });

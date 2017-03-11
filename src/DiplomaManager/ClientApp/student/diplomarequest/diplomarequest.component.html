@@ -2,17 +2,6 @@
 <hr class="col-md-12" />
 <form (ngSubmit)="onSubmit(requestFGroup)" novalidate [formGroup]="requestFGroup"
       [ngBusy]="{busy: busy}">
-    <modal #reqModal>
-        <modal-header>
-            <h4>Подача заявки</h4>
-        </modal-header>
-        <modal-body>
-            {{confirmMessage}}
-        </modal-body>
-        <modal-footer>
-            <button class="btn btn-primary" (click)="reqModal.close()">OK</button>
-        </modal-footer>
-    </modal>
     <div class="col-md-5">
         <div class="panel panel-default">
             <div class="panel-heading">Руководитель</div>

@@ -7,6 +7,7 @@ import { SelectComponent } from 'ng2-select';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { SelectItem } from '../../shared/selectItem';
 import { CustomValidators } from 'ng2-validation';
+import { ToastrService } from 'ngx-toastr';
 
 import { DiplomaRequestService } from './diplomarequest.service';
 import { Degree } from './degree.model';
@@ -27,12 +28,11 @@ export class DiplomaRequestComponent implements OnInit {
 
     busy: Subscription;
     @ViewChild('teachersSelect') teachersSelect: SelectComponent;
-    @ViewChild('reqModal') reqModal: ModalComponent;
     requestFGroup: FormGroup;
     confirmMessage: string;
     capacity: Capacity;
 
-    constructor(private dataService: DiplomaRequestService) { }
+    constructor(private dataService: DiplomaRequestService,  private toastrService: ToastrService) { }
 
     ngOnInit() {
         this.busy = this.dataService.getDegrees().subscribe((data) => {
@@ -112,11 +112,11 @@ export class DiplomaRequestComponent implements OnInit {
             let request = new Request(value.das[0].id, value.teachers[0].id, value.studentFGroup, value.title);
             this.busy = this.dataService.sendRequest(request).subscribe(data => {
                 if (data.message) {
-                    this.confirmMessage = data.message + " =)";
+                    this.toastrService.success(data.message + ' =)');
                 } else {
-                    this.confirmMessage = data.errorMessage;
+                    this.toastrService.error('Ошибка подачи заявки =(');
+                    console.error(data.errorMessage);
                 }
-                this.reqModal.open();
             });
         }
     }

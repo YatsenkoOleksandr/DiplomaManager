@@ -14,6 +14,7 @@ import { SelectModule } from 'ng2-select';
 import { BusyModule, BusyConfig } from 'angular2-busy';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { CustomFormsModule } from 'ng2-validation';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule(({
     imports: [
@@ -33,7 +34,8 @@ import { CustomFormsModule } from 'ng2-validation';
             })
         ),
         Ng2Bs3ModalModule,
-        CustomFormsModule
+        CustomFormsModule,
+        ToastrModule.forRoot()
     ],
     declarations: [
         AppComponent,

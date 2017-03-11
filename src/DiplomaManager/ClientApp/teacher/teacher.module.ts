@@ -15,8 +15,8 @@ import { HttpModule } from '@angular/http';
 import { SelectModule } from 'ng2-select';
 import { BusyModule, BusyConfig } from 'angular2-busy';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
-import { Ng2TableModule } from 'ng2-table/ng2-table';
 import { NgxMyDatePickerModule } from 'ngx-mydatepicker';
+import { ToastrModule } from 'ngx-toastr';
 
 import { PaginationModule } from 'ng2-bootstrap';
 
@@ -38,8 +38,8 @@ import { PaginationModule } from 'ng2-bootstrap';
             })
         ),
         Ng2Bs3ModalModule,
-        Ng2TableModule,
         NgxMyDatePickerModule,
+        ToastrModule.forRoot(),
         PaginationModule.forRoot()
     ],
     declarations: [

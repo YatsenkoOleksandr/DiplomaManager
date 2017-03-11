@@ -28,6 +28,7 @@
             "ngx-mydatepicker": "js/ngx-mydatepicker.umd.js",
             "ng2-validation": "js/ng2-validation.umd.js",
             "ng2-bootstrap": "js/ng2-bootstrap.umd.js",
+            'ngx-toastr': 'js/toastr.umd.js',
 
             'core-js': 'npm:core-js',
             'angular2-dynamic-component': 'npm:angular2-dynamic-component',

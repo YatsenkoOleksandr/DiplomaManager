@@ -25,7 +25,8 @@
     "ng2-bs3-modal": "0.10.4",
     "ngx-mydatepicker": "0.0.6",
     "ng2-validation": "3.8.0",
-    "ng2-bootstrap": "1.4.0"
+    "ng2-bootstrap": "1.4.0",
+    "ngx-toastr": "4.3.0" 
   },
   "devDependencies": {
     "@types/core-js": "^0.9.35",
