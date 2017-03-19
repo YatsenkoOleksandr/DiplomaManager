@@ -2,6 +2,7 @@
 using DiplomaManager.BLL.DTOs.RequestDTOs;
 using DiplomaManager.BLL.DTOs.StudentDTOs;
 using DiplomaManager.BLL.DTOs.TeacherDTOs;
+using DiplomaManager.BLL.DTOs.UserDTOs;
 
 namespace DiplomaManager.BLL.Interfaces
 {
@@ -17,6 +18,7 @@ namespace DiplomaManager.BLL.Interfaces
         IEnumerable<TeacherDTO> GetTeachers(int? daId = null, string cultureName = null);
         CapacityDTO GetCapacity(int degreeId, int teacherId);
         IEnumerable<GroupDTO> GetGroups(int degreeId);
+        IEnumerable<PeopleNameDTO> GetStudentNames(string query, NameKindDTO nameKindDto, int maxItems = 10);
         void CreateDiplomaRequest(StudentDTO studentDto, int daId, int teacherId, int localeId, string title);
 
         void Dispose();

@@ -2,7 +2,7 @@
 
 namespace DiplomaManager.BLL.DTOs.UserDTOs
 {
-    public enum NameKind
+    public enum NameKindDTO
     {
         FirstName,
         LastName,
@@ -22,7 +22,7 @@ namespace DiplomaManager.BLL.DTOs.UserDTOs
         public string Name
         { get; set; }
 
-        public NameKind NameKind { get; set; }
+        public NameKindDTO NameKind { get; set; }
 
         public DateTime CreationDate
         { get; set; }

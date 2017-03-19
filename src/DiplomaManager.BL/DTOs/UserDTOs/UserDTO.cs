@@ -33,28 +33,28 @@ namespace DiplomaManager.BLL.DTOs.UserDTOs
         {
             PeopleNames = new List<PeopleNameDTO>
             {
-                new PeopleNameDTO { Name = firstName, LocaleId = localeId, CreationDate = creationDate, NameKind = NameKind.FirstName },
-                new PeopleNameDTO { Name = lastName, LocaleId = localeId, CreationDate = creationDate, NameKind = NameKind.LastName },
-                new PeopleNameDTO { Name = patronymic, LocaleId = localeId, CreationDate = creationDate, NameKind = NameKind.Patronymic },
+                new PeopleNameDTO { Name = firstName, LocaleId = localeId, CreationDate = creationDate, NameKind = NameKindDTO.FirstName },
+                new PeopleNameDTO { Name = lastName, LocaleId = localeId, CreationDate = creationDate, NameKind = NameKindDTO.LastName },
+                new PeopleNameDTO { Name = patronymic, LocaleId = localeId, CreationDate = creationDate, NameKind = NameKindDTO.Patronymic },
             };
             Email = email;
         }
 
         public string GetFirstName(int localeId)
         {
-            var nameDTO = PeopleNames.FirstOrDefault(f => f.LocaleId == localeId && f.NameKind == NameKind.FirstName);
+            var nameDTO = PeopleNames.FirstOrDefault(f => f.LocaleId == localeId && f.NameKind == NameKindDTO.FirstName);
             return nameDTO?.Name;
         }
 
         public string GetLastName(int localeId)
         {
-            var nameDTO = PeopleNames.FirstOrDefault(f => f.LocaleId == localeId && f.NameKind == NameKind.LastName);
+            var nameDTO = PeopleNames.FirstOrDefault(f => f.LocaleId == localeId && f.NameKind == NameKindDTO.LastName);
             return nameDTO?.Name;
         }
 
         public string GetPatronymic(int localeId)
         {
-            var nameDTO = PeopleNames.FirstOrDefault(f => f.LocaleId == localeId && f.NameKind == NameKind.Patronymic);
+            var nameDTO = PeopleNames.FirstOrDefault(f => f.LocaleId == localeId && f.NameKind == NameKindDTO.Patronymic);
             return nameDTO?.Name;
         }
     }

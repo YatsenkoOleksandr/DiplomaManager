@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using AutoMapper;
+using DiplomaManager.BLL.Configuration;
 using DiplomaManager.BLL.DTOs.RequestDTOs;
 using DiplomaManager.BLL.DTOs.StudentDTOs;
 using DiplomaManager.BLL.DTOs.TeacherDTOs;
@@ -21,11 +23,13 @@ namespace DiplomaManager.BLL.Services
     {
         private IDiplomaManagerUnitOfWork Database { get; }
         private IEmailService EmailService { get; }
+        private ILocaleConfiguration LocaleConfiguration { get; }
 
-        public RequestService(IDiplomaManagerUnitOfWork uow, IEmailService emailService)
+        public RequestService(IDiplomaManagerUnitOfWork uow, IEmailService emailService, ILocaleConfiguration localeConfiguration)
         {
             Database = uow;
             EmailService = emailService;
+            LocaleConfiguration = localeConfiguration;
         }
 
         public DevelopmentAreaDTO GetDevelopmentArea(int id)
@@ -168,6 +172,30 @@ namespace DiplomaManager.BLL.Services
 
             Database.Save();
             EmailService.SendEmailAsync("teland94@mail.ru", "Test", "Test!");
+        }
+
+        public IEnumerable<PeopleNameDTO> GetStudentNames(string query, NameKindDTO nameKindDto, int maxItems = 10)
+        {
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<NameKindDTO, NameKind>();
+                cfg.CreateMap<PeopleName, PeopleNameDTO>();
+            });
+            var nameKind = Mapper.Map<NameKindDTO, NameKind>(nameKindDto);
+
+            var filters = new[]
+            {
+                new FilterExpression<PeopleName>(n => n.NameKind == nameKind),
+                new FilterExpression<PeopleName>(n => n.Name.Contains(query)),
+                new FilterExpression<PeopleName>(n => n.Locale.Name == LocaleConfiguration.DefaultLocaleName)
+            };
+            var names = Database.PeopleNames.Get(filters, 
+                new[] { new IncludeExpression<PeopleName>(n => n.Locale) },
+                pageSize: maxItems,
+                sortExpressions: new SortExpression<PeopleName, string>(n => n.Name, ListSortDirection.Ascending));
+
+            var namesDto = Mapper.Map<IEnumerable<PeopleName>, IEnumerable<PeopleNameDTO>>(names);
+            return namesDto;
         }
 
         private Student CreateStudent(StudentDTO studentDto, int localeId)

@@ -68,9 +68,11 @@ namespace DiplomaManager.Controllers
             return Json(groups);
         }
 
-        public IEnumerable<PeopleNameDTO> GetStudentNames()
+        public IActionResult GetStudentNames(string query, NameKindDTO nameKind)
         {
-            return null;
+            if (string.IsNullOrWhiteSpace(query)) return NotFound();
+            var names = RequestService.GetStudentNames(query, nameKind);
+            return Json(names);
         }
 
         [HttpPost]
