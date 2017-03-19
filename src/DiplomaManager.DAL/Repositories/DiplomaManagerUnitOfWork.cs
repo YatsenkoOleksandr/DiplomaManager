@@ -28,9 +28,7 @@ namespace DiplomaManager.DAL.Repositories
         private EFRepository<Position> _positionRepository;
         private EFRepository<PositionName> _positionNameRepository;
 
-        private EFRepository<FirstName> _firstNameRepository;
-        private EFRepository<LastName> _lastNameRepository;
-        private EFRepository<Patronymic> _patronymicRepository;
+        private EFRepository<PeopleName> _peopleNameRepository;
 
         private EFRepository<Degree> _degreeRepository;
         private EFRepository<DegreeName> _degreeNameRepository;
@@ -65,12 +63,8 @@ namespace DiplomaManager.DAL.Repositories
         public IRepository<PositionName> PositionNames
             => _positionNameRepository ?? (_positionNameRepository = new EFRepository<PositionName>(_db));
 
-        public IRepository<FirstName> FirstNames
-            => _firstNameRepository ?? (_firstNameRepository = new EFRepository<FirstName>(_db));
-        public IRepository<LastName> LastNames
-            => _lastNameRepository ?? (_lastNameRepository = new EFRepository<LastName>(_db));
-        public IRepository<Patronymic> Patronymics
-            => _patronymicRepository ?? (_patronymicRepository = new EFRepository<Patronymic>(_db));
+        public IRepository<PeopleName> PeopleNames
+            => _peopleNameRepository ?? (_peopleNameRepository = new EFRepository<PeopleName>(_db));
 
         public IRepository<Degree> Degrees
             => _degreeRepository ?? (_degreeRepository = new EFRepository<Degree>(_db));

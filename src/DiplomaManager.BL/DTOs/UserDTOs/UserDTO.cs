@@ -24,40 +24,37 @@ namespace DiplomaManager.BLL.DTOs.UserDTOs
         public DateTime StatusCreationDate
         { get; set; }
 
-        public List<FirstNameDTO> FirstNames
-        { get; set; }
-
-        public List<LastNameDTO> LastNames
-        { get; set; }
-
-        public List<PatronymicDTO> Patronymics
+        public List<PeopleNameDTO> PeopleNames
         { get; set; }
 
         public UserDTO() { }
 
         public UserDTO(string firstName, string lastName, string patronymic, int localeId, string email, DateTime creationDate)
         {
-            FirstNames = new List<FirstNameDTO> { new FirstNameDTO { Name = firstName, LocaleId = localeId, CreationDate = creationDate } };
-            LastNames = new List<LastNameDTO> { new LastNameDTO { Name = lastName, LocaleId = localeId, CreationDate = creationDate } };
-            Patronymics = new List<PatronymicDTO> { new PatronymicDTO { Name = patronymic, LocaleId = localeId, CreationDate = creationDate } };
+            PeopleNames = new List<PeopleNameDTO>
+            {
+                new PeopleNameDTO { Name = firstName, LocaleId = localeId, CreationDate = creationDate, NameKind = NameKind.FirstName },
+                new PeopleNameDTO { Name = lastName, LocaleId = localeId, CreationDate = creationDate, NameKind = NameKind.LastName },
+                new PeopleNameDTO { Name = patronymic, LocaleId = localeId, CreationDate = creationDate, NameKind = NameKind.Patronymic },
+            };
             Email = email;
         }
 
         public string GetFirstName(int localeId)
         {
-            var nameDTO = FirstNames.FirstOrDefault(f => f.LocaleId == localeId);
+            var nameDTO = PeopleNames.FirstOrDefault(f => f.LocaleId == localeId && f.NameKind == NameKind.FirstName);
             return nameDTO?.Name;
         }
 
         public string GetLastName(int localeId)
         {
-            var nameDTO = LastNames.FirstOrDefault(f => f.LocaleId == localeId);
+            var nameDTO = PeopleNames.FirstOrDefault(f => f.LocaleId == localeId && f.NameKind == NameKind.LastName);
             return nameDTO?.Name;
         }
 
         public string GetPatronymic(int localeId)
         {
-            var nameDTO = Patronymics.FirstOrDefault(f => f.LocaleId == localeId);
+            var nameDTO = PeopleNames.FirstOrDefault(f => f.LocaleId == localeId && f.NameKind == NameKind.Patronymic);
             return nameDTO?.Name;
         }
     }

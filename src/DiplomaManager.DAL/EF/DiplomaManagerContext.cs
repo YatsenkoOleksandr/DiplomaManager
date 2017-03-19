@@ -14,9 +14,7 @@ namespace DiplomaManager.DAL.EF
         //User
         public DbSet<Locale> Locales { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<FirstName> FirstNames { get; set; }
-        public DbSet<LastName> LastNames { get; set; }
-        public DbSet<Patronymic> Patronymics { get; set; }
+        public DbSet<PeopleName> PeopleNames { get; set; }
 
         //Student
         public DbSet<Degree> Degrees { get; set; }

@@ -31,13 +31,7 @@ namespace DiplomaManager.DAL.Entities.UserEnitites
         public DateTime StatusCreationDate
         { get; set; }
 
-        public List<FirstName> FirstNames
-        { get; set; }
-
-        public List<LastName> LastNames
-        { get; set; }
-
-        public List<Patronymic> Patronymics
+        public List<PeopleName> PeopleNames
         { get; set; }
     }
 }

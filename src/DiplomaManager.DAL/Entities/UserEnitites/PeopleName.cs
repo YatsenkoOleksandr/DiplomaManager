@@ -4,6 +4,13 @@ using DiplomaManager.DAL.Entities.SharedEntities;
 
 namespace DiplomaManager.DAL.Entities.UserEnitites
 {
+    public enum NameKind
+    {
+        FirstName,
+        LastName,
+        Patronymic
+    }
+
     public class PeopleName
     {
         public int Id
@@ -21,6 +28,8 @@ namespace DiplomaManager.DAL.Entities.UserEnitites
         [MaxLength(50)]
         public string Name
         { get; set; }
+
+        public NameKind NameKind { get; set; }
 
         public DateTime CreationDate
         { get; set; }

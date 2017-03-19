@@ -27,11 +27,7 @@ namespace DiplomaManager.DAL.Interfaces
 
         IRepository<PositionName> PositionNames { get; }
 
-        IRepository<FirstName> FirstNames { get; }
-
-        IRepository<LastName> LastNames { get; }
-
-        IRepository<Patronymic> Patronymics { get; }
+        IRepository<PeopleName> PeopleNames { get; }
 
         IRepository<Degree> Degrees { get; }
 

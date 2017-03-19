@@ -77,29 +77,21 @@ namespace DiplomaManager.BLL.Services
             {
                 teachers = Database.Teachers.Get(filterExpressions.ToArray(), includePaths.ToArray()).ToList();
 
-                Database.FirstNames.Get(
-                    new FilterExpression<FirstName>(f => f.Locale.Name == cultureName), new[] { new IncludeExpression<FirstName>(p => p.Locale) });
-                Database.LastNames.Get(
-                    new FilterExpression<LastName>(l => l.Locale.Name == cultureName), new[] { new IncludeExpression<LastName>(p => p.Locale) });
-                Database.Patronymics.Get(
-                    new FilterExpression<Patronymic>(p => p.Locale.Name == cultureName), new[] { new IncludeExpression<Patronymic>(p => p.Locale) });
+                Database.PeopleNames.Get(
+                    new FilterExpression<PeopleName>(f => f.Locale.Name == cultureName), new[] { new IncludeExpression<PeopleName>(p => p.Locale) });
             }
             else
             {
                 includePaths.AddRange(new[] 
                 {
-                    new IncludeExpression<Teacher>(p => p.FirstNames),
-                    new IncludeExpression<Teacher>(p => p.LastNames),
-                    new IncludeExpression<Teacher>(p => p.Patronymics)
+                    new IncludeExpression<Teacher>(p => p.PeopleNames),
                 });
                 teachers = Database.Teachers.Get(filterExpressions.ToArray(), includePaths.ToArray()).ToList();
             }
 
             Mapper.Initialize(cfg =>
             {
-                cfg.CreateMap<FirstName, FirstNameDTO>();
-                cfg.CreateMap<LastName, LastNameDTO>();
-                cfg.CreateMap<Patronymic, PatronymicDTO>();
+                cfg.CreateMap<PeopleName, PeopleNameDTO>();
 
                 cfg.CreateMap<Teacher, TeacherDTO>();
             });
@@ -155,9 +147,7 @@ namespace DiplomaManager.BLL.Services
         {
             Mapper.Initialize(cfg =>
             {
-                cfg.CreateMap<FirstNameDTO, FirstName>();
-                cfg.CreateMap<LastNameDTO, LastName>();
-                cfg.CreateMap<PatronymicDTO, Patronymic>();
+                cfg.CreateMap<PeopleNameDTO, PeopleName>();
                 cfg.CreateMap<GroupDTO, Group>();
                 cfg.CreateMap<StudentDTO, Student>();
             });

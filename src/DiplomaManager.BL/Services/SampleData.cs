@@ -55,12 +55,29 @@ namespace DiplomaManager.BLL.Services
 
                     uow.Save();
 
-                    uow.FirstNames.Add(
-                        new FirstName { CreationDate = DateTime.Now, LocaleId = 193, Name = "Андрей", UserId = 1 });
-                    uow.LastNames.Add(
-                        new LastName { CreationDate = DateTime.Now, LocaleId = 193, Name = "Телешев", UserId = 1 });
-                    uow.Patronymics.Add(
-                        new Patronymic { CreationDate = DateTime.Now, LocaleId = 193, Name = "Максимович", UserId = 1 });
+                    uow.PeopleNames.Add(new PeopleName
+                    {
+                        CreationDate = DateTime.Now,
+                        LocaleId = 193,
+                        NameKind = NameKind.FirstName,
+                        Name = "Андрей",
+                        UserId = 1
+                    });
+                    uow.PeopleNames.Add(new PeopleName
+                    {
+                        CreationDate = DateTime.Now,
+                        LocaleId = 193,
+                        NameKind = NameKind.LastName,
+                        Name = "Телешев",
+                        UserId = 1
+                    });
+                    uow.PeopleNames.Add(new PeopleName
+                    {
+                        CreationDate = DateTime.Now,
+                        LocaleId = 193,
+                        NameKind = NameKind.Patronymic,
+                        Name = "Максимович", UserId = 1
+                    });
 
                     uow.Save();
                 }
@@ -70,11 +87,11 @@ namespace DiplomaManager.BLL.Services
                 {
                     uow.Positions.Add(new Position());
                     uow.PositionNames.Add(new PositionName
-                        {
-                            Name = "Кандидат технических наук",
-                            LocaleId = 1,
-                            PositionId = 1
-                        });
+                    {
+                        Name = "Кандидат технических наук",
+                        LocaleId = 1,
+                        PositionId = 1
+                    });
 
                     uow.Positions.Add(new Position());
                     uow.PositionNames.Add(new PositionName
@@ -102,20 +119,20 @@ namespace DiplomaManager.BLL.Services
 
                     uow.Save();
 
-                    uow.FirstNames.Add(
-                        new FirstName { CreationDate = DateTime.Now, LocaleId = 193, Name = "Андрей", UserId = 2 });
-                    uow.FirstNames.Add(
-                        new FirstName { CreationDate = DateTime.Now, LocaleId = 53, Name = "Andrew", UserId = 2 });
+                    uow.PeopleNames.Add(
+                        new PeopleName { CreationDate = DateTime.Now, LocaleId = 193, Name = "Андрей", NameKind = NameKind.FirstName, UserId = 2 });
+                    uow.PeopleNames.Add(
+                        new PeopleName { CreationDate = DateTime.Now, LocaleId = 53, Name = "Andrew", NameKind = NameKind.FirstName, UserId = 2 });
 
-                    uow.LastNames.Add(
-                        new LastName { CreationDate = DateTime.Now, LocaleId = 193, Name = "Рыбкин", UserId = 2 });
-                    uow.LastNames.Add(
-                        new LastName { CreationDate = DateTime.Now, LocaleId = 53, Name = "Rybkin", UserId = 2 });
+                    uow.PeopleNames.Add(
+                        new PeopleName { CreationDate = DateTime.Now, LocaleId = 193, Name = "Рыбкин", NameKind = NameKind.LastName, UserId = 2 });
+                    uow.PeopleNames.Add(
+                        new PeopleName { CreationDate = DateTime.Now, LocaleId = 53, Name = "Rybkin", NameKind = NameKind.LastName, UserId = 2 });
 
-                    uow.Patronymics.Add(
-                        new Patronymic { CreationDate = DateTime.Now, LocaleId = 193, Name = "Александрович", UserId = 2 });
-                    uow.Patronymics.Add(
-                        new Patronymic { CreationDate = DateTime.Now, LocaleId = 53, Name = "Aleksandrovich", UserId = 2 });
+                    uow.PeopleNames.Add(
+                        new PeopleName { CreationDate = DateTime.Now, LocaleId = 193, Name = "Александрович", NameKind = NameKind.Patronymic, UserId = 2 });
+                    uow.PeopleNames.Add(
+                        new PeopleName { CreationDate = DateTime.Now, LocaleId = 53, Name = "Aleksandrovich", NameKind = NameKind.Patronymic, UserId = 2 });
 
                     uow.Save();
 
@@ -131,12 +148,12 @@ namespace DiplomaManager.BLL.Services
 
                     uow.Save();
 
-                    uow.FirstNames.Add(
-                        new FirstName { CreationDate = DateTime.Now, LocaleId = 193, Name = "Павел", UserId = 3 });
-                    uow.LastNames.Add(
-                        new LastName { CreationDate = DateTime.Now, LocaleId = 193, Name = "Лучшев", UserId = 3 });
-                    uow.Patronymics.Add(
-                        new Patronymic { CreationDate = DateTime.Now, LocaleId = 193, Name = "Александрович", UserId = 3 });
+                    uow.PeopleNames.Add(
+                        new PeopleName { CreationDate = DateTime.Now, LocaleId = 193, Name = "Павел", NameKind = NameKind.FirstName, UserId = 3 });
+                    uow.PeopleNames.Add(
+                        new PeopleName { CreationDate = DateTime.Now, LocaleId = 193, Name = "Лучшев", NameKind = NameKind.LastName, UserId = 3 });
+                    uow.PeopleNames.Add(
+                        new PeopleName { CreationDate = DateTime.Now, LocaleId = 193, Name = "Александрович", NameKind = NameKind.Patronymic, UserId = 3 });
 
                     uow.Save();
                 }

@@ -2,6 +2,13 @@
 
 namespace DiplomaManager.BLL.DTOs.UserDTOs
 {
+    public enum NameKind
+    {
+        FirstName,
+        LastName,
+        Patronymic
+    }
+
     public class PeopleNameDTO
     {
         public int Id
@@ -14,6 +21,8 @@ namespace DiplomaManager.BLL.DTOs.UserDTOs
 
         public string Name
         { get; set; }
+
+        public NameKind NameKind { get; set; }
 
         public DateTime CreationDate
         { get; set; }

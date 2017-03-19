@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DiplomaManager.BLL.DTOs.StudentDTOs;
+using DiplomaManager.BLL.DTOs.UserDTOs;
 using DiplomaManager.BLL.Interfaces;
 using DiplomaManager.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -23,9 +25,9 @@ namespace DiplomaManager.Controllers
                 new TeacherViewModel
                 {
                     Id = t.Id,
-                    FirstName = t.FirstNames[0].Name,
-                    LastName = t.LastNames[0].Name,
-                    Patronymic = t.Patronymics[0].Name,
+                    FirstName = t.GetFirstName(193),
+                    LastName = t.GetLastName(193),
+                    Patronymic = t.GetPatronymic(193),
                     PositionName = string.Empty
                 });
 
@@ -64,6 +66,11 @@ namespace DiplomaManager.Controllers
             if (degreeId == null) return NotFound();
             var groups = RequestService.GetGroups(degreeId.Value);
             return Json(groups);
+        }
+
+        public IEnumerable<PeopleNameDTO> GetStudentNames()
+        {
+            return null;
         }
 
         [HttpPost]

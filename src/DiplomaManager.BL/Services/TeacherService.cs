@@ -101,21 +101,13 @@ namespace DiplomaManager.BLL.Services
 
             if (!string.IsNullOrWhiteSpace(CultureConfiguration.DefaultLocaleName))
             {
-                Database.FirstNames.Get(
-                    new FilterExpression<FirstName>(f => f.Locale.Name == CultureConfiguration.DefaultLocaleName),
-                    new[] {new IncludeExpression<FirstName>(p => p.Locale)});
-                Database.LastNames.Get(
-                    new FilterExpression<LastName>(l => l.Locale.Name == CultureConfiguration.DefaultLocaleName),
-                    new[] {new IncludeExpression<LastName>(p => p.Locale)});
-                Database.Patronymics.Get(
-                    new FilterExpression<Patronymic>(p => p.Locale.Name == CultureConfiguration.DefaultLocaleName),
-                    new[] {new IncludeExpression<Patronymic>(p => p.Locale)});
+                Database.PeopleNames.Get(
+                    new FilterExpression<PeopleName>(f => f.Locale.Name == CultureConfiguration.DefaultLocaleName),
+                    new[] {new IncludeExpression<PeopleName>(p => p.Locale)});
             }
             else
             {
-                includePaths.Add(new IncludeExpression<Project>(p => p.Student.FirstNames));
-                includePaths.Add(new IncludeExpression<Project>(p => p.Student.LastNames));
-                includePaths.Add(new IncludeExpression<Project>(p => p.Student.Patronymics));
+                includePaths.Add(new IncludeExpression<Project>(p => p.Student.PeopleNames));
             }
             return includePaths;
         }
@@ -188,9 +180,7 @@ namespace DiplomaManager.BLL.Services
         {
             Mapper.Initialize(cfg =>
             {
-                cfg.CreateMap<FirstName, FirstNameDTO>();
-                cfg.CreateMap<LastName, LastNameDTO>();
-                cfg.CreateMap<Patronymic, PatronymicDTO>();
+                cfg.CreateMap<PeopleName, PeopleNameDTO>();
 
                 cfg.CreateMap<Teacher, TeacherDTO>();
                 cfg.CreateMap<Group, GroupDTO>();
