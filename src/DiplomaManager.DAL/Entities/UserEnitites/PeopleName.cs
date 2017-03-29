@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using DiplomaManager.DAL.Entities.SharedEntities;
 
@@ -20,8 +21,7 @@ namespace DiplomaManager.DAL.Entities.UserEnitites
         public Locale Locale
         { get; set; }
 
-        public int UserId { get; set; }
-        public User User
+        public List<User> Users
         { get; set; }
 
         [Required]

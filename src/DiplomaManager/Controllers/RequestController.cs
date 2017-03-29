@@ -70,7 +70,6 @@ namespace DiplomaManager.Controllers
 
         public IActionResult GetStudentNames(string query, NameKindDTO nameKind)
         {
-            if (string.IsNullOrWhiteSpace(query)) return NotFound();
             var names = RequestService.GetStudentNames(query, nameKind);
             return Json(names);
         }

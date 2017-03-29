@@ -17,8 +17,6 @@ namespace DiplomaManager.BLL.DTOs.UserDTOs
         public int LocaleId
         { get; set; }
 
-        public int UserId { get; set; }
-
         public string Name
         { get; set; }
 

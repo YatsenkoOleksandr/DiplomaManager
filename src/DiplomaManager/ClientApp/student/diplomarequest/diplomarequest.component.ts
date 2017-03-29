@@ -13,6 +13,7 @@ import { DiplomaRequestService } from './diplomarequest.service';
 import { Degree } from './degree.model';
 import { RequestFormGroup, Request } from './request.model';
 import { Capacity } from './capacity.model';
+import { PeopleName, NameKind } from '../../shared/peopleName.model';
 
 @Component({
     moduleId: module.id,
@@ -26,6 +27,10 @@ export class DiplomaRequestComponent implements OnInit {
     teachersList: Array<SelectItem>;
     groupsList: Array<SelectItem>;
 
+    firstNames: Array<SelectItem>;
+    lastNames: Array<SelectItem>;
+    patronymics: Array<SelectItem>;
+
     busy: Subscription;
     @ViewChild('teachersSelect') teachersSelect: SelectComponent;
     requestFGroup: FormGroup;
@@ -36,21 +41,11 @@ export class DiplomaRequestComponent implements OnInit {
 
     ngOnInit() {
         this.busy = this.dataService.getDegrees().subscribe((data) => {
-            this.degrees = new Array<SelectItem>(data.length);
-            let index = 0;
-            for (let degree of data) {
-                this.degrees[index] = new SelectItem(degree.id, degree.name);
-                index++;
-            }
+            this.setItemsToSelectList(data, "degrees");
         });
 
         this.busy = this.dataService.getDevelopmentAreas().subscribe((data) => {
-            this.dAreasList = new Array<SelectItem>(data.length);
-            let index = 0;
-            for (let da of data) {
-                this.dAreasList[index] = new SelectItem(da.id, da.name);
-                index++;
-            }
+            this.setItemsToSelectList(data, "dAreasList");
         });
 
         this.requestFGroup = new FormGroup({
@@ -67,6 +62,10 @@ export class DiplomaRequestComponent implements OnInit {
                 email: new FormControl('', [Validators.required, CustomValidators.email])
             })
         });
+
+        this.firstNameSearchChanged("");
+        this.lastNameSearchChanged("");
+        this.patronymicSearchChanged("");
     }
 
     dasSelected(event) {
@@ -77,12 +76,7 @@ export class DiplomaRequestComponent implements OnInit {
                     this.teachersSelect.remove(activeItem);
                 }
             }
-            this.teachersList = new Array<SelectItem>(data.length);
-            let index = 0;
-            for (let teacher of data) {
-                this.teachersList[index] = new SelectItem(teacher.id, teacher.toString());
-                index++;
-            }
+            this.setItemsToSelectList(data, "teachersList");
         });
     }
 
@@ -97,13 +91,25 @@ export class DiplomaRequestComponent implements OnInit {
         }
 
         this.busy = this.dataService.getGroups(degreeid).subscribe((data) => {
-            let groupsList = new Array<SelectItem>(data.length);
-            let index = 0;
-            for (let group of data) {
-                groupsList[index] = new SelectItem(group.id, group.name);
-                index++;
-            }
-            this.groupsList = groupsList;
+            this.setItemsToSelectList(data, "degrees");
+        });
+    }
+
+    firstNameSearchChanged(typedText) {
+        this.busy = this.dataService.getStudentNames(typedText, NameKind.FirstName).subscribe((data) => {
+            this.setItemsToSelectList(data, "firstNames");
+        });
+    }
+
+    lastNameSearchChanged(typedText) {
+        this.busy = this.dataService.getStudentNames(typedText, NameKind.LastName).subscribe((data) => {
+            this.setItemsToSelectList(data, "lastNames");
+        });
+    }
+
+    patronymicSearchChanged(typedText) {
+        this.busy = this.dataService.getStudentNames(typedText, NameKind.Patronymic).subscribe((data) => {
+            this.setItemsToSelectList(data, "patronymics");
         });
     }
 
@@ -118,6 +124,15 @@ export class DiplomaRequestComponent implements OnInit {
                     console.error(data.errorMessage);
                 }
             });
+        }
+    }
+
+    private setItemsToSelectList<T>(data: Array<T>, selectListName: string) {
+        this[selectListName] = new Array<SelectItem>(data.length);
+        let index = 0;
+        for (let name of data) {
+            this[selectListName][index] = new SelectItem(name["id"], name["name"]);
+            index++;
         }
     }
 }

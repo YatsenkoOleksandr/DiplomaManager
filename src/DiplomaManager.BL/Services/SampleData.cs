@@ -42,16 +42,25 @@ namespace DiplomaManager.BLL.Services
                     uow.Save();
                 }
 
+                var admin = new Admin
+                {
+                    Login = "admin",
+                    Password = "admin",
+                    Email = "admin@mail.ru",
+                    StatusCreationDate = DateTime.Now
+                };
+
                 //Add Admin User
                 if (uow.Admins.IsEmpty())
                 {
-                    uow.Admins.Add(new Admin
+                    admin = new Admin
                     {
                         Login = "admin",
                         Password = "admin",
                         Email = "admin@mail.ru",
                         StatusCreationDate = DateTime.Now
-                    });
+                    };
+                    uow.Admins.Add(admin);
 
                     uow.Save();
 
@@ -59,24 +68,17 @@ namespace DiplomaManager.BLL.Services
                     {
                         CreationDate = DateTime.Now,
                         LocaleId = 193,
-                        NameKind = NameKind.FirstName,
-                        Name = "Андрей",
-                        UserId = 1
-                    });
-                    uow.PeopleNames.Add(new PeopleName
-                    {
-                        CreationDate = DateTime.Now,
-                        LocaleId = 193,
                         NameKind = NameKind.LastName,
                         Name = "Телешев",
-                        UserId = 1
+                        Users = new List<User> { admin }
                     });
                     uow.PeopleNames.Add(new PeopleName
                     {
                         CreationDate = DateTime.Now,
                         LocaleId = 193,
                         NameKind = NameKind.Patronymic,
-                        Name = "Максимович", UserId = 1
+                        Name = "Максимович",
+                        Users = new List<User> { admin }
                     });
 
                     uow.Save();
@@ -107,7 +109,7 @@ namespace DiplomaManager.BLL.Services
                 //Add Teachers
                 if (uow.Teachers.IsEmpty(new FilterExpression<Teacher>(t => !(t is Admin))))
                 {
-                    uow.Teachers.Add(new Teacher
+                    var teacher = new Teacher
                     {
                         Login = "t1",
                         Password = "123",
@@ -115,28 +117,62 @@ namespace DiplomaManager.BLL.Services
                         PositionId = 2,
                         StatusCreationDate = DateTime.Now,
                         DevelopmentAreas = uow.DevelopmentAreas.Get(new FilterExpression<DevelopmentArea>(da => da.Id == 1)).ToList()
-                    });
+                    };
+                    uow.Teachers.Add(teacher);
 
                     uow.Save();
 
                     uow.PeopleNames.Add(
-                        new PeopleName { CreationDate = DateTime.Now, LocaleId = 193, Name = "Андрей", NameKind = NameKind.FirstName, UserId = 2 });
-                    uow.PeopleNames.Add(
-                        new PeopleName { CreationDate = DateTime.Now, LocaleId = 53, Name = "Andrew", NameKind = NameKind.FirstName, UserId = 2 });
+                        new PeopleName
+                        {
+                            CreationDate = DateTime.Now,
+                            LocaleId = 193,
+                            Name = "Андрей",
+                            NameKind = NameKind.FirstName,
+                            Users = new List<User> { teacher, admin }
+                        });
 
                     uow.PeopleNames.Add(
-                        new PeopleName { CreationDate = DateTime.Now, LocaleId = 193, Name = "Рыбкин", NameKind = NameKind.LastName, UserId = 2 });
+                        new PeopleName
+                        {
+                            CreationDate = DateTime.Now,
+                            LocaleId = 53,
+                            Name = "Andrew",
+                            NameKind = NameKind.FirstName,
+                            Users = new List<User> { teacher, admin }
+                        });
                     uow.PeopleNames.Add(
-                        new PeopleName { CreationDate = DateTime.Now, LocaleId = 53, Name = "Rybkin", NameKind = NameKind.LastName, UserId = 2 });
+                        new PeopleName
+                        {
+                            CreationDate = DateTime.Now,
+                            LocaleId = 193,
+                            Name = "Рыбкин",
+                            NameKind = NameKind.LastName,
+                            Users = new List<User> { teacher }
+                        });
 
                     uow.PeopleNames.Add(
-                        new PeopleName { CreationDate = DateTime.Now, LocaleId = 193, Name = "Александрович", NameKind = NameKind.Patronymic, UserId = 2 });
+                        new PeopleName
+                        {
+                            CreationDate = DateTime.Now,
+                            LocaleId = 53,
+                            Name = "Rybkin",
+                            NameKind = NameKind.LastName,
+                            Users = new List<User> { teacher }
+                        });
                     uow.PeopleNames.Add(
-                        new PeopleName { CreationDate = DateTime.Now, LocaleId = 53, Name = "Aleksandrovich", NameKind = NameKind.Patronymic, UserId = 2 });
+                        new PeopleName
+                        {
+                            CreationDate = DateTime.Now,
+                            LocaleId = 193,
+                            Name = "Александрович",
+                            NameKind = NameKind.Patronymic,
+                            Users = new List<User> { teacher }
+                        });
 
                     uow.Save();
 
-                    uow.Teachers.Add(new Teacher
+                    var luchshev = new Teacher
                     {
                         Login = "t2",
                         Password = "123",
@@ -144,16 +180,38 @@ namespace DiplomaManager.BLL.Services
                         PositionId = 1,
                         StatusCreationDate = DateTime.Now,
                         DevelopmentAreas = uow.DevelopmentAreas.Get(new FilterExpression<DevelopmentArea>(da => da.Id == 1 || da.Id == 2)).ToList()
-                    });
+                    };
+                    uow.Teachers.Add(luchshev);
 
                     uow.Save();
 
                     uow.PeopleNames.Add(
-                        new PeopleName { CreationDate = DateTime.Now, LocaleId = 193, Name = "Павел", NameKind = NameKind.FirstName, UserId = 3 });
+                        new PeopleName
+                        {
+                            CreationDate = DateTime.Now,
+                            LocaleId = 193,
+                            Name = "Павел",
+                            NameKind = NameKind.FirstName,
+                            Users = new List<User> { luchshev }
+                        });
                     uow.PeopleNames.Add(
-                        new PeopleName { CreationDate = DateTime.Now, LocaleId = 193, Name = "Лучшев", NameKind = NameKind.LastName, UserId = 3 });
+                        new PeopleName
+                        {
+                            CreationDate = DateTime.Now,
+                            LocaleId = 193,
+                            Name = "Лучшев",
+                            NameKind = NameKind.LastName,
+                            Users = new List<User> { luchshev, teacher }
+                        });
                     uow.PeopleNames.Add(
-                        new PeopleName { CreationDate = DateTime.Now, LocaleId = 193, Name = "Александрович", NameKind = NameKind.Patronymic, UserId = 3 });
+                        new PeopleName
+                        {
+                            CreationDate = DateTime.Now,
+                            LocaleId = 53,
+                            Name = "Aleksandrovich",
+                            NameKind = NameKind.Patronymic,
+                            Users = new List<User> { teacher, luchshev }
+                        });
 
                     uow.Save();
                 }

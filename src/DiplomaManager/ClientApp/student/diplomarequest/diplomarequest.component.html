@@ -68,10 +68,12 @@
                 </div>
                 <div class="form-group">
                     <label for="lastName">Фамилия</label>
-                    <input type="text"
-                           id="lastName"
-                           class="form-control" placeholder="Введите фамилию"
-                           formControlName="lastName"/>
+                    <ng-select id="lastName"
+                               [items]="lastNames"
+                               placeholder="Введите фамилию"
+                               (typed)="lastNameSearchChanged($event)"
+                               formControlName="lastName">
+                    </ng-select>
                     <div class="alert alert-danger"
                          *ngIf="requestFGroup.get('studentFGroup.lastName').hasError('required')
                             && requestFGroup.get('studentFGroup.lastName').touched">
@@ -85,10 +87,12 @@
                 </div>
                 <div class="form-group">
                     <label for="firstName">Имя</label>
-                    <input type="text"
-                           id="firstName"
-                           class="form-control" placeholder="Введите имя"
-                           formControlName="firstName"/>
+                    <ng-select id="firstName"
+                               [items]="firstNames"
+                               placeholder="Введите имя"
+                               (typed)="firstNameSearchChanged($event)"
+                               formControlName="firstName">
+                    </ng-select>
                     <div class="alert alert-danger"
                          *ngIf="requestFGroup.get('studentFGroup.firstName').hasError('required')
                             && requestFGroup.get('studentFGroup.firstName').touched">
@@ -102,10 +106,16 @@
                 </div>
                 <div class="form-group">
                     <label for="patronymic">Отчество</label>
-                    <input type="text"
-                           id="patronymic"
-                           class="form-control" placeholder="Введите отчество"
-                           formControlName="patronymic"/>
+                    <!--<input type="text"
+                               id="patronymic"
+                               class="form-control" placeholder="Введите отчество"
+                               formControlName="patronymic"/>-->
+                    <ng-select id="patronymic"
+                               [items]="patronymics"
+                               placeholder="Введите отчество"
+                               (typed)="patronymicSearchChanged($event)"
+                               formControlName="patronymic">
+                    </ng-select>
                     <div class="alert alert-danger"
                          *ngIf="requestFGroup.get('studentFGroup.patronymic').hasError('required')
                             && requestFGroup.get('studentFGroup.patronymic').touched">

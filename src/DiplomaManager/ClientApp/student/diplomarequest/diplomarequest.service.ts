@@ -1,5 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, URLSearchParams } from '@angular/http';
 import { Response, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable'
 import 'rxjs/add/operator/map';
@@ -9,7 +9,8 @@ import { Degree } from './degree.model';
 import { DevelopmentArea } from './developmentArea.model';
 import { Request } from './request.model';
 import { Capacity } from './capacity.model';
-import { Group } from '../../shared/group.model'
+import { Group } from '../../shared/group.model';
+import { PeopleName, NameKind } from '../../shared/peopleName.model';
 
 @Injectable()
 export class DiplomaRequestService {
@@ -32,29 +33,38 @@ export class DiplomaRequestService {
 
     getDegrees(): Observable<Degree[]> {
         return this.http.get('/Request/GetDegrees').map((resp: Response) => {
-            let degreesList = resp.json();
-            return degreesList;
+            return resp.json();
         });
     }
 
     getDevelopmentAreas(): Observable<DevelopmentArea[]> {
         return this.http.get('/Request/GetDevelopmentAreas').map((resp: Response) => {
-            let developmentAreaList = resp.json();
-            return developmentAreaList;
+            return resp.json();
         });
     }
 
     getCapacity(degreeId: number, teacherId: number): Observable<Capacity> {
         return this.http.get(`/Request/GetCapacity/?degreeId=${degreeId}&teacherId=${teacherId}`).map((resp: Response) => {
-            let capacity = resp.json();
-            return capacity;
+            return resp.json();
         });
     }
 
     getGroups(degreeId: number): Observable<Group[]> {
         return this.http.get(`/Request/GetGroups/?degreeId=${degreeId}`).map((resp: Response) => {
-            let groups = resp.json();
-            return groups;
+            return resp.json();
+        });
+    }
+
+    getStudentNames(query: string, nameKind: NameKind, maxItems: number = 10):Observable<PeopleName[]> {
+        let params = new URLSearchParams();
+        params.set("query", query);
+        params.set("nameKind", nameKind.toString());
+        params.set("maxItems", maxItems.toString());
+
+        return this.http.get('/Request/GetStudentNames', {
+            search: params
+        }).map((resp: Response) => {
+            return resp.json();
         });
     }
 

@@ -11,6 +11,7 @@ using DiplomaManager.BLL.DTOs.UserDTOs;
 using DiplomaManager.BLL.Interfaces;
 using DiplomaManager.DAL.Entities.ProjectEntities;
 using DiplomaManager.DAL.Entities.RequestEntities;
+using DiplomaManager.DAL.Entities.SharedEntities;
 using DiplomaManager.DAL.Entities.StudentEntities;
 using DiplomaManager.DAL.Entities.TeacherEntities;
 using DiplomaManager.DAL.Entities.UserEnitites;
@@ -179,22 +180,29 @@ namespace DiplomaManager.BLL.Services
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<NameKindDTO, NameKind>();
-                cfg.CreateMap<PeopleName, PeopleNameDTO>();
             });
             var nameKind = Mapper.Map<NameKindDTO, NameKind>(nameKindDto);
 
             var filters = new[]
             {
                 new FilterExpression<PeopleName>(n => n.NameKind == nameKind),
-                new FilterExpression<PeopleName>(n => n.Name.Contains(query)),
+                new FilterExpression<PeopleName>(n => string.IsNullOrEmpty(query) || n.Name.Contains(query)),
                 new FilterExpression<PeopleName>(n => n.Locale.Name == LocaleConfiguration.DefaultLocaleName)
             };
+
+            var nameConfiguration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<NameKind, NameKindDTO>();
+                cfg.CreateMap<PeopleName, PeopleNameDTO>();
+            });
+            var nameMapper = nameConfiguration.CreateMapper();
+
             var names = Database.PeopleNames.Get(filters, 
                 new[] { new IncludeExpression<PeopleName>(n => n.Locale) },
                 pageSize: maxItems,
                 sortExpressions: new SortExpression<PeopleName, string>(n => n.Name, ListSortDirection.Ascending));
 
-            var namesDto = Mapper.Map<IEnumerable<PeopleName>, IEnumerable<PeopleNameDTO>>(names);
+            var namesDto = nameMapper.Map<IEnumerable<PeopleName>, IEnumerable<PeopleNameDTO>>(names);
             return namesDto;
         }
 
