@@ -3,14 +3,13 @@ using AutoMapper;
 using DiplomaManager.Areas.Admin.ViewModels;
 using DiplomaManager.BLL.DTOs.RequestDTOs;
 using DiplomaManager.BLL.Interfaces;
-using DiplomaManager.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DiplomaManager.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [Authorize(Roles = "Администраторы")]
     public class DevelopmentAreaController : Controller
     {
         private readonly IRequestService _requestService;

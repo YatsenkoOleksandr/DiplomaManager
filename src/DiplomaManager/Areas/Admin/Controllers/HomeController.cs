@@ -4,14 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace DiplomaManager.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [Authorize(Roles = "Администраторы")]
     public class HomeController : Controller
     {
-
-        public HomeController()
-        {
-        }
-
         public IActionResult Index()
         {
             return View();

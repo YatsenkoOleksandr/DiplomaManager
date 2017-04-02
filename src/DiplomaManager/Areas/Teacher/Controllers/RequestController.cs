@@ -6,11 +6,13 @@ using DiplomaManager.BLL.Interfaces;
 using DiplomaManager.BLL.Services;
 using DiplomaManager.Requests;
 using DiplomaManager.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DiplomaManager.Areas.Teacher.Controllers
 {
     [Area("Teacher")]
+    [Authorize(Roles = "Администраторы, Преподаватели")]
     public class RequestController : Controller
     {
         private ITeacherService TeacherService { get; }

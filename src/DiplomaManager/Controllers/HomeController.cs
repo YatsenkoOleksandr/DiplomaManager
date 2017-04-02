@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DiplomaManager.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DiplomaManager.Controllers
 {
