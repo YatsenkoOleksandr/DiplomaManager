@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace DiplomaManager.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Администраторы")]
     public class DevelopmentAreaController : Controller
     {
         private readonly IRequestService _requestService;

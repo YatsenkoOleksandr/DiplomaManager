@@ -3,6 +3,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using DiplomaManager.BLL.Services;
 using DiplomaManager.Common.Autofac;
+using DiplomaManager.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -32,12 +33,18 @@ namespace DiplomaManager
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc()
+            services.AddMvc(ConfigureMvcOptions)
                 .AddJsonOptions(ConfigureJsonOptions);
 
             ApplicationContainer = services.AddAutofac(_configuration);
            
             return new AutofacServiceProvider(ApplicationContainer);
+        }
+
+        private static void ConfigureMvcOptions(MvcOptions options)
+        {
+            options.Filters.Add(new AuthorizeAreaFilterAttribute("Admin", new[] { "Администраторы" }));
+            options.Filters.Add(new AuthorizeAreaFilterAttribute("Teacher", new[] { "Администраторы", "Преподаватели" }));
         }
 
         private static void ConfigureJsonOptions(MvcJsonOptions options)
