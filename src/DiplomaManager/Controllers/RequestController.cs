@@ -22,7 +22,7 @@ namespace DiplomaManager.Controllers
         {
             var teachers = RequestService.GetTeachers(daId, "ru");
             var teachersFio = teachers.Select(t =>
-                new TeacherViewModel
+                new TeacherInfoViewModel
                 {
                     Id = t.Id,
                     FirstName = t.GetFirstName(193),
@@ -79,7 +79,7 @@ namespace DiplomaManager.Controllers
         {
             var student = request.Student;
             var studentDto = new StudentDTO(
-                student.FirstName, student.LastName, student.Patronymic, 193, student.Email, DateTime.Now);
+                student.FirstNameId, student.LastNameId, student.PatronymicId, 193, student.Email, DateTime.Now, student.GroupId);
             try
             {
                 RequestService.CreateDiplomaRequest(studentDto, request.DaId, request.TeacherId, 193, request.Title);

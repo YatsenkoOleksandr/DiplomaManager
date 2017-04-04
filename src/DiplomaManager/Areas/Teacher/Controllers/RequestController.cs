@@ -31,7 +31,7 @@ namespace DiplomaManager.Areas.Teacher.Controllers
             var projectVms = projects.Select(p => new RequestTeacherViewModel
             {
                 Id = p.Id,
-                Student = new StudentViewModel
+                Student = new StudentInfoViewModel
                 {
                     Id = p.StudentId,
                     FirstName = p.Student.GetFirstName(193),

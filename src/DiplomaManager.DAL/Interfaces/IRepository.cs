@@ -32,6 +32,8 @@ namespace DiplomaManager.DAL.Interfaces
 
         void Add(TEntity entity);
 
+        void Attach(TEntity entity);
+
         void Update(TEntity entity);
 
         void Remove(TEntity entity);

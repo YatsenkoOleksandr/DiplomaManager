@@ -4,7 +4,7 @@ import { Response, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable'
 import 'rxjs/add/operator/map';
 
-import { Teacher } from '../../shared/teacher.model';
+import { TeacherInfo } from '../../shared/teacher.model';
 import { Degree } from './degree.model';
 import { DevelopmentArea } from './developmentArea.model';
 import { Request } from './request.model';
@@ -17,14 +17,14 @@ export class DiplomaRequestService {
 
     constructor(private http: Http) { }
 
-    getTeachers(daId: number): Observable<Teacher[]> {
+    getTeachers(daId: number): Observable<TeacherInfo[]> {
         return this.http.get('/Request/GetTeachers/?daId=' + daId).map((resp: Response) => {
             let teacherList = resp.json();
-            let teachers: Teacher[] = [];
+            let teachers: TeacherInfo[] = [];
             for (let index in teacherList) {
                 let teacher = teacherList[index];
                 teachers.push(
-                    new Teacher(teacher.id, teacher.firstName, teacher.lastName, teacher.patronymic, teacher.positionName, teacher.email)
+                    new TeacherInfo(teacher.id, teacher.firstName, teacher.lastName, teacher.patronymic, teacher.positionName, teacher.email)
                 );
             }
             return teachers;

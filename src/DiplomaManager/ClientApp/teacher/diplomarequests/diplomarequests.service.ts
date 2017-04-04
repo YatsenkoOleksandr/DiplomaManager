@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
 import { RequestTeacher } from './requestTeacherResponse.model';
-import { Student } from '../../shared/student.model';
+import { StudentInfo } from '../../shared/student.model';
 import { ProjectTitle } from './projectTitle.model';
 import { GetProjectsRequest } from './getProjectsRequest.model';
 import { IPagedResponse } from '../../shared/pagedResponse.model';
@@ -22,7 +22,7 @@ export class TeacherService {
             .map((resp: Response) => {
                 let requestsList = resp.json();
                 for (let request of requestsList.data) {
-                    request.student = new Student(request.student.id,
+                    request.student = new StudentInfo(request.student.id,
                         request.student.firstName,
                         request.student.lastName,
                         request.student.patronymic,

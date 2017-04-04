@@ -61,18 +61,18 @@ namespace DiplomaManager.DAL.EF
                         });
 
             modelBuilder.Entity<Defense>()
-                .HasRequired(d => d.Student)
-                .WithOptional(s => s.Defense);
+                        .HasRequired(d => d.Student)
+                        .WithOptional(s => s.Defense);
 
             modelBuilder.Entity<User>()
-            .HasMany(u => u.PeopleNames)
-            .WithMany(n => n.Users)
-            .Map(i =>
-            {
-                i.MapLeftKey("PeopleNameId");
-                i.MapRightKey("UserId");
-                i.ToTable("UserNames");
-            });
+                        .HasMany(u => u.PeopleNames)
+                        .WithMany(n => n.Users)
+                        .Map(i =>
+                        {
+                            i.MapLeftKey("UserId");
+                            i.MapRightKey("PeopleNameId");
+                            i.ToTable("UserNames");
+                        });
         }
     }
 }

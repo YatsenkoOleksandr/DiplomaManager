@@ -4,6 +4,19 @@
     {
         public int Id { get; set; }
 
+        public int FirstNameId { get; set; }
+
+        public int LastNameId { get; set; }
+
+        public int PatronymicId { get; set; }
+
+        public string Email { get; set; }
+    }
+
+    public class UserInfoViewModel
+    {
+        public int Id { get; set; }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }

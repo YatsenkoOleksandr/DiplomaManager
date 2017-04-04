@@ -40,6 +40,17 @@ namespace DiplomaManager.BLL.DTOs.UserDTOs
             Email = email;
         }
 
+        public UserDTO(int firstNameId, int lastNameId, int patronymicId, int localeId, string email, DateTime creationDate)
+        {
+            PeopleNames = new List<PeopleNameDTO>
+            {
+                new PeopleNameDTO { Id = firstNameId, LocaleId = localeId, CreationDate = creationDate, NameKind = NameKindDTO.FirstName },
+                new PeopleNameDTO { Id = lastNameId, LocaleId = localeId, CreationDate = creationDate, NameKind = NameKindDTO.LastName },
+                new PeopleNameDTO { Id = patronymicId, LocaleId = localeId, CreationDate = creationDate, NameKind = NameKindDTO.Patronymic },
+            };
+            Email = email;
+        }
+
         public string GetFirstName(int localeId)
         {
             var nameDTO = PeopleNames.FirstOrDefault(f => f.LocaleId == localeId && f.NameKind == NameKindDTO.FirstName);

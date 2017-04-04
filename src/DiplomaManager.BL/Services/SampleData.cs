@@ -72,14 +72,6 @@ namespace DiplomaManager.BLL.Services
                         Name = "Телешев",
                         Users = new List<User> { admin }
                     });
-                    uow.PeopleNames.Add(new PeopleName
-                    {
-                        CreationDate = DateTime.Now,
-                        LocaleId = 193,
-                        NameKind = NameKind.Patronymic,
-                        Name = "Максимович",
-                        Users = new List<User> { admin }
-                    });
 
                     uow.Save();
                 }
@@ -160,15 +152,6 @@ namespace DiplomaManager.BLL.Services
                             NameKind = NameKind.LastName,
                             Users = new List<User> { teacher }
                         });
-                    uow.PeopleNames.Add(
-                        new PeopleName
-                        {
-                            CreationDate = DateTime.Now,
-                            LocaleId = 193,
-                            Name = "Александрович",
-                            NameKind = NameKind.Patronymic,
-                            Users = new List<User> { teacher }
-                        });
 
                     uow.Save();
 
@@ -201,7 +184,7 @@ namespace DiplomaManager.BLL.Services
                             LocaleId = 193,
                             Name = "Лучшев",
                             NameKind = NameKind.LastName,
-                            Users = new List<User> { luchshev, teacher }
+                            Users = new List<User> { luchshev }
                         });
                     uow.PeopleNames.Add(
                         new PeopleName
@@ -210,7 +193,16 @@ namespace DiplomaManager.BLL.Services
                             LocaleId = 53,
                             Name = "Aleksandrovich",
                             NameKind = NameKind.Patronymic,
-                            Users = new List<User> { teacher, luchshev }
+                            Users = new List<User> { admin, teacher, luchshev }
+                        });
+                    uow.PeopleNames.Add(
+                        new PeopleName
+                        {
+                            CreationDate = DateTime.Now,
+                            LocaleId = 193,
+                            Name = "Александрович",
+                            NameKind = NameKind.Patronymic,
+                            Users = new List<User> { admin, teacher, luchshev }
                         });
 
                     uow.Save();

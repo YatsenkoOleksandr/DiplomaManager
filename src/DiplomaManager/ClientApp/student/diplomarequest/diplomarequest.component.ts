@@ -14,6 +14,7 @@ import { Degree } from './degree.model';
 import { RequestFormGroup, Request } from './request.model';
 import { Capacity } from './capacity.model';
 import { PeopleName, NameKind } from '../../shared/peopleName.model';
+import { Student } from '../../shared/student.model';
 
 @Component({
     moduleId: module.id,
@@ -56,9 +57,9 @@ export class DiplomaRequestComponent implements OnInit {
 
             studentFGroup: new FormGroup({
                 groups: new FormControl('', Validators.required),
-                firstName: new FormControl('', [Validators.required, Validators.minLength(3)]),
-                lastName: new FormControl('', [Validators.required, Validators.minLength(3)]),
-                patronymic: new FormControl('', [Validators.required, Validators.minLength(3)]),
+                firstNames: new FormControl('', Validators.required),
+                lastNames: new FormControl('', Validators.required),
+                patronymics: new FormControl('', Validators.required),
                 email: new FormControl('', [Validators.required, CustomValidators.email])
             })
         });
@@ -91,7 +92,7 @@ export class DiplomaRequestComponent implements OnInit {
         }
 
         this.busy = this.dataService.getGroups(degreeid).subscribe((data) => {
-            this.setItemsToSelectList(data, "degrees");
+            this.setItemsToSelectList(data, "groupsList");
         });
     }
 
@@ -115,7 +116,13 @@ export class DiplomaRequestComponent implements OnInit {
 
     onSubmit({ value, valid }: { value: RequestFormGroup, valid: boolean }) {
         if (value && valid) {
-            let request = new Request(value.das[0].id, value.teachers[0].id, value.studentFGroup, value.title);
+            let student = new Student(value.studentFGroup.id,
+                value.studentFGroup.firstNames[0].id,
+                value.studentFGroup.lastNames[0].id,
+                value.studentFGroup.patronymics[0].id,
+                value.studentFGroup.email,
+                value.studentFGroup.groups[0].id);
+            let request = new Request(value.das[0].id, value.teachers[0].id, student, value.title);
             this.busy = this.dataService.sendRequest(request).subscribe(data => {
                 if (data.message) {
                     this.toastrService.success(data.message + ' =)');
@@ -129,10 +136,12 @@ export class DiplomaRequestComponent implements OnInit {
 
     private setItemsToSelectList<T>(data: Array<T>, selectListName: string) {
         this[selectListName] = new Array<SelectItem>(data.length);
-        let index = 0;
-        for (let name of data) {
-            this[selectListName][index] = new SelectItem(name["id"], name["name"]);
-            index++;
+        for (let index = 0; index < data.length; index++) {
+            let item = data[index];
+            let name = item["name"];
+            if (!name)
+                name = item.toString();
+            this[selectListName][index] = new SelectItem(item["id"], name);
         }
     }
 }

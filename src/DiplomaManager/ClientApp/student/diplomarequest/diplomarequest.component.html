@@ -72,17 +72,12 @@
                                [items]="lastNames"
                                placeholder="Введите фамилию"
                                (typed)="lastNameSearchChanged($event)"
-                               formControlName="lastName">
+                               formControlName="lastNames">
                     </ng-select>
                     <div class="alert alert-danger"
-                         *ngIf="requestFGroup.get('studentFGroup.lastName').hasError('required')
-                            && requestFGroup.get('studentFGroup.lastName').touched">
+                         *ngIf="requestFGroup.get('studentFGroup.lastNames').hasError('required')
+                            && requestFGroup.get('studentFGroup.lastNames').touched">
                         Не указано имя
-                    </div>
-                    <div class="alert alert-danger"
-                         *ngIf="requestFGroup.get('studentFGroup.lastName').hasError('minlength')
-                            && requestFGroup.get('studentFGroup.lastName').touched">
-                        Мимимум 3 символа
                     </div>
                 </div>
                 <div class="form-group">
@@ -91,40 +86,26 @@
                                [items]="firstNames"
                                placeholder="Введите имя"
                                (typed)="firstNameSearchChanged($event)"
-                               formControlName="firstName">
+                               formControlName="firstNames">
                     </ng-select>
                     <div class="alert alert-danger"
-                         *ngIf="requestFGroup.get('studentFGroup.firstName').hasError('required')
-                            && requestFGroup.get('studentFGroup.firstName').touched">
+                         *ngIf="requestFGroup.get('studentFGroup.firstNames').hasError('required')
+                            && requestFGroup.get('studentFGroup.firstNames').touched">
                         Не указана фамилия
-                    </div>
-                    <div class="alert alert-danger"
-                         *ngIf="requestFGroup.get('studentFGroup.firstName').hasError('minlength')
-                            && requestFGroup.get('studentFGroup.firstName').touched">
-                        Мимимум 3 символа
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="patronymic">Отчество</label>
-                    <!--<input type="text"
-                               id="patronymic"
-                               class="form-control" placeholder="Введите отчество"
-                               formControlName="patronymic"/>-->
                     <ng-select id="patronymic"
                                [items]="patronymics"
                                placeholder="Введите отчество"
                                (typed)="patronymicSearchChanged($event)"
-                               formControlName="patronymic">
+                               formControlName="patronymics">
                     </ng-select>
                     <div class="alert alert-danger"
-                         *ngIf="requestFGroup.get('studentFGroup.patronymic').hasError('required')
-                            && requestFGroup.get('studentFGroup.patronymic').touched">
+                         *ngIf="requestFGroup.get('studentFGroup.patronymics').hasError('required')
+                            && requestFGroup.get('studentFGroup.patronymics').touched">
                         Не указано отчество
-                    </div>
-                    <div class="alert alert-danger"
-                         *ngIf="requestFGroup.get('studentFGroup.patronymic').hasError('minlength')
-                            && requestFGroup.get('studentFGroup.patronymic').touched">
-                        Мимимум 3 символа
                     </div>
                 </div>
                 <div class="form-group">

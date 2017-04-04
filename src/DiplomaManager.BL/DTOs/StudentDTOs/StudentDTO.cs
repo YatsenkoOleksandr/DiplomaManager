@@ -14,5 +14,12 @@ namespace DiplomaManager.BLL.DTOs.StudentDTOs
             DateTime creadionDate) 
             : base(firstName, lastName, patronymic, localeId, email, creadionDate)
         { }
+
+        public StudentDTO(int firstNameId, int lastNameId, int patronymicId, int localeId, string email,
+            DateTime creadionDate, int groupId)
+            : base(firstNameId, lastNameId, patronymicId, localeId, email, creadionDate)
+        {
+            GroupId = groupId;
+        }
     }
 }

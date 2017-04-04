@@ -125,6 +125,11 @@ namespace DiplomaManager.DAL.Repositories
             _dbSet.Add(entity);
         }
 
+        public virtual void Attach(TEntity entity)
+        {
+            _dbSet.Attach(entity);
+        }
+
         public virtual void Remove(TEntity entityToDelete)
         {
             if (_db.Entry(entityToDelete).State == EntityState.Detached)

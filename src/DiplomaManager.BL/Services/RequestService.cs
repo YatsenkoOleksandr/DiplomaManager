@@ -83,13 +83,14 @@ namespace DiplomaManager.BLL.Services
                 teachers = Database.Teachers.Get(filterExpressions.ToArray(), includePaths.ToArray()).ToList();
 
                 Database.PeopleNames.Get(
-                    new FilterExpression<PeopleName>(f => f.Locale.Name == cultureName), new[] { new IncludeExpression<PeopleName>(p => p.Locale) });
+                    new FilterExpression<PeopleName>(f => f.Locale.Name == cultureName), 
+                    new[] { new IncludeExpression<PeopleName>(p => p.Locale), new IncludeExpression<PeopleName>(p => p.Users) });
             }
             else
             {
                 includePaths.AddRange(new[] 
                 {
-                    new IncludeExpression<Teacher>(p => p.PeopleNames),
+                    new IncludeExpression<Teacher>(p => p.PeopleNames)
                 });
                 teachers = Database.Teachers.Get(filterExpressions.ToArray(), includePaths.ToArray()).ToList();
             }
@@ -97,7 +98,6 @@ namespace DiplomaManager.BLL.Services
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<PeopleName, PeopleNameDTO>();
-
                 cfg.CreateMap<Teacher, TeacherDTO>();
             });
 
@@ -211,13 +211,26 @@ namespace DiplomaManager.BLL.Services
             var studentRes = Database.Students.Get(new FilterExpression<Student>(s => s.Email == studentDto.Email)).FirstOrDefault();
             if (studentRes == null)
             {
-                var student = Mapper.Map<StudentDTO, Student>(studentDto);
+                var student = new Student()
+                {
+                    StatusCreationDate = DateTime.Now,
+                    GroupId = studentDto.GroupId,
+                    Email = studentDto.Email,
+                    Login = studentDto.Email,
+                    Password = CreateRandomPassword(8),
+                    Status = studentDto.Status,
+                    PeopleNames = new List<PeopleName>()
+                };
 
-                student.StatusCreationDate = DateTime.Now;
-                student.GroupId = 1;
-                student.Login =
-                    $"{studentDto.GetLastName(localeId)}{studentDto.GetFirstName(localeId).Substring(0, 1).ToUpper()}{studentDto.GetPatronymic(localeId).Substring(0, 1).ToUpper()}";
-                student.Password = CreateRandomPassword(8);
+                if (studentDto.PeopleNames != null)
+                {
+                    foreach (var peopleName in studentDto.PeopleNames)
+                    {
+                        var pn = new PeopleName { Id = peopleName.Id };
+                        student.PeopleNames.Add(pn);
+                        Database.PeopleNames.Attach(pn);
+                    }
+                }
 
                 Database.Students.Add(student);
                 studentRes = student;
@@ -226,8 +239,7 @@ namespace DiplomaManager.BLL.Services
             {
                 if (string.IsNullOrWhiteSpace(studentRes.Login))
                 {
-                    studentRes.Login =
-                        $"{studentDto.GetLastName(localeId)}{studentDto.GetFirstName(localeId).Substring(0, 1).ToUpper()}{studentDto.GetPatronymic(localeId).Substring(0, 1).ToUpper()}";
+                    studentRes.Login = studentDto.Email;
                     Database.Students.Update(studentRes);
                 }
                 if (string.IsNullOrWhiteSpace(studentRes.Password))

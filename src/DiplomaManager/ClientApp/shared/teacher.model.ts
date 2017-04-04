@@ -1,6 +1,6 @@
-﻿import { User } from '../shared/user.model';
+﻿import { UserInfo } from '../shared/user.model';
 
-export class Teacher extends User {
+export class TeacherInfo extends UserInfo {
     positionName: string;
 
     constructor(id: number, firstName: string, lastName: string, patronymic: string, positionName: string, email: string) {

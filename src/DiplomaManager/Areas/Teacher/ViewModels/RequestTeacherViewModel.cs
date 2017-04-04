@@ -11,7 +11,7 @@ namespace DiplomaManager.Areas.Teacher.ViewModels
 
         public List<ProjectTitleDTO> ProjectTitles { get; set; }
 
-        public UserViewModel Student { get; set; }
+        public UserInfoViewModel Student { get; set; }
 
         public DateTime CreationDate { get; set; }
 
