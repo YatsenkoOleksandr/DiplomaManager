@@ -11,6 +11,7 @@ namespace DiplomaManager.BLL.Modules
             builder.RegisterType<RequestService>().As<IRequestService>();
             builder.RegisterType<UserService>().As<IUserService>();
             builder.RegisterType<TeacherService>().As<ITeacherService>();
+            builder.RegisterType<ImportService>().As<IImportService>();
         }
     }
 }
