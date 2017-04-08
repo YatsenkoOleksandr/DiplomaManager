@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using DiplomaManager.BLL.Interfaces;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DiplomaManager.Areas.Admin.Controllers
@@ -26,15 +25,49 @@ namespace DiplomaManager.Areas.Admin.Controllers
             return View();
         }
 
-        public IActionResult GetData()
+        [HttpPost]
+        public IActionResult ImportData(ICollection<IFormFile> files)
         {
-            string sWebRootFolder = HostingEnvironment.WebRootPath;
-            string sFileName = @"list__631pst.xlsx";
+            var filesProcessingInfo = new List<FilesProcessingResult>();
+            FilesProcessingResult.FilesCount = files.Count;
 
-            var fs = new FileStream(Path.Combine(sWebRootFolder, sFileName), FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            ImportService.ImportStudentsInfo(fs);
-
-            return View("Index");
+            var uploads = Path.Combine(HostingEnvironment.WebRootPath, "uploads");
+            foreach (var file in files)
+            {
+                var fileProcessingInfo = new FilesProcessingResult {FileInfo = new FileInfo(file.FileName)};
+                try
+                {
+                    if (file.Length > 0)
+                    {
+                        var fileName = Path.Combine(uploads, file.FileName);
+                        using (var fileStream = new FileStream(fileName, FileMode.Create))
+                        {
+                            file.CopyTo(fileStream);
+                            fileProcessingInfo.RowProcessingResult = ImportService.ImportStudentsInfo(fileStream);
+                        }
+                        fileProcessingInfo.IsValid = true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    fileProcessingInfo.IsValid = false;
+                }
+                finally
+                {
+                    filesProcessingInfo.Add(fileProcessingInfo);
+                }
+            }
+            return View(filesProcessingInfo);
         }
+    }
+
+    public class FilesProcessingResult
+    {
+        public FileInfo FileInfo { get; set; }
+        public RowProcessingResult RowProcessingResult { get; set; }
+
+        public static int FilesCount { get; set; }
+
+        public bool IsValid { get; set; }
     }
 }

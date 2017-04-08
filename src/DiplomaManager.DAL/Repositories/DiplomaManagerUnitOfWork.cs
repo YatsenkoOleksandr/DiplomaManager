@@ -18,6 +18,7 @@ namespace DiplomaManager.DAL.Repositories
         private EFRepository<Locale> _localeRepository;
         private EFRepository<DevelopmentArea> _developmentAreaRepository;
 
+        private EFRepository<User> _userRepository;
         private EFRepository<Admin> _adminRepository;
         private EFRepository<Teacher> _teacherRepository;
         private EFRepository<Student> _studentRepository;
@@ -46,6 +47,8 @@ namespace DiplomaManager.DAL.Repositories
         public IRepository<DevelopmentArea> DevelopmentAreas 
             => _developmentAreaRepository ?? (_developmentAreaRepository = new EFRepository<DevelopmentArea>(_db));
 
+        public IRepository<User> Users
+            => _userRepository ?? (_userRepository = new EFRepository<User>(_db));
         public IRepository<Admin> Admins
             => _adminRepository ?? (_adminRepository = new EFRepository<Admin>(_db));
         public IRepository<Teacher> Teachers

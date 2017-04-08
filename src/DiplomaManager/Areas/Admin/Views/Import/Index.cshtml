@@ -1,8 +1,42 @@
 ﻿@{
-    ViewBag.Title = "Import";
+    ViewBag.Title = "Импорт";
 }
 
-<h2>title</h2>
-<form asp-action="GetData">
-    <button class="btn btn-primary" type="submit">Импортировать</button>
-</form>
+<div class="row">
+    <div class="col-md-6">
+        <h2>Импорт данных</h2>
+        <form method="post" asp-action="ImportData" asp-controller="Import" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>Выберите файл(-ы)</label>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <label class="btn btn-default">
+                            Обзор <input type="file" name="files" style="display: none;" accept=".xlsx" multiple="multiple">
+                        </label>
+                    </span>
+                    <input type="text" id="fileLabel" class="form-control" readonly="readonly">
+                </div>
+            </div>
+            <input class="btn btn-primary" type="submit" value="Импортировать" />
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).on('change', ':file', function () {
+            var input = $(this),
+                numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [numFiles, label]);
+        });
+        $(document).ready(function () {
+            $(':file').on('fileselect', function (event, numFiles, label) {
+                if (label && numFiles === 1)
+                    $('#fileLabel').val(label);
+                else if (numFiles > 1)
+                    $('#fileLabel').val(numFiles + " файла(-ов) выбрано");
+            });
+        });
+    </script>
+}

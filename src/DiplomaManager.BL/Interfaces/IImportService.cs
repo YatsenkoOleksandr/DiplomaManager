@@ -4,6 +4,6 @@ namespace DiplomaManager.BLL.Interfaces
 {
     public interface IImportService
     {
-        void ImportStudentsInfo(Stream excelFileStream);
+        RowProcessingResult ImportStudentsInfo(Stream excelFileStream);
     }
 }

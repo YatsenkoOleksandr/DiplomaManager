@@ -19,6 +19,6 @@
     <ProjectReference Include="..\DiplomaManager.DAL\DiplomaManager.DAL.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\Admin\Views\Import\" />
+    <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 </Project>

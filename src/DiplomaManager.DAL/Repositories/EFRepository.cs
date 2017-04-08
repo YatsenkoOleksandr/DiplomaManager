@@ -33,6 +33,12 @@ namespace DiplomaManager.DAL.Repositories
         }
 
         public IEnumerable<TEntity> Get(
+            FilterExpression<TEntity>[] filters)
+        {
+            return Get<object>(filters, null, null, null, null);
+        }
+
+        public IEnumerable<TEntity> Get(
             IncludeExpression<TEntity> includePath)
         {
             return Get<object>(null, new[] { new IncludeExpression<TEntity>(includePath.Property) }, null, null, null);

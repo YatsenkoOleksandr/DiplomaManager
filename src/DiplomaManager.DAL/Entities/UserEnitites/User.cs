@@ -9,22 +9,15 @@ namespace DiplomaManager.DAL.Entities.UserEnitites
         public int Id
         { get; set; }
 
-        [Required]
-        [MaxLength(50)]
         public string Login
         { get; set; }
 
-        [Required]
-        [MaxLength(50)]
         public string Password
         { get; set; }
 
-        [Required]
-        [MaxLength(50)]
         public string Email
         { get; set; }
 
-        [MaxLength(20)]
         public string Status
         { get; set; }
 
