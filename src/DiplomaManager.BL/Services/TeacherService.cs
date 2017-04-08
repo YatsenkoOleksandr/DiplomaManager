@@ -96,7 +96,8 @@ namespace DiplomaManager.BLL.Services
             var includePaths = new List<IncludeExpression<Project>>
             {
                 new IncludeExpression<Project>(p => p.Student),
-                new IncludeExpression<Project>(p => p.Student.Group)
+                new IncludeExpression<Project>(p => p.Student.Group),
+                new IncludeExpression<Project>(p => p.Student.PeopleNames)
             };
 
             if (!string.IsNullOrWhiteSpace(CultureConfiguration.DefaultLocaleName))

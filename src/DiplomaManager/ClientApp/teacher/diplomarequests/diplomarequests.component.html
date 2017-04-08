@@ -29,11 +29,19 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Многоязычная тема диплома</div>
                     <div class="panel-body">
-                        <div formArrayName="projectTitles">
+                        <div formArrayName="projectTitles" [ngBusy]="{busy: modalBusy}">
                             <div class="form-group"
                                  *ngFor="let title of projectFGroup.controls['projectTitles'].controls; let i = index">
                                 <label>{{selectedRequest.projectTitles[i].locale.nativeName | capitalizeFirst}}</label>
-                                <input class="form-control" formControlName="{{i}}" />
+                                <div class="input-group">
+                                    <input class="form-control" formControlName="{{i}}" />
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" title="Перевести" 
+                                                (click)="translateProjectTitle(selectedRequest.projectTitles[i], title)">
+                                            <i class="glyphicon glyphicon-pencil"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

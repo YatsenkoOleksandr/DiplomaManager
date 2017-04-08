@@ -9,12 +9,13 @@ import { TeacherService, ProjectEdit, ProjectEditTitle, RespondProjectRequest } 
 import { RequestTeacher } from './requestTeacherResponse.model';
 import { ProjectTitle } from './projectTitle.model';
 import { GetProjectsRequest } from './getProjectsRequest.model';
+import { TranslationService } from '../../shared/services/translation.service'
 
 @Component({
     moduleId: module.id,
     selector: 'diploma-requests',
     templateUrl: './diplomarequests.component.html',
-    providers: [TeacherService]
+    providers: [TeacherService, TranslationService]
 })
 export class DiplomaRequestsComponent implements OnInit {
 
@@ -32,6 +33,7 @@ export class DiplomaRequestsComponent implements OnInit {
     @ViewChild('acceptModal') acceptModal: ModalComponent;
     @ViewChild('declineModal') declineModal: ModalComponent;
     busy: Subscription;
+    modalBusy: Subscription;
     projectFGroup: FormGroup;
     selectedRequest: RequestTeacher;
     commentModal: string;
@@ -45,7 +47,8 @@ export class DiplomaRequestsComponent implements OnInit {
         sunHighlight: true
     };
 
-    constructor(private dataService: TeacherService, private formBuilder: FormBuilder, private toastrService: ToastrService) {
+    constructor(private dataService: TeacherService, private formBuilder: FormBuilder, private toastrService: ToastrService,
+        private translationService: TranslationService) {
         this.projectFGroup = formBuilder.group({
             practiceJournalPassed: [''],
             projectTitles: formBuilder.array([])
@@ -175,6 +178,18 @@ export class DiplomaRequestsComponent implements OnInit {
     pageChanged(event: any): void {
         this.currentPage = event.page;
         this.getProjects();
+    }
+
+    translateProjectTitle(projectTitle: ProjectTitle, title: FormControl) {
+        let text = this.selectedRequest.projectTitles[0].title;
+        let lang = projectTitle.locale.name;
+        this.modalBusy = this.translationService.translate(text, lang).subscribe(res => {
+            title.setValue(res.text[0]);
+            this.toastrService.success(`Текст успешно переведен (${res.lang})`);
+        }, err => {
+            this.toastrService.error('Ошибка перевода текста');
+            console.log(err);
+        });
     }
 }
 
