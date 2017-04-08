@@ -14,6 +14,7 @@ namespace DiplomaManager.Modules
             builder.Register(CreateSmtpConfiguration).SingleInstance();
             builder.Register(CreateAppConfiguration).SingleInstance();
             builder.Register(CreateDatabaseConnectionConfiguration).SingleInstance();
+            builder.Register(CreateTranslationConfiguration).SingleInstance();
         }
 
         private static ISmtpConfiguration CreateSmtpConfiguration(IComponentContext context)
@@ -52,6 +53,18 @@ namespace DiplomaManager.Modules
             return result;
         }
 
+        private static ITranslationConfiguration CreateTranslationConfiguration(IComponentContext context)
+        {
+            var configuration = context.Resolve<IConfiguration>();
+
+            var result = new TranslationConfiguration();
+
+            new ConfigureFromConfigurationOptions<TranslationConfiguration>(configuration.GetSection("Translation"))
+                .Configure(result);
+
+            return result;
+        }
+
         #region Nested Class
 
         public class DatabaseConnectionConfiguration : IDatabaseConnectionConfiguration
@@ -73,6 +86,13 @@ namespace DiplomaManager.Modules
         {
             public IEnumerable<string> LocaleNames { get; set; }
             public string DefaultLocaleName { get; set; }
+        }
+
+        public class TranslationConfiguration : ITranslationConfiguration
+        {
+            public string BaseUrl { get; set; }
+            public string TranslateBaseApiPath { get; set; }
+            public string ApiKey { get; set; }
         }
 
         #endregion

@@ -2,7 +2,7 @@
 using DiplomaManager.BLL.Interfaces;
 using DiplomaManager.BLL.Utils;
 
-namespace DiplomaManager.BLL.Infrastructure
+namespace DiplomaManager.BLL.Modules
 {
     public class UtilsModule : Module
     {
