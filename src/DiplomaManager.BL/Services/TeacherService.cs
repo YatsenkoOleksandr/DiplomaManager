@@ -39,7 +39,7 @@ namespace DiplomaManager.BLL.Services
             var filterExprs = FilterDiplomaRequests(teacherId, query);
 
             Database.ProjectTitles.Get(
-                new FilterExpression<ProjectTitle>(t => CultureConfiguration.LocaleNames.Contains(t.Locale.Name)), 
+                new FilterExpression<ProjectTitle>(t => CultureConfiguration.LocaleNames.Contains(t.Locale.Name) || t.LocaleId == 1), 
                 new[] { new IncludeExpression<ProjectTitle>(p => p.Locale) });
 
             var includePaths = GetIncludeProjectFio();
