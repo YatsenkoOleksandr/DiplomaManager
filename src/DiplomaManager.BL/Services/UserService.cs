@@ -12,10 +12,6 @@ namespace DiplomaManager.BLL.Services
     {
         private IDiplomaManagerUnitOfWork Database { get; }
 
-        public UserService()
-        {
-        }
-
         public UserService(IDiplomaManagerUnitOfWork uow)
         {
             Database = uow;
@@ -73,3 +69,4 @@ namespace DiplomaManager.BLL.Services
         }
     }
 }
+

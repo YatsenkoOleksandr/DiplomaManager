@@ -1,0 +1,42 @@
+﻿@using DiplomaManager.Areas.Admin.Controllers
+@model IEnumerable<FilesProcessingResult>
+
+@{
+    ViewBag.Title = "Результат импорта";
+}
+
+<h2>Результат импорта (файлов: @FilesProcessingResult.FilesCount)</h2>
+
+@foreach (var file in Model)
+{
+    if (file.IsValid)
+    {
+         <div class="panel panel-success">
+             <div class="panel-heading">@file.FileInfo.Name</div>
+             <div class="panel-body">
+                <p class="text-info">Всего строк: @file.RowProcessingResult.RowsCount</p>
+                 <p class="text-info">Обработано строк: @file.RowProcessingResult.ProcessedRowsCount</p>
+                 @if (file.RowProcessingResult.ValidRowsCount > 0)
+                 {
+                     <p class="text-success">Корректных строк: @file.RowProcessingResult.ValidRowsCount</p>
+                 }
+                 @if (file.RowProcessingResult.InvalidRowsCount > 0)
+                 {
+                     <p class="text-danger">Некорректных строк: @file.RowProcessingResult.InvalidRowsCount</p>
+                 }
+             </div>
+         </div>
+    }
+    else
+    {
+        <div class="panel panel-danger">
+            <div class="panel-heading">@file.FileInfo.Name</div>
+            <div class="panel-body">
+                Некорретный файл.
+            </div>
+        </div>
+    }
+}
+
+<a asp-action="Index">Назад к выбору файлов</a>
+

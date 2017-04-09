@@ -16,6 +16,9 @@ namespace DiplomaManager.DAL.Interfaces
             FilterExpression<TEntity>[] filters);
 
         IEnumerable<TEntity> Get(
+            FilterExpression<TEntity>[] filters);
+
+        IEnumerable<TEntity> Get(
             IncludeExpression<TEntity> includePath);
 
         IEnumerable<TEntity> Get(
