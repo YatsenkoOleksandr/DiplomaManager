@@ -10,18 +10,21 @@ namespace DiplomaManager.DAL.Interfaces
         TEntity Get(int id);
 
         IEnumerable<TEntity> Get(
-           FilterExpression<TEntity> filter);
+            FilterExpression<TEntity> filter);
+
+        IEnumerable<TEntity> Get(
+            FilterExpression<TEntity>[] filters);
 
         IEnumerable<TEntity> Get(
             IncludeExpression<TEntity> includePath);
 
         IEnumerable<TEntity> Get(
-           FilterExpression<TEntity> filter,
-           IncludeExpression<TEntity>[] includePaths);
+            FilterExpression<TEntity> filter,
+            IncludeExpression<TEntity>[] includePaths);
 
         IEnumerable<TEntity> Get(
-           FilterExpression<TEntity>[] filters,
-           IncludeExpression<TEntity>[] includePaths);
+            FilterExpression<TEntity>[] filters,
+            IncludeExpression<TEntity>[] includePaths);
 
         IEnumerable<TEntity> Get<TKey>(
             FilterExpression<TEntity>[] filters,

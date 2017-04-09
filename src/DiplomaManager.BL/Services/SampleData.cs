@@ -267,6 +267,42 @@ namespace DiplomaManager.BLL.Services
 
                     uow.Save();
                 }
+
+                //Add Student
+                if (uow.Students.IsEmpty())
+                {
+                    uow.Students.Add(new Student
+                    {
+                        StatusCreationDate = DateTime.Now,
+                        GroupId = 1,
+                        PeopleNames = new List<PeopleName>
+                        {
+                            new PeopleName
+                            {
+                                Name = "Алексей",
+                                CreationDate = DateTime.Now,
+                                LocaleId = 193,
+                                NameKind = NameKind.FirstName
+                            },
+                            new PeopleName
+                            {
+                                Name = "Гаврилов",
+                                CreationDate = DateTime.Now,
+                                LocaleId = 193,
+                                NameKind = NameKind.LastName
+                            },
+                            new PeopleName
+                            {
+                                Name = "Андреевич",
+                                CreationDate = DateTime.Now,
+                                LocaleId = 193,
+                                NameKind = NameKind.Patronymic
+                            }
+                        }
+                    });
+
+                    uow.Save();
+                }
             }
         }
     }

@@ -79,10 +79,10 @@ namespace DiplomaManager.Controllers
         {
             var student = request.Student;
             var studentDto = new StudentDTO(
-                student.FirstNameId, student.LastNameId, student.PatronymicId, 193, student.Email, DateTime.Now, student.GroupId);
+                student.FirstNameId, student.LastNameId, student.PatronymicId, 1, student.Email, DateTime.Now, student.GroupId);
             try
             {
-                RequestService.CreateDiplomaRequest(studentDto, request.DaId, request.TeacherId, 193, request.Title);
+                RequestService.CreateDiplomaRequest(studentDto, request.DaId, request.TeacherId, 1, request.Title);
                 return Json(new { Message = "Заявка отравлена" });
             }
             catch (Exception ex)

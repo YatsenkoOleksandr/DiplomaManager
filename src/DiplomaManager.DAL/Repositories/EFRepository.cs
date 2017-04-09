@@ -33,20 +33,26 @@ namespace DiplomaManager.DAL.Repositories
         }
 
         public IEnumerable<TEntity> Get(
+            FilterExpression<TEntity>[] filters)
+        {
+            return Get<object>(filters, null, null, null, null);
+        }
+
+        public IEnumerable<TEntity> Get(
             IncludeExpression<TEntity> includePath)
         {
             return Get<object>(null, new[] { new IncludeExpression<TEntity>(includePath.Property) }, null, null, null);
         }
 
         public IEnumerable<TEntity> Get(
-           FilterExpression<TEntity> filter,
+            FilterExpression<TEntity> filter,
             IncludeExpression<TEntity>[] includePaths)
         {
             return Get<object>(new[] { new FilterExpression<TEntity>(filter.Filter) }, includePaths, null, null, null);
         }
 
         public IEnumerable<TEntity> Get(
-            FilterExpression<TEntity>[] filters, 
+            FilterExpression<TEntity>[] filters,
             IncludeExpression<TEntity>[] includePaths)
         {
             return Get<object>(filters, includePaths, null, null, null);
@@ -54,8 +60,8 @@ namespace DiplomaManager.DAL.Repositories
 
         public IEnumerable<TEntity> Get<TKey>(
             FilterExpression<TEntity>[] filters,
-            IncludeExpression<TEntity>[] includePaths, 
-            int? page, 
+            IncludeExpression<TEntity>[] includePaths,
+            int? page,
             int? pageSize,
             SortExpression<TEntity, TKey>[] sortExpressions)
         {

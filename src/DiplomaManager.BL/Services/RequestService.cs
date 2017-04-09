@@ -25,12 +25,15 @@ namespace DiplomaManager.BLL.Services
         private IDiplomaManagerUnitOfWork Database { get; }
         private IEmailService EmailService { get; }
         private ILocaleConfiguration LocaleConfiguration { get; }
+        private IUserService UserService { get; }
 
-        public RequestService(IDiplomaManagerUnitOfWork uow, IEmailService emailService, ILocaleConfiguration localeConfiguration)
+        public RequestService(IDiplomaManagerUnitOfWork uow, IEmailService emailService, ILocaleConfiguration localeConfiguration,
+            IUserService userService)
         {
             Database = uow;
             EmailService = emailService;
             LocaleConfiguration = localeConfiguration;
+            UserService = userService;
         }
 
         public DevelopmentAreaDTO GetDevelopmentArea(int id)
@@ -157,7 +160,7 @@ namespace DiplomaManager.BLL.Services
                 cfg.CreateMap<StudentDTO, Student>();
             });
 
-            var studentRes = CreateStudent(studentDto, localeId);
+            var studentRes = GetStudent(studentDto);
 
             var project = new Project
             {
@@ -206,63 +209,27 @@ namespace DiplomaManager.BLL.Services
             return namesDto;
         }
 
-        private Student CreateStudent(StudentDTO studentDto, int localeId)
+        private Student GetStudent(StudentDTO studentDto)
         {
-            var studentRes = Database.Students.Get(new FilterExpression<Student>(s => s.Email == studentDto.Email)).FirstOrDefault();
+            var nameConfiguration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<NameKindDTO, NameKind>();
+                cfg.CreateMap<PeopleNameDTO, PeopleName>();
+            });
+            var nameMapper = nameConfiguration.CreateMapper();
+            var namesDto = nameMapper.Map<IEnumerable<PeopleNameDTO>, IEnumerable<PeopleName>>(studentDto.PeopleNames);
+
+            var studentRes = UserService.GetUserFromFullName<Student>(namesDto.ToList());
             if (studentRes == null)
-            {
-                var student = new Student()
-                {
-                    StatusCreationDate = DateTime.Now,
-                    GroupId = studentDto.GroupId,
-                    Email = studentDto.Email,
-                    Login = studentDto.Email,
-                    Password = CreateRandomPassword(8),
-                    Status = studentDto.Status,
-                    PeopleNames = new List<PeopleName>()
-                };
+                throw new InvalidOperationException("Can't get Student");
 
-                if (studentDto.PeopleNames != null)
-                {
-                    foreach (var peopleName in studentDto.PeopleNames)
-                    {
-                        var pn = new PeopleName { Id = peopleName.Id };
-                        student.PeopleNames.Add(pn);
-                        Database.PeopleNames.Attach(pn);
-                    }
-                }
-
-                Database.Students.Add(student);
-                studentRes = student;
-            }
-            else
+            if (string.IsNullOrWhiteSpace(studentRes.Email) || string.IsNullOrWhiteSpace(studentRes.Login))
             {
-                if (string.IsNullOrWhiteSpace(studentRes.Login))
-                {
-                    studentRes.Login = studentDto.Email;
-                    Database.Students.Update(studentRes);
-                }
-                if (string.IsNullOrWhiteSpace(studentRes.Password))
-                {
-                    studentRes.Password = CreateRandomPassword(8);
-                    Database.Students.Update(studentRes);
-                }
+                studentRes.Login = studentDto.Email;
+                studentRes.Email = studentDto.Email;
+                Database.Students.Update(studentRes);
             }
             return studentRes;
-        }
-
-        private string CreateRandomPassword(int passwordLength)
-        {
-            string allowedChars = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ0123456789!@$?_-";
-            char[] chars = new char[passwordLength];
-            Random rd = new Random();
-
-            for (int i = 0; i < passwordLength; i++)
-            {
-                chars[i] = allowedChars[rd.Next(0, allowedChars.Length)];
-            }
-
-            return new string(chars);
         }
 
         public void Dispose()

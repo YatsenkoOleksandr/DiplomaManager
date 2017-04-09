@@ -13,6 +13,8 @@ namespace DiplomaManager.DAL.Interfaces
 
         IRepository<Locale> Locales { get; }
 
+        IRepository<User> Users { get; }
+
         IRepository<Admin> Admins { get; }
 
         IRepository<Teacher> Teachers { get; }
