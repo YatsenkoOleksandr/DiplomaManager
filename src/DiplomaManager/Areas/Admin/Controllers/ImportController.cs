@@ -5,6 +5,7 @@ using DiplomaManager.BLL.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace DiplomaManager.Areas.Admin.Controllers
 {
@@ -13,11 +14,13 @@ namespace DiplomaManager.Areas.Admin.Controllers
     {
         private IImportService ImportService { get; }
         private IHostingEnvironment HostingEnvironment { get; }
+        private ILogger<ImportController> Logger { get; }
 
-        public ImportController(IImportService importService, IHostingEnvironment hostingEnvironment)
+        public ImportController(IImportService importService, IHostingEnvironment hostingEnvironment, ILogger<ImportController> logger)
         {
             ImportService = importService;
             HostingEnvironment = hostingEnvironment;
+            Logger = logger;
         }
 
         public IActionResult Index()
@@ -51,6 +54,7 @@ namespace DiplomaManager.Areas.Admin.Controllers
                 catch (Exception ex)
                 {
                     fileProcessingInfo.IsValid = false;
+                    Logger.LogError(new EventId(1, "Error"), ex, "File Processing Error");
                 }
                 finally
                 {

@@ -8,6 +8,7 @@ using DiplomaManager.DAL.Entities.StudentEntities;
 using DiplomaManager.DAL.Entities.UserEnitites;
 using DiplomaManager.DAL.Interfaces;
 using DiplomaManager.DAL.Utils;
+using Microsoft.Extensions.Logging;
 using OfficeOpenXml;
 using Group = DiplomaManager.DAL.Entities.StudentEntities.Group;
 
@@ -17,13 +18,15 @@ namespace DiplomaManager.BLL.Services
     {
         private IDiplomaManagerUnitOfWork Database { get; }
         private IUserService UserService { get; }
+        private ILogger<ImportService> Logger { get; }
 
         private RowProcessingResult _rowProcessingInfo;
 
-        public ImportService(IDiplomaManagerUnitOfWork uow, IUserService userService)
+        public ImportService(IDiplomaManagerUnitOfWork uow, IUserService userService, ILogger<ImportService> logger)
         {
             Database = uow;
             UserService = userService;
+            Logger = logger;
         }
 
         public RowProcessingResult ImportStudentsInfo(Stream excelFileStream)
@@ -56,9 +59,10 @@ namespace DiplomaManager.BLL.Services
 
                     _rowProcessingInfo.ValidRowsCount++;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     _rowProcessingInfo.InvalidRowsCount++;
+                    Logger.LogError(new EventId(1, "Error"), ex, "FullName Processing Error", fullName);
                 }
                 finally
                 {
@@ -162,6 +166,8 @@ namespace DiplomaManager.BLL.Services
                         _rowProcessingInfo.ProcessedRowsCount++;
                         _rowProcessingInfo.InvalidRowsCount++;
                         _rowProcessingInfo.InvalidRowsNumbers.Add(row);
+
+                        Logger.LogWarning("Invalid Excel FullName", fullName);
                     }
                 }
                 return peopleNames;
@@ -218,11 +224,14 @@ namespace DiplomaManager.BLL.Services
                         return name;
                     }
                 }
+
             }
 
             _rowProcessingInfo.ProcessedRowsCount++;
             _rowProcessingInfo.InvalidRowsCount++;
             _rowProcessingInfo.InvalidRowsNumbers.Add(row);
+
+            Logger.LogWarning("Invalid Excel Group");
 
             return null;
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using DiplomaManager.BLL.Services;
@@ -11,6 +12,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
+using Serilog;
+using Serilog.Exceptions;
+using Serilog.Formatting.Json;
 
 namespace DiplomaManager
 {
@@ -24,6 +28,12 @@ namespace DiplomaManager
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             _configuration = builder.Build();
+
+            // Configure the Serilog pipeline
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.WithExceptionDetails()
+                .WriteTo.File(new JsonFormatter(renderMessage: true), @"Logs\log.txt")
+                .CreateLogger();
         }
 
         public IContainer ApplicationContainer { get; private set; }
@@ -56,6 +66,8 @@ namespace DiplomaManager
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory
             , IApplicationLifetime appLifetime)
         {
+            loggerFactory.AddSerilog();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
