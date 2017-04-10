@@ -48,12 +48,22 @@ namespace DiplomaManager.BLL.Services
         {
             foreach (var fullName in fullNames)
             {
-                var peopleNames = GetPeopleNames(fullName).ToList();
-                var peopleNamesProcessed = ProcessPeopleNames(peopleNames);
-                ProcessStudent(peopleNamesProcessed, group);
+                try
+                {
+                    var peopleNames = GetPeopleNames(fullName).ToList();
+                    var peopleNamesProcessed = ProcessPeopleNames(peopleNames);
+                    ProcessStudent(peopleNamesProcessed, group);
 
-                _rowProcessingInfo.ProcessedRowsCount++;
-                _rowProcessingInfo.ValidRowsCount++;
+                    _rowProcessingInfo.ValidRowsCount++;
+                }
+                catch (Exception)
+                {
+                    _rowProcessingInfo.InvalidRowsCount++;
+                }
+                finally
+                {
+                    _rowProcessingInfo.ProcessedRowsCount++;
+                }
             }
         }
 
