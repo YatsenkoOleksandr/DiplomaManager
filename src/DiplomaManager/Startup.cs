@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using Serilog;
+using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Formatting.Json;
 
@@ -32,8 +33,11 @@ namespace DiplomaManager
             // Configure the Serilog pipeline
             Log.Logger = new LoggerConfiguration()
                 .Enrich.WithExceptionDetails()
-                .WriteTo.File(new JsonFormatter(renderMessage: true), @"Logs\log.txt")
-                .CreateLogger();
+                .WriteTo.RollingFile(
+                    new JsonFormatter(renderMessage: true),
+                    @"Logs\log-{Date}.txt",
+                    LogEventLevel.Warning)
+                .CreateLogger(); 
         }
 
         public IContainer ApplicationContainer { get; private set; }
