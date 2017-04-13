@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using DiplomaManager.BLL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Logging;
 namespace DiplomaManager.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize("Admins")]
     public class ImportController : Controller
     {
         private IImportService ImportService { get; }

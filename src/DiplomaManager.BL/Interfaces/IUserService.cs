@@ -10,5 +10,7 @@ namespace DiplomaManager.BLL.Interfaces
         string CreateRandomPassword(int passwordLength);
 
         T GetUserFromFullName<T>(ICollection<PeopleName> peopleNames) where T : User;
+
+        string GetUserDisplayName(string login);
     }
 }

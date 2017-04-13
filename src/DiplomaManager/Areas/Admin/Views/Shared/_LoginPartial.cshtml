@@ -1,0 +1,12 @@
+﻿@inject DiplomaManager.Services.IUserInfoService UserInfoService
+@{
+    var userDisplayName = UserInfoService.GetUserDisplayName();
+}
+@if (!string.IsNullOrWhiteSpace(userDisplayName))
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            <a>Привет, @userDisplayName!</a>
+        </li>
+    </ul>
+}

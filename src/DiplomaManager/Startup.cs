@@ -5,6 +5,8 @@ using Autofac.Extensions.DependencyInjection;
 using DiplomaManager.BLL.Services;
 using DiplomaManager.Common.Autofac;
 using DiplomaManager.Filters;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +18,7 @@ using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Formatting.Json;
+using DiplomaManager.Services;
 
 namespace DiplomaManager
 {
@@ -47,18 +50,22 @@ namespace DiplomaManager
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(ConfigureMvcOptions)
+            services.AddMvc()
                 .AddJsonOptions(ConfigureJsonOptions);
 
+            services.AddAuthorization(ConfigureAuthOptions);
+
             ApplicationContainer = services.AddAutofac(_configuration);
-           
+
             return new AutofacServiceProvider(ApplicationContainer);
         }
 
-        private static void ConfigureMvcOptions(MvcOptions options)
+        private void ConfigureAuthOptions(AuthorizationOptions options)
         {
-            options.Filters.Add(new AuthorizeAreaFilterAttribute("Admin", new[] { "Администраторы" }));
-            options.Filters.Add(new AuthorizeAreaFilterAttribute("Teacher", new[] { "Администраторы", "Преподаватели" }));
+            options.AddPolicy("Teachers&Admins",
+                policy => policy.AddRequirements(new GroupsRequirement("Администраторы", "Administrators", "Преподаватели", "Teachers")));
+            options.AddPolicy("Admins",
+                policy => policy.AddRequirements(new GroupsRequirement("Администраторы", "Administrators")));
         }
 
         private static void ConfigureJsonOptions(MvcJsonOptions options)

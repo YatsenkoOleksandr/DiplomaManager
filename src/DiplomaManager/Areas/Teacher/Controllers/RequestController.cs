@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DiplomaManager.Areas.Teacher.Controllers
 {
     [Area("Teacher")]
+    [Authorize(Policy = "Teachers&Admins")]
     public class RequestController : Controller
     {
         private ITeacherService TeacherService { get; }

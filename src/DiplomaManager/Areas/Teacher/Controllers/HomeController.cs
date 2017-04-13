@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DiplomaManager.Areas.Teacher.Controllers
 {
     [Area("Teacher")]
+    [Authorize(Policy = "Teachers&Admins")]
     public class HomeController : Controller
     {
         public IActionResult Index()

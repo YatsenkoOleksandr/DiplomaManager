@@ -1,49 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DiplomaManager.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DiplomaManager.Filters
 {
-    internal class Http403Result : ActionResult
+    public class GroupsRequirement : AuthorizationHandler<GroupsRequirement>, IAuthorizationRequirement
     {
-        public override void ExecuteResult(ActionContext actionContext)
-        {
-            actionContext.HttpContext.Response.StatusCode = 403;
-        }
-    }
+        private readonly IEnumerable<string> _groups;
 
-    public class AuthorizeAreaFilterAttribute : ActionFilterAttribute
-    {
-        private readonly string _areaName;
-        private readonly IEnumerable<string> _roles;
-
-        public AuthorizeAreaFilterAttribute(string areaName, IEnumerable<string> roles)
+        public GroupsRequirement(params string[] groups)
         {
-            _areaName = areaName;
-            _roles = roles;
+            _groups = groups;
         }
 
-        public override void OnActionExecuting(ActionExecutingContext context)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, GroupsRequirement requirement)
         {
-            var area = context.RouteData.Values["area"];
-            var areaStr = area?.ToString();
-            if (!string.IsNullOrWhiteSpace(areaStr) && areaStr == _areaName.ToLower())
+            var mvcContext = context.Resource as Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext;
+            if (mvcContext != null)
             {
-                var userInfoService = context.HttpContext.RequestServices.GetService<IUserInfoService>();
+                var userInfoService = mvcContext.HttpContext.RequestServices.GetService<IUserInfoService>();
                 if (userInfoService != null)
                 {
-                    if (!_roles.Any(role => userInfoService.IsInGroup(role)))
+                    if (!_groups.Any(role => userInfoService.IsInGroup(role)))
                     {
-                        context.Result = new Http403Result();
+                        context.Fail();
+
+                        return Task.FromResult<object>(null);
                     }
-                    return;
+                    context.Succeed(requirement);
+
+                    return Task.FromResult<object>(null);
                 }
                 throw new InvalidOperationException("IUserInfoService not found");
             }
+            throw new InvalidOperationException("AuthorizationFilterContext not found");
         }
     }
 }

@@ -23,6 +23,17 @@ namespace DiplomaManager.BLL.Services
             return (T)Database.Users.Get(new FilterExpression<User>(u => u is T && u.Login == login)).SingleOrDefault();
         }
 
+        public string GetUserDisplayName(string login)
+        {
+            var user = GetUser<User>(login);
+            if (user == null)
+                return null;
+
+            var peopleNames = user.PeopleNames;
+            var lastName = peopleNames?.SingleOrDefault(pn => pn.NameKind == NameKind.LastName);
+            return lastName != null ? lastName.Name : user.Login;
+        }
+
         public string CreateRandomPassword(int passwordLength)
         {
             string allowedChars = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ0123456789!@$?_-";
