@@ -15,6 +15,8 @@ namespace DiplomaManager.BLL.Interfaces
 
         IEnumerable<ProjectDTO> GetProjects(PageInfo pageInfo, ProjectFilter filter);
 
+        int CountProjects(ProjectFilter filter);
+
 
         // Methods for reciving filters
 
