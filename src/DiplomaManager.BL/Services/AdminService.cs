@@ -33,6 +33,16 @@ namespace DiplomaManager.BLL.Services
             EmailService = emailService;
         }
 
+        public int CountProjects(ProjectFilter filter)
+        {
+            List<FilterExpression<Project>> filterExpressions = new List<FilterExpression<Project>>();
+
+            this.FilterProjects(filter, filterExpressions);           
+
+
+            return this.Database.Projects.Count(filterExpressions.ToArray());
+        }
+
         public IEnumerable<ProjectDTO> GetProjects(PageInfo pageInfo, ProjectFilter filter)
         {
             List<ProjectDTO> projects = new List<ProjectDTO>();
@@ -57,74 +67,7 @@ namespace DiplomaManager.BLL.Services
 
             IEnumerable<Project> databaseProjects = new List<Project>();
 
-            // Select by acceptance
-            switch (filter.AcceptanceStatus)
-            {
-                case ProjectAcceptanceStatus.Active:
-                    filterExpressions.Add(new FilterExpression<Project>(p => p.Accepted == null));
-                    break;
-
-                case ProjectAcceptanceStatus.Refused:
-                    filterExpressions.Add(new FilterExpression<Project>(p => p.Accepted == false));
-                    break;
-
-                case ProjectAcceptanceStatus.Accepted:
-                    filterExpressions.Add(new FilterExpression<Project>(p => p.Accepted == true));
-                    break;
-            }
-
-            // Select by journal status
-            switch(filter.PracticeJournalStatus)
-            {
-                case PracticeJournalStatus.Passed:
-                    filterExpressions.Add(new FilterExpression<Project>(p => p.PracticeJournalPassed != null));
-                    break;
-
-                case PracticeJournalStatus.NotPassed:
-                    filterExpressions.Add(new FilterExpression<Project>(p => p.PracticeJournalPassed == null));
-                    break;
-            }
-
-            // Select by student
-            if (filter.StudentId != 0)
-            {
-                filterExpressions.Add(new FilterExpression<Project>(p => p.StudentId == filter.StudentId));
-            }
-
-            // Select by teacher
-            if (filter.TeacherId != 0)
-            {
-                filterExpressions.Add(new FilterExpression<Project>(
-                    p => p.TeacherId == filter.TeacherId));
-            }
-
-            // Select by group
-            if (filter.GroupId != 0)
-            {
-                filterExpressions.Add(new FilterExpression<Project>(
-                    p => p.Student.GroupId == filter.GroupId));                
-            }
-
-            // Select by degree
-            if (filter.DegreeId != 0)
-            {
-                filterExpressions.Add(new FilterExpression<Project>(p => 
-                    p.Student.Group.DegreeId == filter.DegreeId));
-            }
-
-            // Select by graduation year
-            if (filter.GraduationYear != 0)
-            {
-                filterExpressions.Add(new FilterExpression<Project>(p => 
-                    p.Student.Group.GraduationYear == filter.GraduationYear));                
-            }
-            
-            // Select by project title
-            if (!string.IsNullOrEmpty(filter.Title))
-            {
-                filterExpressions.Add(new FilterExpression<Project>(
-                    p => p.ProjectTitles.Any(t => t.Title == filter.Title)));
-            }
+            this.FilterProjects(filter, filterExpressions);
 
             // Sort and get projects from database
             switch(filter.SortedField)
@@ -229,6 +172,78 @@ namespace DiplomaManager.BLL.Services
             }
 
             return projects;
+        }
+
+        private void FilterProjects(ProjectFilter filter, List<FilterExpression<Project>> filterExpressions)
+        {
+            // Select by acceptance
+            switch (filter.AcceptanceStatus)
+            {
+                case ProjectAcceptanceStatus.Active:
+                    filterExpressions.Add(new FilterExpression<Project>(p => p.Accepted == null));
+                    break;
+
+                case ProjectAcceptanceStatus.Refused:
+                    filterExpressions.Add(new FilterExpression<Project>(p => p.Accepted == false));
+                    break;
+
+                case ProjectAcceptanceStatus.Accepted:
+                    filterExpressions.Add(new FilterExpression<Project>(p => p.Accepted == true));
+                    break;
+            }
+
+            // Select by journal status
+            switch (filter.PracticeJournalStatus)
+            {
+                case PracticeJournalStatus.Passed:
+                    filterExpressions.Add(new FilterExpression<Project>(p => p.PracticeJournalPassed != null));
+                    break;
+
+                case PracticeJournalStatus.NotPassed:
+                    filterExpressions.Add(new FilterExpression<Project>(p => p.PracticeJournalPassed == null));
+                    break;
+            }
+
+            // Select by student
+            if (filter.StudentId != 0)
+            {
+                filterExpressions.Add(new FilterExpression<Project>(p => p.StudentId == filter.StudentId));
+            }
+
+            // Select by teacher
+            if (filter.TeacherId != 0)
+            {
+                filterExpressions.Add(new FilterExpression<Project>(
+                    p => p.TeacherId == filter.TeacherId));
+            }
+
+            // Select by group
+            if (filter.GroupId != 0)
+            {
+                filterExpressions.Add(new FilterExpression<Project>(
+                    p => p.Student.GroupId == filter.GroupId));
+            }
+
+            // Select by degree
+            if (filter.DegreeId != 0)
+            {
+                filterExpressions.Add(new FilterExpression<Project>(p =>
+                    p.Student.Group.DegreeId == filter.DegreeId));
+            }
+
+            // Select by graduation year
+            if (filter.GraduationYear != 0)
+            {
+                filterExpressions.Add(new FilterExpression<Project>(p =>
+                    p.Student.Group.GraduationYear == filter.GraduationYear));
+            }
+
+            // Select by project title
+            if (!string.IsNullOrEmpty(filter.Title))
+            {
+                filterExpressions.Add(new FilterExpression<Project>(
+                    p => p.ProjectTitles.Any(t => t.Title == filter.Title)));
+            }
         }
 
         private ProjectDTO MapProjectToProjectDTO(Project project)
