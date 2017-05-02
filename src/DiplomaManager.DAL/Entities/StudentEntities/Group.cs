@@ -13,6 +13,9 @@ namespace DiplomaManager.DAL.Entities.StudentEntities
         public string Name
         { get; set; }
 
+        public int GraduationYear
+        { get; set; }
+
         public int DegreeId { get; set; }
         public Degree Degree
         { get; set; }
