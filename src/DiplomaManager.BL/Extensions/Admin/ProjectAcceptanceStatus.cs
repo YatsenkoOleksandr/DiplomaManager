@@ -10,7 +10,7 @@ namespace DiplomaManager.BLL.Extensions.Admin
     /// <summary>
     /// Enumeration for selecting requests
     /// </summary>
-    public enum ProjectAcceptance
+    public enum ProjectAcceptanceStatus
     {
         All,
         Active,

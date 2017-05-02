@@ -43,8 +43,8 @@ namespace DiplomaManager
 
         private static void ConfigureMvcOptions(MvcOptions options)
         {
-            options.Filters.Add(new AuthorizeAreaFilterAttribute("Admin", new[] { "Администраторы" }));
-            options.Filters.Add(new AuthorizeAreaFilterAttribute("Teacher", new[] { "Администраторы", "Преподаватели" }));
+            options.Filters.Add(new AuthorizeAreaFilterAttribute("Admin", new[] { "Administrators" }));
+            options.Filters.Add(new AuthorizeAreaFilterAttribute("Teacher", new[] { "Administrators", "Преподаватели" }));
         }
 
         private static void ConfigureJsonOptions(MvcJsonOptions options)

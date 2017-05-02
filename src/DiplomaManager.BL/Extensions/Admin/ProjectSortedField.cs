@@ -11,7 +11,9 @@ namespace DiplomaManager.BLL.Extensions.Admin
         Teacher,
         Student,
         Degree,
-        Year,
+        GraduationYear,
+        CreationDate,
+        PracticeJournalPassedDate,
         Group,
         Acceptance,
         Title
