@@ -3,12 +3,13 @@ import { Http, Headers, URLSearchParams } from '@angular/http';
 
 @Injectable()
 export class DataService {
-    constructor(private http: Http) {
-    }
+    constructor(private http: Http) { }
 
     public get(url: string, params?: any) {
-        return this.http.get(url, {
-            search: params
+        let parameters = this.buildUrlSearchParams(params);
+        return this.http.get(url,
+        {
+            search: parameters
         });
     }
 
