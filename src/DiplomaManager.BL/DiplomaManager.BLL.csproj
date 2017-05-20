@@ -19,4 +19,8 @@
   <ItemGroup>
     <ProjectReference Include="..\DiplomaManager.DAL\DiplomaManager.DAL.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Interfaces\DefenseService\" />
+    <Folder Include="Interfaces\PredefenseService\" />
+  </ItemGroup>
 </Project>

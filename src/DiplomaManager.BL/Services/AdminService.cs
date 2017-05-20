@@ -36,10 +36,7 @@ namespace DiplomaManager.BLL.Services
         public int CountProjects(ProjectFilter filter)
         {
             List<FilterExpression<Project>> filterExpressions = new List<FilterExpression<Project>>();
-
-            this.FilterProjects(filter, filterExpressions);           
-
-
+            this.FilterProjects(filter, filterExpressions);  
             return this.Database.Projects.Count(filterExpressions.ToArray());
         }
 
@@ -521,6 +518,8 @@ namespace DiplomaManager.BLL.Services
         {
             IDictionary<int, string> degrees = new Dictionary<int, string>();
             degrees.Add(0, "-");
+
+
 
             /*
             List<FilterExpression<Degree>> filterExpressions = new List<FilterExpression<Degree>>();
