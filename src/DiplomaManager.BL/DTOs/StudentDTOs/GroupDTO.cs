@@ -9,5 +9,7 @@
         { get; set; }
 
         public int DegreeId { get; set; }
+
+        public int GraduationYear { get; set; }
     }
 }
