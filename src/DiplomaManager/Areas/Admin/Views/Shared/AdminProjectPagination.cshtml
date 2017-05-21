@@ -1,0 +1,106 @@
+﻿@using DiplomaManager.Areas.Admin.ViewModels
+@using DiplomaManager.BLL.Extensions.Admin
+@model DiplomaManager.Areas.Admin.ViewModels.AdminProjectsViewModel
+
+@if (Model.Pager.EndPage > 1)
+{
+    <ul class="pagination">
+
+        @*Show buttons "1" and "Previous Page"*@
+        @if (Model.Pager.CurrentPage > 1)
+        {
+            <li>
+               @Html.ActionLink(
+                    "1",
+                    "Index",
+                    "AdminProject",
+                    new ProjectFilterViewModel(1, Model.ProjectFilterViewModel),
+                    null)
+            </li>
+            <li>
+                @Html.ActionLink(
+                    "<",
+                    "Index",
+                    "AdminProject",
+                    new ProjectFilterViewModel(Model.Pager.CurrentPage - 1, Model.ProjectFilterViewModel),
+                    null)
+            </li>
+        }
+        else
+        {
+            <li class="disabled">
+                <a>1</a>
+            </li>
+            <li class="disabled">
+                <a>&lt;</a>
+            </li>
+        }
+
+        @*Show buttons before current page*@
+        @for(int p = Model.Pager.StartPage; p < Model.Pager.CurrentPage; p++)
+        {
+            <li>
+                @Html.ActionLink(
+                    p.ToString(),
+                    "Index",
+                    "AdminProject",
+                    new ProjectFilterViewModel(p, Model.ProjectFilterViewModel),
+                    null)
+            </li>
+        }
+
+        @*Show current page button*@
+        <li class="active">
+            @Html.ActionLink(
+                Model.Pager.CurrentPage.ToString(),
+                "Index",
+                "AdminProject",
+                new ProjectFilterViewModel(Model.Pager.CurrentPage, Model.ProjectFilterViewModel),
+                null)
+        </li>
+
+        @*Show buttons after current page*@
+        @for (int p = Model.Pager.CurrentPage + 1; p <= Model.Pager.EndPage; p++)
+        {
+            <li>
+                @Html.ActionLink(
+                    p.ToString(),
+                    "Index",
+                    "AdminProject",
+                    new ProjectFilterViewModel(p, Model.ProjectFilterViewModel),
+                    null)
+            </li>
+        }
+
+        @*Show buttons "Next" and "Last Page"*@
+        @if (Model.Pager.CurrentPage < Model.Pager.EndPage)
+        {
+            <li>
+                @Html.ActionLink(
+                    ">",
+                    "Index",
+                    "AdminProject",
+                    new ProjectFilterViewModel(Model.Pager.CurrentPage + 1, Model.ProjectFilterViewModel),
+                    null)
+            </li>
+            <li>
+                @Html.ActionLink(
+                    Model.Pager.TotalPages.ToString(),
+                    "Index",
+                    "AdminProject",
+                    new ProjectFilterViewModel(Model.Pager.TotalPages, Model.ProjectFilterViewModel),
+                    null)
+            </li>
+        }
+        else
+        {
+            <li class="disabled">
+                <a>&gt;</a>
+            </li>
+            <li class="disabled">
+                <a>@Model.Pager.TotalPages</a>
+            </li>
+        }
+
+    </ul>
+}
