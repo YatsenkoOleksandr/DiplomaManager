@@ -4,7 +4,7 @@ using DiplomaManager.BLL.Services;
 
 namespace DiplomaManager.BLL.Interfaces
 {
-    public interface ITeacherService
+    public interface ITeacherDiplomaRequestService
     {
         IEnumerable<ProjectDTO> GetDiplomaRequests(int teacherId, string query = "", int currentPage = 1,
             int itemsPerPage = 10);

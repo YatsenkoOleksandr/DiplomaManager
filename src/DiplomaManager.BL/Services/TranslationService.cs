@@ -42,13 +42,12 @@ namespace DiplomaManager.BLL.Services
             return result;
         }
 
-        private Dictionary<string, string> CreateApiParameters(string text, string lang)
+        private Dictionary<string, string> CreateApiParameters(string text, string to)
         {
             var parameters = new Dictionary<string, string>
             {
-                {"key", Configuration.ApiKey},
                 {"text", text},
-                {"lang", lang}
+                {"to", to}
             };
             return parameters;
         }
@@ -69,7 +68,9 @@ namespace DiplomaManager.BLL.Services
 
     public class TranslationResult
     {
-        public string Lang { get; set; }
-        public IEnumerable<string> Text { get; set; }
+        public string From { get; set; }
+        public string To { get; set; }
+        public string Text { get; set; }
+        public string TranslationText { get; set; }
     }
 }

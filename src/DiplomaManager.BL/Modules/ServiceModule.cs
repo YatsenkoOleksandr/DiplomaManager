@@ -8,9 +8,9 @@ namespace DiplomaManager.BLL.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<RequestService>().As<IRequestService>();
+            builder.RegisterType<StudentDiplomaRequestService>().As<IStudentDiplomaRequestService>();
             builder.RegisterType<UserService>().As<IUserService>();
-            builder.RegisterType<TeacherService>().As<ITeacherService>();
+            builder.RegisterType<TeacherDiplomaRequestService>().As<ITeacherDiplomaRequestService>();
             builder.RegisterType<ImportService>().As<IImportService>();
             builder.RegisterType<TranslationService>().As<ITranslationService>();
         }

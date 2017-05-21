@@ -19,13 +19,13 @@ using DiplomaManager.DAL.Utils;
 
 namespace DiplomaManager.BLL.Services
 {
-    public class TeacherService : ITeacherService
+    public class TeacherDiplomaRequestService : ITeacherDiplomaRequestService
     {
         private IDiplomaManagerUnitOfWork Database { get; }
         private ILocaleConfiguration CultureConfiguration { get; }
         private IEmailService EmailService { get; }
 
-        public TeacherService(IDiplomaManagerUnitOfWork uow, ILocaleConfiguration configuration, IEmailService emailService)
+        public TeacherDiplomaRequestService(IDiplomaManagerUnitOfWork uow, ILocaleConfiguration configuration, IEmailService emailService)
         {
             Database = uow;
             CultureConfiguration = configuration;

@@ -6,7 +6,7 @@ using DiplomaManager.BLL.DTOs.UserDTOs;
 
 namespace DiplomaManager.BLL.Interfaces
 {
-    public interface IRequestService
+    public interface IStudentDiplomaRequestService
     {
         DevelopmentAreaDTO GetDevelopmentArea(int id);
         IEnumerable<DevelopmentAreaDTO> GetDevelopmentAreas();

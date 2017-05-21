@@ -14,11 +14,12 @@ import { PeopleName, NameKind } from '../../shared/peopleName.model';
 
 @Injectable()
 export class DiplomaRequestService {
+    private apiBasePath = 'DiplomaRequest';
 
     constructor(private http: Http) { }
 
     getTeachers(daId: number): Observable<TeacherInfo[]> {
-        return this.http.get('/Request/GetTeachers/?daId=' + daId).map((resp: Response) => {
+        return this.http.get(`${this.apiBasePath}/GetTeachers/?daId=${daId}`).map((resp: Response) => {
             let teacherList = resp.json();
             let teachers: TeacherInfo[] = [];
             for (let index in teacherList) {
@@ -32,25 +33,25 @@ export class DiplomaRequestService {
     }
 
     getDegrees(): Observable<Degree[]> {
-        return this.http.get('/Request/GetDegrees').map((resp: Response) => {
+        return this.http.get(`${this.apiBasePath}/GetDegrees`).map((resp: Response) => {
             return resp.json();
         });
     }
 
     getDevelopmentAreas(): Observable<DevelopmentArea[]> {
-        return this.http.get('/Request/GetDevelopmentAreas').map((resp: Response) => {
+        return this.http.get(`${this.apiBasePath}/GetDevelopmentAreas`).map((resp: Response) => {
             return resp.json();
         });
     }
 
     getCapacity(degreeId: number, teacherId: number): Observable<Capacity> {
-        return this.http.get(`/Request/GetCapacity/?degreeId=${degreeId}&teacherId=${teacherId}`).map((resp: Response) => {
+        return this.http.get(`${this.apiBasePath}/GetCapacity/?degreeId=${degreeId}&teacherId=${teacherId}`).map((resp: Response) => {
             return resp.json();
         });
     }
 
     getGroups(degreeId: number): Observable<Group[]> {
-        return this.http.get(`/Request/GetGroups/?degreeId=${degreeId}`).map((resp: Response) => {
+        return this.http.get(`${this.apiBasePath}/GetGroups/?degreeId=${degreeId}`).map((resp: Response) => {
             return resp.json();
         });
     }
@@ -61,7 +62,7 @@ export class DiplomaRequestService {
         params.set("nameKind", nameKind.toString());
         params.set("maxItems", maxItems.toString());
 
-        return this.http.get('/Request/GetStudentNames', {
+        return this.http.get(`${this.apiBasePath}/GetStudentNames`, {
             search: params
         }).map((resp: Response) => {
             return resp.json();
@@ -71,7 +72,7 @@ export class DiplomaRequestService {
     sendRequest(request: Request) {
         const body = JSON.stringify(request);
         let headers = new Headers({ 'Content-Type': 'application/json;charset=utf-8' });
-        return this.http.post('/Request/SendRequest', body, { headers: headers })
+        return this.http.post(`${this.apiBasePath}/SendRequest`, body, { headers: headers })
             .map((resp: Response) => resp.json());
     }
 }
