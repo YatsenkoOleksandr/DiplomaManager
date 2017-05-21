@@ -1,0 +1,21 @@
+﻿@using DiplomaManager.Areas.Admin.ViewModels
+@model DiplomaManager.Areas.Admin.ViewModels.ProjectFilterViewModel
+
+@using (Html.BeginForm("Index", "AdminProject", FormMethod.Get))
+{
+    <select class="form-control" id="filter_Size", name="filter.Size">
+        @foreach(int p in Pager.PageSizes)
+        {
+            if (p != Model.Size)
+            {
+                <option value="@p">@p</option>
+            }
+            else
+            {
+                <option selected value="@p">@p</option>
+            }
+        }
+    </select>
+
+    <input class="btn btn-primary" type="submit" value="Применить" />
+}

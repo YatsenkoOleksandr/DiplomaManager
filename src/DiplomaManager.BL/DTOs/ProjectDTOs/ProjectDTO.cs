@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using DiplomaManager.BLL.DTOs.StudentDTOs;
 using DiplomaManager.BLL.DTOs.TeacherDTOs;
+using System.Linq;
+using DiplomaManager.DAL.Entities.StudentEntities;
 
 namespace DiplomaManager.BLL.DTOs.ProjectDTOs
 {
@@ -31,5 +33,60 @@ namespace DiplomaManager.BLL.DTOs.ProjectDTOs
         { get; set; }
 
         public List<ProjectTitleDTO> ProjectTitles { get; set; }
+
+        public string AcceptanceToString()
+        {
+            string res = string.Empty;
+            switch(Accepted)
+            {
+                case null:
+                    res = "Заявка активна";
+                    break;
+
+                case false:
+                    res = "Заявка отклонена";
+                    break;
+
+                case true:
+                    res = "Заявка принята";
+                    break;                
+            }
+            return res;
+        }
+
+        public string DegreeToString(int localeId = 193)
+        {
+            string res;
+            DegreeName degreeName = Student.Group.Degree.DegreeNames.FirstOrDefault(d => d.LocaleId == localeId);
+            if (degreeName != null && !string.IsNullOrEmpty(degreeName.Name))
+            {
+                res = degreeName.Name;
+            }
+            else
+            {
+                res = "-";
+            }
+            return res;
+        }
+
+        public string PracticeJournalPassDateToString()
+        {
+            return (PracticeJournalPassed == null ? "-" : PracticeJournalPassed.ToString());
+        }
+
+        public string TitleToString(int localeId = 193)
+        {
+            string res;
+            ProjectTitleDTO title = ProjectTitles.FirstOrDefault(t => t.LocaleId == localeId);
+            if (title != null)
+            {
+                res = string.IsNullOrEmpty(title.Title) ? "-" : title.Title;
+            }
+            else
+            {
+                res = "-";
+            }
+            return res;
+        }
     }
 }

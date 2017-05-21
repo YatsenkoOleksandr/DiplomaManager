@@ -11,5 +11,7 @@
         public int DegreeId { get; set; }
 
         public int GraduationYear { get; set; }
+
+        public DegreeDTO Degree { get; set; }
     }
 }
