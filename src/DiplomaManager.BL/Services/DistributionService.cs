@@ -313,6 +313,8 @@ namespace DiplomaManager.BLL.Services
                         p.Student.Group.GraduationYear == graduationYear)
                     .Count();
             }
+
+            Database.Save();
         }
     }
 }
