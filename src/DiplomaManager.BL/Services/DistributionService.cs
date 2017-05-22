@@ -16,6 +16,7 @@ using DiplomaManager.DAL.Entities.TeacherEntities;
 using DiplomaManager.BLL.DTOs.StudentDTOs;
 using DiplomaManager.BLL.DTOs.TeacherDTOs;
 using DiplomaManager.BLL.DTOs.RequestDTOs;
+using DiplomaManager.DAL.Entities.RequestEntities;
 
 namespace DiplomaManager.BLL.Services
 {
@@ -268,9 +269,50 @@ namespace DiplomaManager.BLL.Services
             return distributed;
         }        
 
-        public void Save(FormedProjects formedProjects)
+        public void Save(int degreeId, int graduationYear, FormedProjects formedProjects)
         {
-            throw new NotImplementedException();
+            foreach (ProjectDTO pr in formedProjects.NewProjects)
+            {
+                Database.Projects.Add(new Project()
+                {
+                    StudentId = pr.StudentId,
+                    TeacherId = pr.TeacherId,
+                });
+            }
+
+            foreach (ProjectDTO pr in formedProjects.ExistedModifiedProjects)
+            {
+                Project p = Database.Projects.Get(pr.Id);
+                p.Accepted = pr.Accepted;
+                p.StudentId = pr.StudentId;
+                p.TeacherId = p.TeacherId;
+            }
+
+            Database.Save();
+
+            // Change logic of changing capacity!!
+
+            List<IncludeExpression<Teacher>> teacherPaths = new List<IncludeExpression<Teacher>>();
+            teacherPaths.Add(new IncludeExpression<Teacher>(pr => pr.PeopleNames));
+            teacherPaths.Add(new IncludeExpression<Teacher>(pr => pr.Capacities));
+
+            IEnumerable<Teacher> teachers = Database.Teachers.Get(
+                new FilterExpression<Teacher>(
+                    t => t.Capacities.Any(
+                        c => c.StudyingYear.Year == graduationYear && c.DegreeId == degreeId)),
+                teacherPaths.ToArray());
+
+            foreach(Teacher t in teachers)
+            {
+                Capacity cap =
+                    t.Capacities
+                    .Where(c => c.DegreeId == degreeId && c.StudyingYear.Year == graduationYear)
+                    .FirstOrDefault();
+                cap.AcceptedCount = t.Projects
+                    .Where(p => p.Student.Group.DegreeId == degreeId &&
+                        p.Student.Group.GraduationYear == graduationYear)
+                    .Count();
+            }
         }
     }
 }
