@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DiplomaManager.BLL.DTOs.TeacherDTOs;
+using System;
 
 namespace DiplomaManager.BLL.DTOs.RequestDTOs
 {
@@ -8,6 +9,8 @@ namespace DiplomaManager.BLL.DTOs.RequestDTOs
         { get; set; }
 
         public int TeacherId { get; set; }
+
+        public TeacherDTO Teacher { get; set; }
 
         public int DegreeId { get; set; }
 

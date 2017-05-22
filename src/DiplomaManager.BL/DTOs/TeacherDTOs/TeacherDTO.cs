@@ -1,11 +1,18 @@
 ﻿using System;
 using DiplomaManager.BLL.DTOs.UserDTOs;
+using DiplomaManager.BLL.DTOs.RequestDTOs;
+using System.Collections.Generic;
+using DiplomaManager.BLL.DTOs.ProjectDTOs;
 
 namespace DiplomaManager.BLL.DTOs.TeacherDTOs
 {
     public class TeacherDTO : UserDTO
     {
         public int? PositionId { get; set; }
+
+        public List<CapacityDTO> Capacities { get; set; }
+
+        public List<ProjectDTO> Projects { get; set; }
 
         public TeacherDTO() { }
 
