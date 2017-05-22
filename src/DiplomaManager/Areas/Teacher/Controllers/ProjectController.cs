@@ -13,11 +13,11 @@ namespace DiplomaManager.Areas.Teacher.Controllers
 {
     [Area("Teacher")]
     [Authorize(Policy = "Teachers&Admins")]
-    public class RequestController : Controller
+    public class ProjectController : Controller
     {
-        private ITeacherService TeacherService { get; }
+        private ITeacherProjectService TeacherService { get; }
 
-        public RequestController(ITeacherService teacherService)
+        public ProjectController(ITeacherProjectService teacherService)
         {
             TeacherService = teacherService;
         }

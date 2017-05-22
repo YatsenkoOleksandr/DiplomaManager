@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using DiplomaManager.BLL.DTOs.StudentDTOs;
 using DiplomaManager.BLL.DTOs.UserDTOs;
@@ -9,11 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DiplomaManager.Controllers
 {
-    public class RequestController : Controller
+    public class ProjectController : Controller
     {
-        private IRequestService RequestService { get; }
+        private IStudentProjectService RequestService { get; }
 
-        public RequestController(IRequestService requestService)
+        public ProjectController(IStudentProjectService requestService)
         {
             RequestService = requestService;
         }

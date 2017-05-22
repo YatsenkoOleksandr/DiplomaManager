@@ -12,9 +12,9 @@ namespace DiplomaManager.Areas.Admin.Controllers
     [Authorize("Admins")]
     public class DevelopmentAreaController : Controller
     {
-        private readonly IRequestService _requestService;
+        private readonly IStudentProjectService _requestService;
 
-        public DevelopmentAreaController(IRequestService requestService)
+        public DevelopmentAreaController(IStudentProjectService requestService)
         {
             _requestService = requestService;
         }

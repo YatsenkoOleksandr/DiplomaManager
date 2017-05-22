@@ -20,14 +20,14 @@ using DiplomaManager.DAL.Utils;
 
 namespace DiplomaManager.BLL.Services
 {
-    public class RequestService : IRequestService
+    public class StudentProjectService : IStudentProjectService
     {
         private IDiplomaManagerUnitOfWork Database { get; }
         private IEmailService EmailService { get; }
         private ILocaleConfiguration LocaleConfiguration { get; }
         private IUserService UserService { get; }
 
-        public RequestService(IDiplomaManagerUnitOfWork uow, IEmailService emailService, ILocaleConfiguration localeConfiguration,
+        public StudentProjectService(IDiplomaManagerUnitOfWork uow, IEmailService emailService, ILocaleConfiguration localeConfiguration,
             IUserService userService)
         {
             Database = uow;
