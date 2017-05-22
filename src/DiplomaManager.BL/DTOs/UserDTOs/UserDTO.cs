@@ -68,5 +68,14 @@ namespace DiplomaManager.BLL.DTOs.UserDTOs
             var nameDTO = PeopleNames.FirstOrDefault(f => f.LocaleId == localeId && f.NameKind == NameKindDTO.Patronymic);
             return nameDTO?.Name;
         }
+
+        public string GetFullName(int localeId = 193)
+        {
+            string ln = this.GetLastName(localeId);
+            string fn = this.GetFirstName(localeId);
+            string pn = this.GetPatronymic(localeId);
+
+            return string.Concat(ln ?? "-", " ", fn ?? "-", " ", pn ?? "-");
+        }
     }
 }
