@@ -57,6 +57,8 @@ namespace DiplomaManager
 
             ApplicationContainer = services.AddAutofac(_configuration);
 
+            Modules.AutoMapperConfiguration.Configure();
+
             return new AutofacServiceProvider(ApplicationContainer);
         }
 
