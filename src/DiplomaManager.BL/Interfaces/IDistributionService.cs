@@ -11,6 +11,6 @@ namespace DiplomaManager.BLL.Interfaces
     {
         FormedProjects Distribute(int degreeId, int graduationYear);
 
-        void Save(FormedProjects formedProjects);
+        void Save(int degreeId, int graduationYear, FormedProjects formedProjects);
     }
 }
