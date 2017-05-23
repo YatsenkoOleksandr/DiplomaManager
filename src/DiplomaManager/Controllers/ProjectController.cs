@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using DiplomaManager.Areas.Teacher.ViewModels;
 using DiplomaManager.BLL.DTOs.StudentDTOs;
 using DiplomaManager.BLL.DTOs.UserDTOs;
 using DiplomaManager.BLL.Interfaces;
@@ -24,9 +25,8 @@ namespace DiplomaManager.Controllers
                 new TeacherInfoViewModel
                 {
                     Id = t.Id,
-                    FirstName = t.GetFirstName(193),
-                    LastName = t.GetLastName(193),
-                    Patronymic = t.GetPatronymic(193),
+                    ShortName = t.GetShortName(193),
+                    FullName = t.GetFullName(193),
                     PositionName = string.Empty
                 });
 
@@ -67,18 +67,25 @@ namespace DiplomaManager.Controllers
             return Json(groups);
         }
 
-        public IActionResult GetStudentNames(string query, NameKindDTO nameKind)
+        public IActionResult GetStudents(int? groupId)
         {
-            var names = RequestService.GetStudentNames(query, nameKind);
-            return Json(names);
+            if (groupId == null) return NotFound();
+            var students = RequestService.GetStudents(groupId.Value);
+            var studentsFio = students.Select(s =>
+                new UserInfoViewModel
+                {
+                    Id = s.Id,
+                    ShortName = s.GetShortName(),
+                    FullName = s.GetFullName(),
+                });
+            return Json(studentsFio);
         }
 
         [HttpPost]
         public IActionResult SendRequest([FromBody] RequestViewModel request)
         {
             var student = request.Student;
-            var studentDto = new StudentDTO(
-                student.FirstNameId, student.LastNameId, student.PatronymicId, 1, student.Email, DateTime.Now, student.GroupId);
+            var studentDto = new StudentDTO(student.Id, student.Email, student.GroupId);
             try
             {
                 RequestService.CreateDiplomaRequest(studentDto, request.DaId, request.TeacherId, 1, request.Title);

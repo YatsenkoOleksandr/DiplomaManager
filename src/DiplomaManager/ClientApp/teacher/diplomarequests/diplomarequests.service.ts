@@ -23,9 +23,8 @@ export class TeacherService {
                 let requestsList = resp.json();
                 for (let request of requestsList.data) {
                     request.student = new StudentInfo(request.student.id,
-                        request.student.firstName,
-                        request.student.lastName,
-                        request.student.patronymic,
+                        request.student.shortName,
+                        request.student.fullName,
                         request.student.email,
                         request.groupId);
                 }

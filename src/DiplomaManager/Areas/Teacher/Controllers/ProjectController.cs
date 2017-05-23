@@ -34,10 +34,8 @@ namespace DiplomaManager.Areas.Teacher.Controllers
                 Student = new StudentInfoViewModel
                 {
                     Id = p.StudentId,
-                    FirstName = p.Student.GetFirstName(193),
-                    LastName = p.Student.GetLastName(193),
-                    Patronymic = p.Student.GetPatronymic(193),
-                    GroupName = p.Student.Group.Name,
+                    ShortName = p.Student.GetShortName(),
+                    FullName = p.Student.GetFullName(),
                     Email = p.Student.Email
                 },
                 Accepted = p.Accepted,

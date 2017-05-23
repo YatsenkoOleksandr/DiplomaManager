@@ -184,6 +184,7 @@ namespace DiplomaManager.BLL.Services
                 cfg.CreateMap<PeopleName, PeopleNameDTO>();
 
                 cfg.CreateMap<Teacher, TeacherDTO>();
+                cfg.CreateMap<Degree, DegreeDTO>();
                 cfg.CreateMap<Group, GroupDTO>();
                 cfg.CreateMap<Student, StudentDTO>();
 

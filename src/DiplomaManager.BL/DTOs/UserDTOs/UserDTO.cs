@@ -29,6 +29,12 @@ namespace DiplomaManager.BLL.DTOs.UserDTOs
 
         public UserDTO() { }
 
+        public UserDTO(int id, string email)
+        {
+            Id = id;
+            Email = email;
+        }
+
         public UserDTO(string firstName, string lastName, string patronymic, int localeId, string email, DateTime creationDate)
         {
             PeopleNames = new List<PeopleNameDTO>
@@ -69,13 +75,22 @@ namespace DiplomaManager.BLL.DTOs.UserDTOs
             return nameDTO?.Name;
         }
 
-        public string GetFullName(int localeId = 193)
+        public string GetFullName(int localeId = 1)
         {
             string ln = this.GetLastName(localeId);
             string fn = this.GetFirstName(localeId);
             string pn = this.GetPatronymic(localeId);
 
             return string.Concat(ln ?? "-", " ", fn ?? "-", " ", pn ?? "-");
+        }
+
+        public string GetShortName(int localeId = 1)
+        {
+            string ln = this.GetLastName(localeId);
+            string fn = this.GetFirstName(localeId);
+            string pn = this.GetPatronymic(localeId);
+
+            return string.Concat(ln ?? "-", " ", fn?.Substring(0, 1) ?? "-", ". ", pn.Substring(0, 1) ?? "-", ".");
         }
     }
 }

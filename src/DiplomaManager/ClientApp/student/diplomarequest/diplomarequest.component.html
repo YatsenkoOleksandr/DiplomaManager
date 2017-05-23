@@ -58,54 +58,26 @@
                     <label>Группа</label>
                     <ng-select [items]="groupsList"
                                placeholder="Не выбрана группа"
+                               (selected)="groupSelected($event)"
                                formControlName="groups">
                     </ng-select>
                     <div class="alert alert-danger"
-                         *ngIf="requestFGroup.get('degrees').hasError('required')
-                            && requestFGroup.get('degrees').touched">
+                         *ngIf="requestFGroup.get('studentFGroup.groups').hasError('required')
+                            && requestFGroup.get('studentFGroup.groups').touched">
                         Не выбрана группа
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="lastName">Фамилия</label>
-                    <ng-select id="lastName"
-                               [items]="lastNames"
-                               placeholder="Введите фамилию"
-                               (typed)="lastNameSearchChanged($event)"
-                               formControlName="lastNames">
+                    <label for="students">ФИО</label>
+                    <ng-select id="students"
+                               [items]="studentsList"
+                               placeholder="Введите ФИО"
+                               formControlName="users">
                     </ng-select>
                     <div class="alert alert-danger"
-                         *ngIf="requestFGroup.get('studentFGroup.lastNames').hasError('required')
-                            && requestFGroup.get('studentFGroup.lastNames').touched">
-                        Не указано имя
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="firstName">Имя</label>
-                    <ng-select id="firstName"
-                               [items]="firstNames"
-                               placeholder="Введите имя"
-                               (typed)="firstNameSearchChanged($event)"
-                               formControlName="firstNames">
-                    </ng-select>
-                    <div class="alert alert-danger"
-                         *ngIf="requestFGroup.get('studentFGroup.firstNames').hasError('required')
-                            && requestFGroup.get('studentFGroup.firstNames').touched">
-                        Не указана фамилия
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="patronymic">Отчество</label>
-                    <ng-select id="patronymic"
-                               [items]="patronymics"
-                               placeholder="Введите отчество"
-                               (typed)="patronymicSearchChanged($event)"
-                               formControlName="patronymics">
-                    </ng-select>
-                    <div class="alert alert-danger"
-                         *ngIf="requestFGroup.get('studentFGroup.patronymics').hasError('required')
-                            && requestFGroup.get('studentFGroup.patronymics').touched">
-                        Не указано отчество
+                         *ngIf="requestFGroup.get('studentFGroup.users').hasError('required')
+                            && requestFGroup.get('studentFGroup.users').touched">
+                        Не указано ФИО
                     </div>
                 </div>
                 <div class="form-group">

@@ -10,7 +10,7 @@ import { DevelopmentArea } from './developmentArea.model';
 import { Request } from './request.model';
 import { Capacity } from './capacity.model';
 import { Group } from '../../shared/group.model';
-import { PeopleName, NameKind } from '../../shared/peopleName.model';
+import { User } from '../../shared/user.model';
 
 @Injectable()
 export class DiplomaRequestService {
@@ -20,15 +20,7 @@ export class DiplomaRequestService {
 
     getTeachers(daId: number): Observable<TeacherInfo[]> {
         return this.http.get(`${this.apiBasePath}/GetTeachers/?daId=${daId}`).map((resp: Response) => {
-            let teacherList = resp.json();
-            let teachers: TeacherInfo[] = [];
-            for (let index in teacherList) {
-                let teacher = teacherList[index];
-                teachers.push(
-                    new TeacherInfo(teacher.id, teacher.firstName, teacher.lastName, teacher.patronymic, teacher.positionName, teacher.email)
-                );
-            }
-            return teachers;
+            return resp.json();
         });
     }
 
@@ -56,15 +48,8 @@ export class DiplomaRequestService {
         });
     }
 
-    getStudentNames(query: string, nameKind: NameKind, maxItems: number = 10):Observable<PeopleName[]> {
-        let params = new URLSearchParams();
-        params.set("query", query);
-        params.set("nameKind", nameKind.toString());
-        params.set("maxItems", maxItems.toString());
-
-        return this.http.get(`${this.apiBasePath}/GetStudentNames`, {
-            search: params
-        }).map((resp: Response) => {
+    getStudents(groupId: number): Observable<User[]>  {
+        return this.http.get(`${this.apiBasePath}/GetStudents/?groupId=${groupId}`).map((resp: Response) => {
             return resp.json();
         });
     }

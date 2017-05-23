@@ -8,7 +8,7 @@
         <modal-body>
             <form [formGroup]="projectFGroup">
                 <div class="well">
-                    {{selectedRequest?.student.toString()}}
+                    {{selectedRequest?.student.fullName}}
                 </div>
                 <div class="form-group">
                     <label for="practiceDate">Дата сдачи журнала по практике</label>
@@ -61,7 +61,7 @@
         </modal-header>
         <modal-body>
             <div class="well">
-                {{selectedRequest?.student.toString()}}
+                {{selectedRequest?.student.fullName}}
             </div>
             <div class="form-group">
                 <label for="comment">Комментарий</label>
@@ -79,7 +79,7 @@
         </modal-header>
         <modal-body>
             <div class="well">
-                <span class="text-danger">{{selectedRequest?.student.toString()}}</span>
+                <span class="text-danger">{{selectedRequest?.student.fullName}}</span>
             </div>
             <div class="form-group">
                 <label for="commentDecline">Комментарий</label>
@@ -110,12 +110,12 @@
             <th>ФИО студента</th>
             <th>Тема</th>
             <th>Дата подачи</th>
-            <th>Дата сдачи журнала по практике</th>
+            <th>Дата сдачи журнала</th>
             <th></th>
         </tr>
         <tr *ngFor="let request of requests" [ngClass]="{'strikeout': request.accepted === false }">
             <td>{{request.id}}</td>
-            <td>{{request.student.toString()}}</td>
+            <td>{{request.student.shortName}}</td>
             <td>
                 <div *ngFor="let projectTitle of request.projectTitles">
                     <span *ngIf="projectTitle.title">"{{projectTitle.title}}"</span>

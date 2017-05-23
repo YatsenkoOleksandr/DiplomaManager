@@ -3,8 +3,8 @@
 export class TeacherInfo extends UserInfo {
     positionName: string;
 
-    constructor(id: number, firstName: string, lastName: string, patronymic: string, positionName: string, email: string) {
-        super(id, firstName, lastName, patronymic, email);
+    constructor(id: number, shortName: string, fullName: string, positionName: string, email: string) {
+        super(id, shortName, fullName, email);
         this.positionName = positionName;
     }
 } 

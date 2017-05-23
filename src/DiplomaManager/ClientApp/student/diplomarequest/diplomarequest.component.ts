@@ -1,19 +1,15 @@
 ﻿import { Component, OnInit, ViewChild } from '@angular/core';
-import { Response } from '@angular/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { SelectComponent } from 'ng2-select';
-import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { SelectItem } from '../../shared/selectItem';
 import { CustomValidators } from 'ng2-validation';
 import { ToastrService } from 'ngx-toastr';
 
 import { DiplomaRequestService } from './diplomarequest.service';
-import { Degree } from './degree.model';
 import { RequestFormGroup, Request } from './request.model';
 import { Capacity } from './capacity.model';
-import { PeopleName, NameKind } from '../../shared/peopleName.model';
 import { Student } from '../../shared/student.model';
 
 @Component({
@@ -28,9 +24,7 @@ export class DiplomaRequestComponent implements OnInit {
     teachersList: Array<SelectItem>;
     groupsList: Array<SelectItem>;
 
-    firstNames: Array<SelectItem>;
-    lastNames: Array<SelectItem>;
-    patronymics: Array<SelectItem>;
+    studentsList: Array<SelectItem>;
 
     busy: Subscription;
     @ViewChild('teachersSelect') teachersSelect: SelectComponent;
@@ -57,16 +51,10 @@ export class DiplomaRequestComponent implements OnInit {
 
             studentFGroup: new FormGroup({
                 groups: new FormControl('', Validators.required),
-                firstNames: new FormControl('', Validators.required),
-                lastNames: new FormControl('', Validators.required),
-                patronymics: new FormControl('', Validators.required),
+                users: new FormControl('', Validators.required),
                 email: new FormControl('', [Validators.required, CustomValidators.email])
             })
         });
-
-        this.firstNameSearchChanged("");
-        this.lastNameSearchChanged("");
-        this.patronymicSearchChanged("");
     }
 
     dasSelected(event) {
@@ -77,7 +65,7 @@ export class DiplomaRequestComponent implements OnInit {
                     this.teachersSelect.remove(activeItem);
                 }
             }
-            this.setItemsToSelectList(data, "teachersList");
+            this.setItemsToSelectList(data, "teachersList", "fullName");
         });
     }
 
@@ -96,30 +84,18 @@ export class DiplomaRequestComponent implements OnInit {
         });
     }
 
-    firstNameSearchChanged(typedText) {
-        this.busy = this.dataService.getStudentNames(typedText, NameKind.FirstName).subscribe((data) => {
-            this.setItemsToSelectList(data, "firstNames");
-        });
-    }
+    groupSelected(event) {
+        let groupid = event.id;
 
-    lastNameSearchChanged(typedText) {
-        this.busy = this.dataService.getStudentNames(typedText, NameKind.LastName).subscribe((data) => {
-            this.setItemsToSelectList(data, "lastNames");
-        });
-    }
-
-    patronymicSearchChanged(typedText) {
-        this.busy = this.dataService.getStudentNames(typedText, NameKind.Patronymic).subscribe((data) => {
-            this.setItemsToSelectList(data, "patronymics");
+        this.busy = this.dataService.getStudents(groupid).subscribe((data) => {
+            this.setItemsToSelectList(data, "studentsList", "fullName");
         });
     }
 
     onSubmit({ value, valid }: { value: RequestFormGroup, valid: boolean }) {
         if (value && valid) {
-            let student = new Student(value.studentFGroup.id,
-                value.studentFGroup.firstNames[0].id,
-                value.studentFGroup.lastNames[0].id,
-                value.studentFGroup.patronymics[0].id,
+            let student = new Student(
+                value.studentFGroup.users[0].id,
                 value.studentFGroup.email,
                 value.studentFGroup.groups[0].id);
             let request = new Request(value.das[0].id, value.teachers[0].id, student, value.title);
@@ -133,15 +109,16 @@ export class DiplomaRequestComponent implements OnInit {
             });
         }
     }
-
-    private setItemsToSelectList<T>(data: Array<T>, selectListName: string) {
+    
+    private setItemsToSelectList<T>(data: Array<T>, selectListName: string,
+        labelPropertyName: string = "name", idPropertyName: string = "id") {
         this[selectListName] = new Array<SelectItem>(data.length);
         for (let index = 0; index < data.length; index++) {
             let item = data[index];
-            let name = item["name"];
+            let name = item[labelPropertyName];
             if (!name)
                 name = item.toString();
-            this[selectListName][index] = new SelectItem(item["id"], name);
+            this[selectListName][index] = new SelectItem(item[idPropertyName], name);
         }
     }
 }

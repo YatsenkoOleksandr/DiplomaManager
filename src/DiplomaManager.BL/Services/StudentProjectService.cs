@@ -146,16 +146,37 @@ namespace DiplomaManager.BLL.Services
         public IEnumerable<GroupDTO> GetGroups(int degreeId)
         {
             var groups = Database.Groups.Get(new FilterExpression<Group>(g => g.DegreeId == degreeId));
-            Mapper.Initialize(cfg => cfg.CreateMap<Group, GroupDTO>());
+
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<Degree, DegreeDTO>();
+                cfg.CreateMap<Group, GroupDTO>();
+            });
+
             var groupDtos = Mapper.Map<IEnumerable<Group>, IEnumerable<GroupDTO>>(groups);
             return groupDtos;
+        }
+
+        public IEnumerable<StudentDTO> GetStudents(int groupId)
+        {
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<Degree, DegreeDTO>();
+                cfg.CreateMap<Group, GroupDTO>();
+                cfg.CreateMap<PeopleName, PeopleNameDTO>();
+                cfg.CreateMap<Student, StudentDTO>();
+            });
+
+            var students = Database.Students.Get(new FilterExpression<Student>(s => s.GroupId == groupId), 
+                new [] { new IncludeExpression<Student>(s => s.PeopleNames)} );
+            var studentsDtos = Mapper.Map<IEnumerable<Student>, IEnumerable<StudentDTO>>(students);
+            return studentsDtos;
         }
 
         public void CreateDiplomaRequest(StudentDTO studentDto, int daId, int teacherId, int localeId, string title)
         {
             Mapper.Initialize(cfg =>
             {
-                cfg.CreateMap<PeopleNameDTO, PeopleName>();
                 cfg.CreateMap<GroupDTO, Group>();
                 cfg.CreateMap<StudentDTO, Student>();
             });
@@ -178,52 +199,13 @@ namespace DiplomaManager.BLL.Services
             EmailService.SendEmailAsync("teland94@mail.ru", "Test", "Test!");
         }
 
-        public IEnumerable<PeopleNameDTO> GetStudentNames(string query, NameKindDTO nameKindDto, int maxItems = 10)
-        {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<NameKindDTO, NameKind>();
-            });
-            var nameKind = Mapper.Map<NameKindDTO, NameKind>(nameKindDto);
-
-            var filters = new[]
-            {
-                new FilterExpression<PeopleName>(n => n.NameKind == nameKind),
-                new FilterExpression<PeopleName>(n => string.IsNullOrEmpty(query) || n.Name.Contains(query)),
-                new FilterExpression<PeopleName>(n => n.Locale.Name == LocaleConfiguration.DefaultLocaleName)
-            };
-
-            var nameConfiguration = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<NameKind, NameKindDTO>();
-                cfg.CreateMap<PeopleName, PeopleNameDTO>();
-            });
-            var nameMapper = nameConfiguration.CreateMapper();
-
-            var names = Database.PeopleNames.Get(filters, 
-                new[] { new IncludeExpression<PeopleName>(n => n.Locale) },
-                pageSize: maxItems,
-                sortExpressions: new SortExpression<PeopleName, string>(n => n.Name, ListSortDirection.Ascending));
-
-            var namesDto = nameMapper.Map<IEnumerable<PeopleName>, IEnumerable<PeopleNameDTO>>(names);
-            return namesDto;
-        }
-
         private Student GetStudent(StudentDTO studentDto)
         {
-            var nameConfiguration = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<NameKindDTO, NameKind>();
-                cfg.CreateMap<PeopleNameDTO, PeopleName>();
-            });
-            var nameMapper = nameConfiguration.CreateMapper();
-            var namesDto = nameMapper.Map<IEnumerable<PeopleNameDTO>, IEnumerable<PeopleName>>(studentDto.PeopleNames);
-
-            var studentRes = UserService.GetUserFromFullName<Student>(namesDto.ToList());
+            var studentRes = Database.Students.Get(new FilterExpression<Student>(s => s.Id == studentDto.Id)).FirstOrDefault();
             if (studentRes == null)
                 throw new InvalidOperationException("Can't get Student");
 
-            if (string.IsNullOrWhiteSpace(studentRes.Email) || string.IsNullOrWhiteSpace(studentRes.Login))
+            if (string.IsNullOrWhiteSpace(studentRes.Email) && !string.IsNullOrWhiteSpace(studentDto.Email))
             {
                 studentRes.Login = studentDto.Email;
                 studentRes.Email = studentDto.Email;

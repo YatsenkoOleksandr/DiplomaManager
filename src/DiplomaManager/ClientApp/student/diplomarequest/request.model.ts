@@ -20,7 +20,7 @@ export class Request {
     constructor(daId: number, teacherId: number, student: Student, title: string) {
         this.daId = daId;
         this.teacherId = teacherId;
-        this.student = new Student(0, student.firstNameId, student.lastNameId, student.patronymicId, student.email, student.groupId);
+        this.student = new Student(student.id, student.email, student.groupId);
         this.title = title;
     }
 }
