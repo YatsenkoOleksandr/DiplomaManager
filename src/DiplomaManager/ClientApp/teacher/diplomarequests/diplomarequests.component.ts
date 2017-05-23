@@ -180,12 +180,17 @@ export class DiplomaRequestsComponent implements OnInit {
         this.getProjects();
     }
 
-    translateProjectTitle(projectTitle: ProjectTitle, title: FormControl) {
-        let text = this.selectedRequest.projectTitles[0].title;
+    translateProjectTitle(projectTitle: ProjectTitle, title: FormControl, invariantTitle: FormControl) {
+        let text = invariantTitle.value;
         let lang = projectTitle.locale.name;
         this.modalBusy = this.translationService.translate(text, lang).subscribe(res => {
-            title.setValue(res.text[0]);
-            this.toastrService.success(`Текст успешно переведен (${res.lang})`);
+            if (res) {
+                title.setValue(res.translationText)
+                this.toastrService.success(`Текст успешно переведен (${res.from}-${res.to})`);
+            }
+            else {
+                this.toastrService.error('Не удалось перевести');
+            }
         }, err => {
             this.toastrService.error('Ошибка перевода текста');
             console.log(err);

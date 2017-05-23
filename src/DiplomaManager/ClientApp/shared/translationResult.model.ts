@@ -1,4 +1,6 @@
 ﻿export class TranslationResult {
-    lang: string;
-    text: Array<string>;
+    from: string;
+    to: string;
+    text: string;
+    translationText: string;
 }

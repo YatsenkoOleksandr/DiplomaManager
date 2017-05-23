@@ -33,13 +33,14 @@
                             <div class="form-group"
                                  *ngFor="let title of projectFGroup.controls['projectTitles'].controls; let i = index">
                                 <label>{{selectedRequest.projectTitles[i].locale.nativeName | capitalizeFirst}}</label>
-                                <input class="form-control" formControlName="{{i}}" 
+                                <input class="form-control" formControlName="{{i}}"
                                        *ngIf="selectedRequest.projectTitles[i].locale.id == 1" />
                                 <div class="input-group" *ngIf="selectedRequest.projectTitles[i].locale.id > 1">
                                     <input class="form-control" formControlName="{{i}}" />
                                     <div class="input-group-btn">
                                         <button class="btn btn-default" title="Перевести"
-                                                (click)="translateProjectTitle(selectedRequest.projectTitles[i], title)">
+                                                (click)="translateProjectTitle(selectedRequest.projectTitles[i], title, 
+                                                projectFGroup.controls['projectTitles'].controls[0])">
                                             <i class="glyphicon glyphicon-pencil"></i>
                                         </button>
                                     </div>

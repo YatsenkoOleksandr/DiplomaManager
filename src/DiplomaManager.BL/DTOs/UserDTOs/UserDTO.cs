@@ -90,7 +90,7 @@ namespace DiplomaManager.BLL.DTOs.UserDTOs
             string fn = this.GetFirstName(localeId);
             string pn = this.GetPatronymic(localeId);
 
-            return string.Concat(ln ?? "-", " ", fn?.Substring(0, 1) ?? "-", ". ", pn.Substring(0, 1) ?? "-", ".");
+            return string.Concat(ln ?? "-", " ", fn?.Substring(0, 1) ?? "-", ". ", pn?.Substring(0, 1) ?? "-", ".");
         }
     }
 }
