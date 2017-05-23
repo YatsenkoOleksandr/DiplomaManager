@@ -503,9 +503,132 @@ namespace DiplomaManager.BLL.Services.ProjectService
 
 #endregion
 
-        public bool AcceptRequest(int projectId, int studentId, int teacherId, bool acceptance)
+        public void AcceptRequest(int projectId, int studentId, int teacherId, bool acceptance)
+        {            
+            Student student = Database.Students.Get(
+                    new FilterExpression<Student>(s => s.Id == studentId),
+                    new IncludeExpression<Student>[] { new IncludeExpression<Student>(s => s.Projects),
+                        new IncludeExpression<Student>(s => s.Group) })
+                    .FirstOrDefault();
+            if (student == null)
+            {
+                // ADD EXCEPTION
+            }
+
+            int degreeId = student.Group.DegreeId;
+            int graduationYear = student.Group.GraduationYear;
+
+            Teacher teacher = Database.Teachers.Get(
+                    new FilterExpression<Teacher>(t => t.Id == teacherId),
+                    new IncludeExpression<Teacher>[] {
+                        new IncludeExpression<Teacher>(t => t.Capacities),
+                        new IncludeExpression<Teacher>(t => t.Projects) })
+                    .FirstOrDefault();
+            if (teacher == null)
+            {
+                // ADD EXCEPTION
+            }
+
+            Capacity capacity = teacher.Capacities
+                    .Where(c => c.DegreeId == degreeId && c.StudyingYear.Year == graduationYear)
+                    .FirstOrDefault();
+            if (capacity == null)
+            {
+                // ADD EXCEPTION
+            }
+
+            if (acceptance == true)
+            {                
+                if (student.Projects.Where(p => p.Id != projectId).Any(p => p.Accepted == null || p.Accepted == true))
+                {
+                    // Student has active or accepted requests
+                    // ADD EXCEPTION
+                }
+
+                // Check teacher                
+
+                if (capacity.AcceptedCount == capacity.Count)
+                {
+                    // Teacher doesn't have free units
+                    // ADD EXCEPTION
+                };
+            }
+            
+
+            List<IncludeExpression<Project>> includePath = new List<IncludeExpression<Project>>();
+            includePath.Add(new IncludeExpression<Project>(p => p.Teacher.Capacities));
+            includePath.Add(new IncludeExpression<Project>(p => p.Student.Group));
+
+            
+            Project editedProject = Database.Projects.Get(
+                new FilterExpression<Project>(p => p.Id == projectId),
+                includePath.ToArray()).FirstOrDefault();
+            if (editedProject == null)
+            {
+                // ADD EXCEPTION
+            }
+
+            Teacher oldTeacher = editedProject.Teacher;                    
+            if (oldTeacher == null)
+            {
+                // ADD EXCEPTION
+            }
+            Capacity oldCapacity = oldTeacher.Capacities
+                    .Where(c => c.DegreeId == degreeId && c.StudyingYear.Year == graduationYear)
+                    .FirstOrDefault();
+            if (oldCapacity == null)
+            {
+                // ADD EXCEPTION
+            }
+
+            if (editedProject.Accepted == true)
+            {
+                oldCapacity.AcceptedCount--;
+            }
+
+            editedProject.StudentId = studentId;
+            editedProject.TeacherId = teacherId;
+            editedProject.Accepted = acceptance;
+            if(acceptance == true)
+            {
+                capacity.AcceptedCount++;
+            }
+            Database.Save();
+        }
+
+        public void DeleteProject(int projectId)
         {
-            throw new NotImplementedException();
+            List<IncludeExpression<Project>> includePath = new List<IncludeExpression<Project>>();
+            includePath.Add(new IncludeExpression<Project>(p => p.Teacher.Capacities));
+            includePath.Add(new IncludeExpression<Project>(p => p.Student.Group));
+
+
+            Project project = Database.Projects.Get(
+                new FilterExpression<Project>(p => p.Id == projectId),
+                includePath.ToArray()).FirstOrDefault();
+
+            if (project.Accepted == true)
+            {
+                // Reduce teacher projects
+                Teacher teacher = project.Teacher;
+                if (teacher == null)
+                {
+                    // ADD EXCEPTION
+                }
+                Capacity capacity = teacher.Capacities
+                        .Where(c => c.DegreeId == project.Student.Group.DegreeId && 
+                            c.StudyingYear.Year == project.Student.Group.GraduationYear)
+                        .FirstOrDefault();
+                if (capacity == null)
+                {
+                    // ADD EXCEPTION
+                }
+
+                capacity.AcceptedCount--;
+
+            }
+            Database.Projects.Remove(projectId);
+            Database.Save();
         }
     }
 }

@@ -45,6 +45,8 @@ namespace DiplomaManager.BLL.Interfaces.ProjectService
         IEnumerable<TeacherDTO> GetFreeTeachers(int degreeId, int graduationYear);
 
         // Method for accept requests
-        bool AcceptRequest(int projectId, int studentId, int teacherId, bool acceptance);        
+        void AcceptRequest(int projectId, int studentId, int teacherId, bool acceptance);
+
+        void DeleteProject(int projectId);
     }
 }
