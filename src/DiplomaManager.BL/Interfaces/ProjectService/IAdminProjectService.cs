@@ -34,14 +34,17 @@ namespace DiplomaManager.BLL.Interfaces.ProjectService
 
         IEnumerable<GroupDTO> GetGroups(ProjectFilter filter);
 
+        // Methods for editing 
+        */
+
 
         // Methods for reciving free students and teachers
 
-        IEnumerable<StudentDTO> GetFreeStudents(ProjectFilter filter);
+        IEnumerable<StudentDTO> GetFreeStudents(int degreeId, int graduationYear);
 
-        IEnumerable<TeacherDTO> GetFreeTeachers(ProjectFilter filter);
+        IEnumerable<TeacherDTO> GetFreeTeachers(int degreeId, int graduationYear);
 
-        // Methods for editing 
-        */
+        // Method for accept requests
+        bool AcceptRequest(int projectId, int studentId, int teacherId, bool acceptance);        
     }
 }
