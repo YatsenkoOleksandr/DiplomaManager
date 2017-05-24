@@ -41,7 +41,7 @@ namespace DiplomaManager.BLL.Services
 
             IEnumerable<StudentDTO> students = this.GetStudents(degreeId, graduationYear);
             IEnumerable<TeacherDTO> teachers = this.GetTeachersAndCapacities(degreeId, graduationYear, out capacities);
-            IEnumerable<ProjectDTO> projects = this.GetProjects(degreeId, graduationYear);            
+            IEnumerable<ProjectDTO> projects = this.GetProjects(degreeId, graduationYear); 
 
             formedProjects = this.DistributeStudents(degreeId, graduationYear, students, teachers, projects, capacities);
             formedProjects.ExistedUnchangedProjects = this.GetAcceptedProjects(degreeId, graduationYear).ToList();
@@ -49,7 +49,6 @@ namespace DiplomaManager.BLL.Services
 
             return formedProjects;
         }
-
 
         private IEnumerable<StudentDTO> GetStudents(int degreeId, int graduationYear)
         {
@@ -70,6 +69,7 @@ namespace DiplomaManager.BLL.Services
         private IEnumerable<TeacherDTO> GetTeachersAndCapacities(int degreeId, int graduationYear, out List<CapacityDTO> capacities)
         {
             capacities = new List<CapacityDTO>();
+
             List<IncludeExpression<Teacher>> teacherPaths = new List<IncludeExpression<Teacher>>();
             teacherPaths.Add(new IncludeExpression<Teacher>(pr => pr.PeopleNames));
             teacherPaths.Add(new IncludeExpression<Teacher>(pr => pr.Capacities));
@@ -94,7 +94,7 @@ namespace DiplomaManager.BLL.Services
         }
 
 
-        private IEnumerable<ProjectDTO> GetAcceptedProjects(int degreeId, int graduationYear)
+        public IEnumerable<ProjectDTO> GetAcceptedProjects(int degreeId, int graduationYear)
         {
             List<IncludeExpression<Project>> includeProjectPaths = new List<IncludeExpression<Project>>();
             includeProjectPaths.Add(new IncludeExpression<Project>(pr => pr.Student));
@@ -102,7 +102,7 @@ namespace DiplomaManager.BLL.Services
             includeProjectPaths.Add(new IncludeExpression<Project>(pr => pr.Student.Group));
             includeProjectPaths.Add(new IncludeExpression<Project>(pr => pr.Teacher));
             includeProjectPaths.Add(new IncludeExpression<Project>(pr => pr.Teacher.PeopleNames));
-            
+           
             IEnumerable<Project> existedPairs = Database.Projects.Get(
                 new FilterExpression<Project>(
                     pr => pr.Accepted == true &&
@@ -173,12 +173,10 @@ namespace DiplomaManager.BLL.Services
                 }
             }
 
-
             // Distribute students with denied requests
+
             IEnumerable<StudentDTO> deniedStudents = this.GetDeniedStudents(projects, students);
-
-            //foreach (ProjectDTO project in )
-
+            
             List<TeacherDTO> freeTeachers = new List<TeacherDTO>();
             foreach(CapacityDTO cap in capacities)
             {
@@ -192,7 +190,6 @@ namespace DiplomaManager.BLL.Services
             {
                 List<TeacherDTO> potentialTeachers =
                     GetPotentialTeachers(freeTeachers, projects, st.Id);
-
                 int potentialCount = potentialTeachers.Count;
 
                 if (potentialCount != 0)
@@ -276,8 +273,7 @@ namespace DiplomaManager.BLL.Services
             }
 
             return distributed;
-        }        
-
+        } 
 
         private IEnumerable<StudentDTO> GetDeniedStudents(
             IEnumerable<ProjectDTO> projects, 
@@ -343,7 +339,6 @@ namespace DiplomaManager.BLL.Services
             return studentsWithoutRequests;
         }
 
-
         public void Save(int degreeId, int graduationYear, FormedProjects formedProjects)
         {
             foreach (ProjectDTO pr in formedProjects.NewProjects)
@@ -363,6 +358,7 @@ namespace DiplomaManager.BLL.Services
                 p.TeacherId = p.TeacherId;
                 p.CreationDate = DateTime.Now;
                 p.DevelopmentArea = Database.DevelopmentAreas.Get().FirstOrDefault();
+
             }
 
             Database.Save();

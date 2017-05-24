@@ -1,8 +1,12 @@
-﻿@{
+
+﻿@model IEnumerable<DiplomaManager.Areas.Admin.ViewModels.TeacherStudentsViewModel>
+@{
+
     ViewBag.Title = "Распределение";
 }
 
 <h2>Распределение</h2>
+
 <div class="panel-group">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -33,6 +37,28 @@
         </div>
     </div>
 </div>
+
+@foreach (var ts in Model)
+{
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" href="#@ts.Teacher.Id">@ts.Teacher.GetFullName()</a>
+                </h4>
+            </div>
+            <div id="#@ts.Teacher.Id" class="panel-collapse collapse in">
+                <ul class="list-group">
+                    @foreach (var student in ts.Students)
+                    {
+                        <li class="list-group-item">@student.GetFullName()</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+}
+
 <form method="post" asp-action="Distribute" asp-controller="Distribution">
     <button class="btn btn-primary">Сформировать</button>
 </form>
