@@ -86,15 +86,16 @@ namespace DiplomaManager.BLL.Services
             return Mapper.Map<IEnumerable<Teacher>, IEnumerable<TeacherDTO>>(teachers);
         }
 
-        private IEnumerable<ProjectDTO> GetAcceptedProjects(int degreeId, int graduationYear)
+        public IEnumerable<ProjectDTO> GetAcceptedProjects(int degreeId, int graduationYear)
         {
-            List<IncludeExpression<Project>> includeProjectPaths = new List<IncludeExpression<Project>>();
-            includeProjectPaths.Add(new IncludeExpression<Project>(pr => pr.Student));
-            includeProjectPaths.Add(new IncludeExpression<Project>(pr => pr.Student.PeopleNames));
-            includeProjectPaths.Add(new IncludeExpression<Project>(pr => pr.Student.Group));
-            includeProjectPaths.Add(new IncludeExpression<Project>(pr => pr.Teacher));
-            includeProjectPaths.Add(new IncludeExpression<Project>(pr => pr.Teacher.PeopleNames));
-            
+            List<IncludeExpression<Project>> includeProjectPaths = new List<IncludeExpression<Project>>
+            {
+                new IncludeExpression<Project>(pr => pr.Student),
+                new IncludeExpression<Project>(pr => pr.Student.PeopleNames),
+                new IncludeExpression<Project>(pr => pr.Student.Group),
+                new IncludeExpression<Project>(pr => pr.Teacher),
+                new IncludeExpression<Project>(pr => pr.Teacher.PeopleNames)
+            };
             IEnumerable<Project> existedPairs = Database.Projects.Get(
                 new FilterExpression<Project>(
                     pr => pr.Accepted == true &&
