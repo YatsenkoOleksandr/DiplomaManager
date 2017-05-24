@@ -25,6 +25,8 @@ namespace DiplomaManager.Areas.Admin.ViewModels
 
         public string CreationalDate { get; set; }
 
-        public string GraduationYear { get; set; }
+        public int GraduationYear { get; set; }
+
+        public int DegreeId { get; set; }
     }
 }

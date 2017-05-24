@@ -53,8 +53,11 @@ namespace DiplomaManager.Modules
                         d => d.Degree,
                         opt => opt.MapFrom(s => s.DegreeToString(193)))
                     .ForMember(
+                        d => d.DegreeId,
+                        opt => opt.MapFrom(s => s.Student.Group.DegreeId))
+                    .ForMember(
                         d => d.GraduationYear,
-                        opt => opt.MapFrom(s => s.Student.Group.GraduationYear.ToString()))
+                        opt => opt.MapFrom(s => s.Student.Group.GraduationYear))
                     .ForMember(
                         d => d.Group,
                         opt => opt.MapFrom(s => s.Student.Group.Name))
