@@ -303,6 +303,29 @@ namespace DiplomaManager.BLL.Services.ProjectService
 
         #endregion
 
+        public ProjectDTO GetProject(int projectId)
+        {
+            List<FilterExpression<Project>> filterExpressions =
+                new List<FilterExpression<Project>>();
+            filterExpressions.Add(new FilterExpression<Project>(p => p.Id == projectId));
+
+            List<IncludeExpression<Project>> includeExpressions =
+                new List<IncludeExpression<Project>>();
+            includeExpressions.Add(new IncludeExpression<Project>(p => p.Student));
+            includeExpressions.Add(new IncludeExpression<Project>(p => p.Student.PeopleNames));
+            includeExpressions.Add(new IncludeExpression<Project>(p => p.Student.Group));
+            includeExpressions.Add(new IncludeExpression<Project>(p => p.Student.Group.Degree));
+            includeExpressions.Add(new IncludeExpression<Project>(p => p.Student.Group.Degree.DegreeNames));
+            includeExpressions.Add(new IncludeExpression<Project>(p => p.Teacher));
+            includeExpressions.Add(new IncludeExpression<Project>(p => p.Teacher.PeopleNames));
+            includeExpressions.Add(new IncludeExpression<Project>(p => p.ProjectTitles));
+
+            Project project = Database.Projects.Get(filterExpressions.ToArray(), includeExpressions.ToArray())
+                .FirstOrDefault();
+
+            return Mapper.Map<Project, ProjectDTO>(project);
+        }
+
         public IEnumerable<ProjectDTO> GetProjects(PageInfo pageInfo, ProjectFilter filter)
         {
             IEnumerable<ProjectDTO> projects;
@@ -513,6 +536,8 @@ namespace DiplomaManager.BLL.Services.ProjectService
             if (student == null)
             {
                 // ADD EXCEPTION
+
+                return;
             }
 
             int degreeId = student.Group.DegreeId;
@@ -527,6 +552,7 @@ namespace DiplomaManager.BLL.Services.ProjectService
             if (teacher == null)
             {
                 // ADD EXCEPTION
+                return;
             }
 
             Capacity capacity = teacher.Capacities
@@ -535,6 +561,7 @@ namespace DiplomaManager.BLL.Services.ProjectService
             if (capacity == null)
             {
                 // ADD EXCEPTION
+                return;
             }
 
             if (acceptance == true)
@@ -543,6 +570,7 @@ namespace DiplomaManager.BLL.Services.ProjectService
                 {
                     // Student has active or accepted requests
                     // ADD EXCEPTION
+                    return;
                 }
 
                 // Check teacher                
@@ -551,6 +579,7 @@ namespace DiplomaManager.BLL.Services.ProjectService
                 {
                     // Teacher doesn't have free units
                     // ADD EXCEPTION
+                    return;
                 };
             }
             
@@ -566,12 +595,14 @@ namespace DiplomaManager.BLL.Services.ProjectService
             if (editedProject == null)
             {
                 // ADD EXCEPTION
+                return;
             }
 
             Teacher oldTeacher = editedProject.Teacher;                    
             if (oldTeacher == null)
             {
                 // ADD EXCEPTION
+                return;
             }
             Capacity oldCapacity = oldTeacher.Capacities
                     .Where(c => c.DegreeId == degreeId && c.StudyingYear.Year == graduationYear)
@@ -579,6 +610,7 @@ namespace DiplomaManager.BLL.Services.ProjectService
             if (oldCapacity == null)
             {
                 // ADD EXCEPTION
+                return;
             }
 
             if (editedProject.Accepted == true)
@@ -607,6 +639,12 @@ namespace DiplomaManager.BLL.Services.ProjectService
                 new FilterExpression<Project>(p => p.Id == projectId),
                 includePath.ToArray()).FirstOrDefault();
 
+            if (project == null)
+            {
+                // ADD EXCEPTION
+                return;
+            }
+
             if (project.Accepted == true)
             {
                 // Reduce teacher projects
@@ -614,6 +652,7 @@ namespace DiplomaManager.BLL.Services.ProjectService
                 if (teacher == null)
                 {
                     // ADD EXCEPTION
+                    return;
                 }
                 Capacity capacity = teacher.Capacities
                         .Where(c => c.DegreeId == project.Student.Group.DegreeId && 
@@ -622,6 +661,7 @@ namespace DiplomaManager.BLL.Services.ProjectService
                 if (capacity == null)
                 {
                     // ADD EXCEPTION
+                    return;
                 }
 
                 capacity.AcceptedCount--;

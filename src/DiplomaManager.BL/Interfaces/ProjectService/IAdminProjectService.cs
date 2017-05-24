@@ -20,6 +20,8 @@ namespace DiplomaManager.BLL.Interfaces.ProjectService
 
         int CountProjects(ProjectFilter filter);
 
+        ProjectDTO GetProject(int projectId);
+
         /*
          
         // Methods for reciving filters
