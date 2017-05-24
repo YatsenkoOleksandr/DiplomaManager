@@ -35,19 +35,13 @@ namespace DiplomaManager.BLL.Services
 
         public FormedProjects Distribute(int degreeId, int graduationYear)
         {
-            FormedProjects formedProjects = new FormedProjects();            
+            FormedProjects formedProjects = new FormedProjects();
+
+            List<CapacityDTO> capacities;
 
             IEnumerable<StudentDTO> students = this.GetStudents(degreeId, graduationYear);
-            IEnumerable<TeacherDTO> teachers = this.GetTeachers(degreeId, graduationYear);
-            IEnumerable<ProjectDTO> projects = this.GetProjects(degreeId, graduationYear);
-
-            List<CapacityDTO> capacities = new List<CapacityDTO>();
-
-            // Get capacities
-            foreach(TeacherDTO t in teachers)
-            {
-                capacities.Add(t.Capacities.Where(c => c.DegreeId == degreeId && c.StudyingYear.Year == graduationYear).FirstOrDefault());
-            }
+            IEnumerable<TeacherDTO> teachers = this.GetTeachersAndCapacities(degreeId, graduationYear, out capacities);
+            IEnumerable<ProjectDTO> projects = this.GetProjects(degreeId, graduationYear);            
 
             formedProjects = this.DistributeStudents(degreeId, graduationYear, students, teachers, projects, capacities);
             formedProjects.ExistedUnchangedProjects = this.GetAcceptedProjects(degreeId, graduationYear).ToList();
@@ -55,6 +49,7 @@ namespace DiplomaManager.BLL.Services
 
             return formedProjects;
         }
+
 
         private IEnumerable<StudentDTO> GetStudents(int degreeId, int graduationYear)
         {
@@ -71,8 +66,10 @@ namespace DiplomaManager.BLL.Services
             return Mapper.Map<IEnumerable<Student>, IEnumerable<StudentDTO>>(students);
         }
 
-        private IEnumerable<TeacherDTO> GetTeachers(int degreeId, int graduationYear)
+
+        private IEnumerable<TeacherDTO> GetTeachersAndCapacities(int degreeId, int graduationYear, out List<CapacityDTO> capacities)
         {
+            capacities = new List<CapacityDTO>();
             List<IncludeExpression<Teacher>> teacherPaths = new List<IncludeExpression<Teacher>>();
             teacherPaths.Add(new IncludeExpression<Teacher>(pr => pr.PeopleNames));
             teacherPaths.Add(new IncludeExpression<Teacher>(pr => pr.Capacities));
@@ -83,8 +80,19 @@ namespace DiplomaManager.BLL.Services
                         c => c.StudyingYear.Year == graduationYear && c.DegreeId == degreeId)),
                 teacherPaths.ToArray());
 
+            // Get capacities
+            foreach (Teacher t in teachers)
+            {
+                capacities.Add(
+                    Mapper.Map<Capacity, CapacityDTO>(
+                        t.Capacities
+                        .Where(c => c.DegreeId == degreeId && c.StudyingYear.Year == graduationYear)
+                        .FirstOrDefault()));
+            }
+
             return Mapper.Map<IEnumerable<Teacher>, IEnumerable<TeacherDTO>>(teachers);
         }
+
 
         private IEnumerable<ProjectDTO> GetAcceptedProjects(int degreeId, int graduationYear)
         {
@@ -105,6 +113,7 @@ namespace DiplomaManager.BLL.Services
 
             return Mapper.Map<IEnumerable<Project>, IEnumerable<ProjectDTO>>(existedPairs);
         }
+
 
         private IEnumerable<ProjectDTO> GetProjects(int degreeId, int graduationYear)
         {
@@ -166,9 +175,9 @@ namespace DiplomaManager.BLL.Services
 
 
             // Distribute students with denied requests
-            IEnumerable<StudentDTO> deniedStudents = students
-                .Where(st => st.Projects.All(p => p.Accepted == false))
-                .OrderBy(st => st.Projects.Count);
+            IEnumerable<StudentDTO> deniedStudents = this.GetDeniedStudents(projects, students);
+
+            //foreach (ProjectDTO project in )
 
             List<TeacherDTO> freeTeachers = new List<TeacherDTO>();
             foreach(CapacityDTO cap in capacities)
@@ -182,7 +191,7 @@ namespace DiplomaManager.BLL.Services
             foreach(StudentDTO st in deniedStudents)
             {
                 List<TeacherDTO> potentialTeachers =
-                    freeTeachers.Where(t => t.Projects.All(pr => pr.StudentId != st.Id)).ToList();
+                    GetPotentialTeachers(freeTeachers, projects, st.Id);
 
                 int potentialCount = potentialTeachers.Count;
 
@@ -238,8 +247,8 @@ namespace DiplomaManager.BLL.Services
             }
 
             // Distribute other students
-            IEnumerable<StudentDTO> studentsWithoutRequests = 
-                students.Where(st => st.Projects == null || st.Projects.Count == 0);
+            IEnumerable<StudentDTO> studentsWithoutRequests =
+                GetStudentsWithoutRequests(students, projects);
 
             foreach(StudentDTO st in studentsWithoutRequests)
             {
@@ -269,6 +278,72 @@ namespace DiplomaManager.BLL.Services
             return distributed;
         }        
 
+
+        private IEnumerable<StudentDTO> GetDeniedStudents(
+            IEnumerable<ProjectDTO> projects, 
+            IEnumerable<StudentDTO> students)
+        {
+            // Key - student id; Value - count of not accepted requests
+            Dictionary<int, int> studentMap = new Dictionary<int, int>();
+            foreach(StudentDTO st in students)
+            {
+                IEnumerable<ProjectDTO> studentProjects =
+                    projects.Where(p => p.StudentId == st.Id);
+
+                if (studentProjects.Count() != 0 && studentProjects.All(p => p.Accepted == false))
+                {
+                    studentMap.Add(st.Id, studentProjects.Count());
+                }
+            }
+
+            IEnumerable<KeyValuePair<int, int>> pairs = studentMap.OrderBy(k => k.Value);
+
+            List<StudentDTO> deniedStudents = new List<StudentDTO>();
+            foreach(var key in pairs)
+            {
+                deniedStudents.Add(students.Where(s => s.Id == key.Key).FirstOrDefault());
+            }
+
+            return deniedStudents;
+        }
+
+
+        private List<TeacherDTO> GetPotentialTeachers(
+            IEnumerable<TeacherDTO> freeTeachers, 
+            IEnumerable<ProjectDTO> projects, 
+            int studentId)
+        {
+            List<TeacherDTO> potentialTeachers = new List<TeacherDTO>();
+            foreach(TeacherDTO t in freeTeachers)
+            {
+                var teacherProjects = projects.Where(p => p.TeacherId == t.Id);
+                if (teacherProjects.All(p => p.StudentId != studentId))
+                {
+                    potentialTeachers.Add(t);
+                }
+            }
+            return potentialTeachers;
+        }
+
+        private List<StudentDTO> GetStudentsWithoutRequests(
+            IEnumerable<StudentDTO> students, 
+            IEnumerable<ProjectDTO> projects)
+        {
+            List<StudentDTO> studentsWithoutRequests = new List<StudentDTO>();
+
+            foreach(StudentDTO student in students)
+            {
+                var studentProjects = projects.Where(p => p.StudentId == student.Id);
+                if (studentProjects == null || studentProjects.Count() == 0)
+                {
+                    studentsWithoutRequests.Add(student);
+                }
+            }
+
+            return studentsWithoutRequests;
+        }
+
+
         public void Save(int degreeId, int graduationYear, FormedProjects formedProjects)
         {
             foreach (ProjectDTO pr in formedProjects.NewProjects)
@@ -286,6 +361,8 @@ namespace DiplomaManager.BLL.Services
                 p.Accepted = pr.Accepted;
                 p.StudentId = pr.StudentId;
                 p.TeacherId = p.TeacherId;
+                p.CreationDate = DateTime.Now;
+                p.DevelopmentArea = Database.DevelopmentAreas.Get().FirstOrDefault();
             }
 
             Database.Save();

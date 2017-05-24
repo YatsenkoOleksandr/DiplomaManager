@@ -13,6 +13,7 @@ namespace DiplomaManager.BLL.Modules
             builder.RegisterType<TeacherProjectService>().As<ITeacherProjectService>();
             builder.RegisterType<ImportService>().As<IImportService>();
             builder.RegisterType<TranslationService>().As<ITranslationService>();
+            builder.RegisterType<DistributionService>().As<IDistributionService>();
         }
     }
 }
