@@ -10,8 +10,6 @@ namespace DiplomaManager.BLL.DTOs.StudentDTOs
         public int GroupId { get; set; }
         public GroupDTO Group { get; set; }
 
-        public List<ProjectDTO> Projects { get; set; }
-
         public StudentDTO() { }
 
         public StudentDTO(int id, string email, int groupId)

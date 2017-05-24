@@ -10,10 +10,6 @@ namespace DiplomaManager.BLL.DTOs.TeacherDTOs
     {
         public int? PositionId { get; set; }
 
-        public List<CapacityDTO> Capacities { get; set; }
-
-        public List<ProjectDTO> Projects { get; set; }
-
         public TeacherDTO() { }
 
         public TeacherDTO(string firstName, string lastName, string patronymic, int localeId, string email,
