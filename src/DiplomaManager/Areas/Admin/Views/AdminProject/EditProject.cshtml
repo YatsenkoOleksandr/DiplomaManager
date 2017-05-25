@@ -1,0 +1,46 @@
+﻿@model DiplomaManager.Areas.Admin.ViewModels.ProjectEditViewModel
+
+@using (Html.BeginForm("EditProject", "AdminProject"))
+{
+    @Html.Hidden("projectId", Model.Project.Id)
+
+    @Html.Label("Студент:")
+
+    <select name="studentId" id="studentId">
+        <option selected value="@Model.Project.StudentId">@Model.FreeStudents[Model.Project.StudentId]</option>
+        @for (int i = 0; i < Model.FreeStudents.Count; i++)
+        {
+            if (Model.FreeStudents.ElementAt(i).Key != Model.Project.StudentId)
+            {
+                <option value="@Model.FreeStudents.ElementAt(i).Key">@Model.FreeStudents.ElementAt(i).Value</option>
+            }
+        }
+    </select>
+
+    @Html.Label("Преподаватель:")
+
+    <select name="teacherId" id="teacherId">
+        <option selected value="@Model.Project.TeacherId">@Model.FreeTeachers[Model.Project.TeacherId]</option>
+        @for (int i = 0; i < Model.FreeTeachers.Count; i++)
+        {
+            if (Model.FreeTeachers.ElementAt(i).Key != Model.Project.TeacherId)
+            {
+                <option value="@Model.FreeTeachers.ElementAt(i).Key">@Model.FreeTeachers.ElementAt(i).Value</option>
+            }
+        }
+    </select>
+
+    @Html.Label("Принять: ")
+    <input id="Acceptance" type="checkbox" value="true" name="acceptance" 
+        @(Model.Project.Accepted == true ? "checked=\"checked\"" : "")
+        />
+        <input type="hidden" value="false" name="acceptance" />
+
+    <input class="btn btn-primary" type="submit" value="Применить" />
+}
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}

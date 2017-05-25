@@ -211,7 +211,41 @@
                 <th>@project.Degree</th>
                 <th>@project.GraduationYear</th>
                 <th>@project.PracticeJournalPassDate</th>
-                <th>@project.CreationalDate</th>                
+                <th>@project.CreationalDate</th> 
+                <th>
+                    @Html.ActionLink(
+                        "Удалить",
+                        "DeleteProject",
+                        "AdminProject",
+                        new
+                        {
+                            projectId = project.Id,
+                            A = Model.ProjectFilterViewModel.A,
+                            D = Model.ProjectFilterViewModel.D,
+                            Y = Model.ProjectFilterViewModel.Y,
+                            G = Model.ProjectFilterViewModel.G,
+                            J = Model.ProjectFilterViewModel.J,
+                            SD = Model.ProjectFilterViewModel.SD,
+                            SF = Model.ProjectFilterViewModel.SF,
+                            S = Model.ProjectFilterViewModel.S,
+                            T = Model.ProjectFilterViewModel.T,
+                            Ti = Model.ProjectFilterViewModel.Ti,
+                            Page = 1,
+                            Size = Model.ProjectFilterViewModel.Size
+                    }, null)
+                </th>
+                <th>
+                    @Html.ActionLink(
+                        "Редактировать",
+                        "EditProject",
+                        "AdminProject",
+                        new
+                        {
+                            projectId = project.Id,
+                            degreeId = project.DegreeId,
+                            graduationYear = project.GraduationYear
+                        }, null)
+                </th>
             </tr>
         }
     </tbody>

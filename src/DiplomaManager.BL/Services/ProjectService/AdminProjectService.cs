@@ -13,6 +13,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DiplomaManager.BLL.DTOs.StudentDTOs;
+using DiplomaManager.BLL.DTOs.TeacherDTOs;
+using DiplomaManager.DAL.Entities.StudentEntities;
+using DiplomaManager.DAL.Entities.TeacherEntities;
+using DiplomaManager.DAL.Entities.RequestEntities;
 
 namespace DiplomaManager.BLL.Services.ProjectService
 {    
@@ -298,6 +303,29 @@ namespace DiplomaManager.BLL.Services.ProjectService
 
         #endregion
 
+        public ProjectDTO GetProject(int projectId)
+        {
+            List<FilterExpression<Project>> filterExpressions =
+                new List<FilterExpression<Project>>();
+            filterExpressions.Add(new FilterExpression<Project>(p => p.Id == projectId));
+
+            List<IncludeExpression<Project>> includeExpressions =
+                new List<IncludeExpression<Project>>();
+            includeExpressions.Add(new IncludeExpression<Project>(p => p.Student));
+            includeExpressions.Add(new IncludeExpression<Project>(p => p.Student.PeopleNames));
+            includeExpressions.Add(new IncludeExpression<Project>(p => p.Student.Group));
+            includeExpressions.Add(new IncludeExpression<Project>(p => p.Student.Group.Degree));
+            includeExpressions.Add(new IncludeExpression<Project>(p => p.Student.Group.Degree.DegreeNames));
+            includeExpressions.Add(new IncludeExpression<Project>(p => p.Teacher));
+            includeExpressions.Add(new IncludeExpression<Project>(p => p.Teacher.PeopleNames));
+            includeExpressions.Add(new IncludeExpression<Project>(p => p.ProjectTitles));
+
+            Project project = Database.Projects.Get(filterExpressions.ToArray(), includeExpressions.ToArray())
+                .FirstOrDefault();
+
+            return Mapper.Map<Project, ProjectDTO>(project);
+        }
+
         public IEnumerable<ProjectDTO> GetProjects(PageInfo pageInfo, ProjectFilter filter)
         {
             IEnumerable<ProjectDTO> projects;
@@ -412,6 +440,235 @@ namespace DiplomaManager.BLL.Services.ProjectService
             projects = Mapper.Map<IEnumerable<Project>, IEnumerable<ProjectDTO>>(databaseProjects);
 
             return projects;
+        }
+
+#region Get free students and teachers
+
+        public IEnumerable<StudentDTO> GetFreeStudents(int degreeId, int graduationYear)
+        {
+            List<IncludeExpression<Student>> includePath = new List<IncludeExpression<Student>>();
+            includePath.Add(new IncludeExpression<Student>(s => s.PeopleNames));
+
+            FilterExpression<Student> filterExpression = new FilterExpression<Student>(
+                s => s.Group.GraduationYear == graduationYear && s.Group.DegreeId == degreeId && 
+                    (s.Projects.Count == 0 || s.Projects.All(p => p.Accepted == false)));
+
+            SortExpression<Student, string>[] sortExpressions =
+                new SortExpression<Student, string>[3];
+
+            sortExpressions[0] = new SortExpression<Student, string>(
+                s => s.PeopleNames.Where(pn => pn.Locale.Name == CultureConfiguration.DefaultLocaleName &&
+                    pn.NameKind == DAL.Entities.UserEnitites.NameKind.LastName).FirstOrDefault().Name,
+                System.ComponentModel.ListSortDirection.Ascending);
+            sortExpressions[1] = new SortExpression<Student, string>(
+                s => s.PeopleNames.Where(pn => pn.Locale.Name == CultureConfiguration.DefaultLocaleName &&
+                    pn.NameKind == DAL.Entities.UserEnitites.NameKind.FirstName).FirstOrDefault().Name,
+                System.ComponentModel.ListSortDirection.Ascending);
+
+            sortExpressions[2] = new SortExpression<Student, string>(
+                s => s.PeopleNames.Where(pn => pn.Locale.Name == CultureConfiguration.DefaultLocaleName &&
+                    pn.NameKind == DAL.Entities.UserEnitites.NameKind.Patronymic).FirstOrDefault().Name,
+                System.ComponentModel.ListSortDirection.Ascending);
+
+            IEnumerable<Student> students = Database.Students.Get(
+                new FilterExpression<Student>[] { filterExpression }, 
+                includePath.ToArray(),
+                null,
+                null,
+                sortExpressions.ToArray());
+
+            return Mapper.Map<IEnumerable<Student>, IEnumerable<StudentDTO>>(students);
+        }
+
+        public IEnumerable<TeacherDTO> GetFreeTeachers(int degreeId, int graduationYear)
+        {
+            List<IncludeExpression<Capacity>> includePath = new List<IncludeExpression<Capacity>>();
+            includePath.Add(new IncludeExpression<Capacity>(c => c.Teacher));
+            includePath.Add(new IncludeExpression<Capacity>(c => c.Teacher.PeopleNames));
+
+            FilterExpression<Capacity> filterExpression = new FilterExpression<Capacity>(
+                c => c.StudyingYear.Year == graduationYear && c.DegreeId == degreeId && c.AcceptedCount < c.Count);
+
+            SortExpression<Capacity, string>[] sortExpressions =
+                new SortExpression<Capacity, string>[3];
+
+            sortExpressions[0] = new SortExpression<Capacity, string>(
+                c => c.Teacher.PeopleNames.Where(pn => pn.Locale.Name == CultureConfiguration.DefaultLocaleName &&
+                    pn.NameKind == DAL.Entities.UserEnitites.NameKind.LastName).FirstOrDefault().Name,
+                System.ComponentModel.ListSortDirection.Ascending);
+            sortExpressions[1] = new SortExpression<Capacity, string>(
+                c => c.Teacher.PeopleNames.Where(pn => pn.Locale.Name == CultureConfiguration.DefaultLocaleName &&
+                    pn.NameKind == DAL.Entities.UserEnitites.NameKind.FirstName).FirstOrDefault().Name,
+                System.ComponentModel.ListSortDirection.Ascending);
+
+            sortExpressions[2] = new SortExpression<Capacity, string>(
+                c => c.Teacher.PeopleNames.Where(pn => pn.Locale.Name == CultureConfiguration.DefaultLocaleName &&
+                    pn.NameKind == DAL.Entities.UserEnitites.NameKind.Patronymic).FirstOrDefault().Name,
+                System.ComponentModel.ListSortDirection.Ascending);
+
+            IEnumerable<Capacity> capacities = Database.Capacities.Get(
+                new FilterExpression<Capacity>[] { filterExpression },
+                includePath.ToArray(),
+                null,
+                null,
+                sortExpressions.ToArray());
+
+            List<TeacherDTO> freeTeachers = new List<TeacherDTO>();
+
+            foreach(Capacity cap in capacities)
+            {
+                freeTeachers.Add(Mapper.Map<Teacher, TeacherDTO>(cap.Teacher));
+            }
+
+
+            return freeTeachers;
+        }
+
+#endregion
+
+        public void AcceptRequest(int projectId, int studentId, int teacherId, bool acceptance)
+        {            
+            Student student = Database.Students.Get(
+                    new FilterExpression<Student>(s => s.Id == studentId),
+                    new IncludeExpression<Student>[] { new IncludeExpression<Student>(s => s.Projects),
+                        new IncludeExpression<Student>(s => s.Group) })
+                    .FirstOrDefault();
+            if (student == null)
+            {
+                // ADD EXCEPTION
+
+                return;
+            }
+
+            int degreeId = student.Group.DegreeId;
+            int graduationYear = student.Group.GraduationYear;
+
+            Teacher teacher = Database.Teachers.Get(
+                    new FilterExpression<Teacher>(t => t.Id == teacherId),
+                    new IncludeExpression<Teacher>[] {
+                        new IncludeExpression<Teacher>(t => t.Capacities),
+                        new IncludeExpression<Teacher>(t => t.Projects) })
+                    .FirstOrDefault();
+            if (teacher == null)
+            {
+                // ADD EXCEPTION
+                return;
+            }
+
+            Capacity capacity = teacher.Capacities
+                    .Where(c => c.DegreeId == degreeId && c.StudyingYear.Year == graduationYear)
+                    .FirstOrDefault();
+            if (capacity == null)
+            {
+                // ADD EXCEPTION
+                return;
+            }
+
+            if (acceptance == true)
+            {                
+                if (student.Projects.Where(p => p.Id != projectId).Any(p => p.Accepted == null || p.Accepted == true))
+                {
+                    // Student has active or accepted requests
+                    // ADD EXCEPTION
+                    return;
+                }
+
+                // Check teacher                
+
+                if (capacity.AcceptedCount == capacity.Count)
+                {
+                    // Teacher doesn't have free units
+                    // ADD EXCEPTION
+                    return;
+                };
+            }
+            
+
+            List<IncludeExpression<Project>> includePath = new List<IncludeExpression<Project>>();
+            includePath.Add(new IncludeExpression<Project>(p => p.Teacher.Capacities));
+            includePath.Add(new IncludeExpression<Project>(p => p.Student.Group));
+
+            
+            Project editedProject = Database.Projects.Get(
+                new FilterExpression<Project>(p => p.Id == projectId),
+                includePath.ToArray()).FirstOrDefault();
+            if (editedProject == null)
+            {
+                // ADD EXCEPTION
+                return;
+            }
+
+            Teacher oldTeacher = editedProject.Teacher;                    
+            if (oldTeacher == null)
+            {
+                // ADD EXCEPTION
+                return;
+            }
+            Capacity oldCapacity = oldTeacher.Capacities
+                    .Where(c => c.DegreeId == degreeId && c.StudyingYear.Year == graduationYear)
+                    .FirstOrDefault();
+            if (oldCapacity == null)
+            {
+                // ADD EXCEPTION
+                return;
+            }
+
+            if (editedProject.Accepted == true)
+            {
+                oldCapacity.AcceptedCount--;
+            }
+
+            editedProject.StudentId = studentId;
+            editedProject.TeacherId = teacherId;
+            editedProject.Accepted = acceptance;
+            if(acceptance == true)
+            {
+                capacity.AcceptedCount++;
+            }
+            Database.Save();
+        }
+
+        public void DeleteProject(int projectId)
+        {
+            List<IncludeExpression<Project>> includePath = new List<IncludeExpression<Project>>();
+            includePath.Add(new IncludeExpression<Project>(p => p.Teacher.Capacities));
+            includePath.Add(new IncludeExpression<Project>(p => p.Student.Group));
+
+
+            Project project = Database.Projects.Get(
+                new FilterExpression<Project>(p => p.Id == projectId),
+                includePath.ToArray()).FirstOrDefault();
+
+            if (project == null)
+            {
+                // ADD EXCEPTION
+                return;
+            }
+
+            if (project.Accepted == true)
+            {
+                // Reduce teacher projects
+                Teacher teacher = project.Teacher;
+                if (teacher == null)
+                {
+                    // ADD EXCEPTION
+                    return;
+                }
+                Capacity capacity = teacher.Capacities
+                        .Where(c => c.DegreeId == project.Student.Group.DegreeId && 
+                            c.StudyingYear.Year == project.Student.Group.GraduationYear)
+                        .FirstOrDefault();
+                if (capacity == null)
+                {
+                    // ADD EXCEPTION
+                    return;
+                }
+
+                capacity.AcceptedCount--;
+
+            }
+            Database.Projects.Remove(projectId);
+            Database.Save();
         }
     }
 }
