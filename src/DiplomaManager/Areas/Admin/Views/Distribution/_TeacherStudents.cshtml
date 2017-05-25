@@ -1,0 +1,25 @@
+﻿@model IEnumerable<DiplomaManager.Areas.Admin.ViewModels.TeacherStudentsViewModel>
+<ul class="list-group">
+    @foreach (var ts in Model)
+    {
+        <li class="list-group-item">
+            <div class="panel-group">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" href="#@ts.GetHashCode()">@ts.Teacher.GetFullName(193)</a>
+                        </h4>
+                    </div>
+                    <div id="@ts.GetHashCode()" class="panel-collapse collapse in">
+                        <ul class="list-group">
+                            @foreach (var student in ts.Students)
+                            {
+                            <li class="list-group-item">@student.GetFullName()</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </li>
+    }
+</ul>

@@ -194,7 +194,7 @@ namespace DiplomaManager.BLL.Services
             if (groupsDb.Count > 0) //If Group exists in Db
                 return groupsDb.SingleOrDefault();
 
-            var group = new Group { Name = groupName };
+            var group = new Group { Name = groupName, GraduationYear = DateTime.Now.Year };
             var groupNumber = GetGroupNumber(groupName);
             group.DegreeId = groupNumber < 650 ? 1 : 2; // ??? Degree Detection
 

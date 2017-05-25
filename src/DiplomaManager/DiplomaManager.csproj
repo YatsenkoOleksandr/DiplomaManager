@@ -20,7 +20,6 @@
     <ProjectReference Include="..\DiplomaManager.BL\DiplomaManager.BLL.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\Admin\Views\Distribution\" />
     <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 </Project>
