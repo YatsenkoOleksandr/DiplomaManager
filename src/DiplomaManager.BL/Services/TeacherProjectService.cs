@@ -34,8 +34,6 @@ namespace DiplomaManager.BLL.Services
 
         public IEnumerable<ProjectDTO> GetDiplomaRequests(int teacherId, string query = "", int currentPage = 1, int itemsPerPage = 10)
         {
-            CreateProjectMapping();
-
             var filterExprs = FilterDiplomaRequests(teacherId, query);
 
             Database.ProjectTitles.Get(
@@ -175,23 +173,6 @@ namespace DiplomaManager.BLL.Services
             }
             else
                 throw new InvalidOperationException("Project not found");
-        }
-
-        private static void CreateProjectMapping()
-        {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<PeopleName, PeopleNameDTO>();
-
-                cfg.CreateMap<Teacher, TeacherDTO>();
-                cfg.CreateMap<Degree, DegreeDTO>();
-                cfg.CreateMap<Group, GroupDTO>();
-                cfg.CreateMap<Student, StudentDTO>();
-
-                cfg.CreateMap<Locale, LocaleDTO>();
-                cfg.CreateMap<ProjectTitle, ProjectTitleDTO>();
-                cfg.CreateMap<Project, ProjectDTO>();
-            });
         }
     }
 

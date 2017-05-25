@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using AutoMapper;
 using DiplomaManager.BLL.Configuration;
 using DiplomaManager.BLL.DTOs.RequestDTOs;
 using DiplomaManager.BLL.DTOs.StudentDTOs;
 using DiplomaManager.BLL.DTOs.TeacherDTOs;
-using DiplomaManager.BLL.DTOs.UserDTOs;
 using DiplomaManager.BLL.Interfaces;
 using DiplomaManager.DAL.Entities.ProjectEntities;
 using DiplomaManager.DAL.Entities.RequestEntities;
-using DiplomaManager.DAL.Entities.SharedEntities;
 using DiplomaManager.DAL.Entities.StudentEntities;
 using DiplomaManager.DAL.Entities.TeacherEntities;
 using DiplomaManager.DAL.Entities.UserEnitites;
@@ -38,27 +35,23 @@ namespace DiplomaManager.BLL.Services
 
         public DevelopmentAreaDTO GetDevelopmentArea(int id)
         {
-            Mapper.Initialize(cfg => cfg.CreateMap<DevelopmentArea, DevelopmentAreaDTO>());
             return Mapper.Map<DevelopmentArea, DevelopmentAreaDTO>(Database.DevelopmentAreas.Get(id));
         }
 
         public IEnumerable<DevelopmentAreaDTO> GetDevelopmentAreas()
         {
             var das = Database.DevelopmentAreas.Get();
-            Mapper.Initialize(cfg => cfg.CreateMap<DevelopmentArea, DevelopmentAreaDTO>());
             return Mapper.Map<IEnumerable<DevelopmentArea>, IEnumerable<DevelopmentAreaDTO>>(das);
         }
 
         public void AddDevelopmentArea(DevelopmentAreaDTO developmentArea)
         {
-            Mapper.Initialize(cfg => cfg.CreateMap<DevelopmentAreaDTO, DevelopmentArea>());
             Database.DevelopmentAreas.Add(Mapper.Map<DevelopmentAreaDTO, DevelopmentArea>(developmentArea));
             Database.Save();
         }
 
         public void UpdateDevelopmentArea(DevelopmentAreaDTO developmentArea)
         {
-            Mapper.Initialize(cfg => cfg.CreateMap<DevelopmentAreaDTO, DevelopmentArea>());
             Database.DevelopmentAreas.Update(Mapper.Map<DevelopmentAreaDTO, DevelopmentArea>(developmentArea));
             Database.Save();
         }
@@ -98,12 +91,6 @@ namespace DiplomaManager.BLL.Services
                 teachers = Database.Teachers.Get(filterExpressions.ToArray(), includePaths.ToArray()).ToList();
             }
 
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<PeopleName, PeopleNameDTO>();
-                cfg.CreateMap<Teacher, TeacherDTO>();
-            });
-
             var teacherDtos = Mapper.Map<IEnumerable<Teacher>, IEnumerable<TeacherDTO>>(teachers);
             return teacherDtos;
         }
@@ -122,13 +109,6 @@ namespace DiplomaManager.BLL.Services
                 degrees = Database.Degrees.Get(new IncludeExpression<Degree>(d => d.DegreeNames)).ToList();
             }
 
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<Degree, DegreeDTO>();
-                cfg.CreateMap<DegreeName, DegreeNameDTO>();
-                cfg.CreateMap<Capacity, CapacityDTO>();
-            });
-
             var degreeDtos = Mapper.Map<IEnumerable<Degree>, IEnumerable<DegreeDTO>>(degrees);
             return degreeDtos;
         }
@@ -138,7 +118,6 @@ namespace DiplomaManager.BLL.Services
             var capacity = Database.Capacities
                 .Get(new FilterExpression<Capacity>(c => c.DegreeId == degreeId && c.TeacherId == teacherId))
                 .SingleOrDefault();
-            Mapper.Initialize(cfg => cfg.CreateMap<Capacity, CapacityDTO>());
             var capacityDto = Mapper.Map<Capacity, CapacityDTO>(capacity);
             return capacityDto;
         }
@@ -147,26 +126,12 @@ namespace DiplomaManager.BLL.Services
         {
             var groups = Database.Groups.Get(new FilterExpression<Group>(g => g.DegreeId == degreeId));
 
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<Degree, DegreeDTO>();
-                cfg.CreateMap<Group, GroupDTO>();
-            });
-
             var groupDtos = Mapper.Map<IEnumerable<Group>, IEnumerable<GroupDTO>>(groups);
             return groupDtos;
         }
 
         public IEnumerable<StudentDTO> GetStudents(int groupId)
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<Degree, DegreeDTO>();
-                cfg.CreateMap<Group, GroupDTO>();
-                cfg.CreateMap<PeopleName, PeopleNameDTO>();
-                cfg.CreateMap<Student, StudentDTO>();
-            });
-
             var students = Database.Students.Get(new FilterExpression<Student>(s => s.GroupId == groupId), 
                 new [] { new IncludeExpression<Student>(s => s.PeopleNames)} );
             var studentsDtos = Mapper.Map<IEnumerable<Student>, IEnumerable<StudentDTO>>(students);
@@ -175,12 +140,6 @@ namespace DiplomaManager.BLL.Services
 
         public void CreateDiplomaRequest(StudentDTO studentDto, int daId, int teacherId, int localeId, string title)
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<GroupDTO, Group>();
-                cfg.CreateMap<StudentDTO, Student>();
-            });
-
             var studentRes = GetStudent(studentDto);
 
             var project = new Project
