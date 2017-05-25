@@ -92,5 +92,19 @@ namespace DiplomaManager.BLL.DTOs.UserDTOs
 
             return string.Concat(ln ?? "-", " ", fn?.Substring(0, 1) ?? "-", ". ", pn?.Substring(0, 1) ?? "-", ".");
         }
+
+        public override bool Equals(object obj)
+        {
+            var user = obj as UserDTO;
+            if (user == null) return false;
+            return (Id == user.Id);
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 23;
+            hash = hash * 31 + Id.GetHashCode();
+            return hash;
+        }
     }
 }

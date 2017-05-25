@@ -31,8 +31,14 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="Admin" asp-controller="Home" asp-action="Index">Главная</a></li>
-                    <li><a asp-area="Admin" asp-controller="Import" asp-action="Index">Импорт</a></li>
                     <li><a asp-area="Admin" asp-controller="DevelopmentArea" asp-action="Index">Предметные области</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Преддипломная практика <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a asp-area="Admin" asp-controller="Import" asp-action="Index">Импорт</a></li>
+                            <li><a asp-area="Admin" asp-controller="Distribution" asp-action="Index">Распределение</a></li>
+                        </ul>
+                    </li>
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>

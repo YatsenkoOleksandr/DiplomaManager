@@ -42,7 +42,7 @@ namespace DiplomaManager.BLL.Services
                     uow.Save();
                 }
 
-                var admin = new Admin
+                Admin admin = new Admin
                 {
                     Login = "admin",
                     Password = "admin",
@@ -53,13 +53,6 @@ namespace DiplomaManager.BLL.Services
                 //Add Admin User
                 if (uow.Admins.IsEmpty())
                 {
-                    admin = new Admin
-                    {
-                        Login = "admin",
-                        Password = "admin",
-                        Email = "admin@mail.ru",
-                        StatusCreationDate = DateTime.Now
-                    };
                     uow.Admins.Add(admin);
 
                     uow.Save();
@@ -69,7 +62,7 @@ namespace DiplomaManager.BLL.Services
                         CreationDate = DateTime.Now,
                         LocaleId = 193,
                         NameKind = NameKind.LastName,
-                        Name = "Телешев",
+                        Name = "Шевелев",
                         Users = new List<User> { admin }
                     });
 
@@ -119,7 +112,7 @@ namespace DiplomaManager.BLL.Services
                         {
                             CreationDate = DateTime.Now,
                             LocaleId = 193,
-                            Name = "Андрей",
+                            Name = "Игорь",
                             NameKind = NameKind.FirstName,
                             Users = new List<User> { teacher, admin }
                         });
@@ -129,7 +122,7 @@ namespace DiplomaManager.BLL.Services
                         {
                             CreationDate = DateTime.Now,
                             LocaleId = 53,
-                            Name = "Andrew",
+                            Name = "Igor",
                             NameKind = NameKind.FirstName,
                             Users = new List<User> { teacher, admin }
                         });
@@ -227,29 +220,43 @@ namespace DiplomaManager.BLL.Services
                 {
                     uow.Capacities.Add(new Capacity
                     {
+                        TeacherId = 1,
+                        Count = 100,
+                        DegreeId = 1,
+                        StudyingYear = DateTime.Now
+                    });
+                    uow.Capacities.Add(new Capacity
+                    {
+                        TeacherId = 1,
+                        Count = 75,
+                        DegreeId = 2,
+                        StudyingYear = DateTime.Now
+                    });
+                    uow.Capacities.Add(new Capacity
+                    {
                         TeacherId = 2,
-                        Count = 6,
+                        Count = 110,
                         DegreeId = 1,
                         StudyingYear = DateTime.Now
                     });
                     uow.Capacities.Add(new Capacity
                     {
                         TeacherId = 2,
-                        Count = 5,
+                        Count = 90,
                         DegreeId = 2,
                         StudyingYear = DateTime.Now
                     });
                     uow.Capacities.Add(new Capacity
                     {
                         TeacherId = 3,
-                        Count = 8,
+                        Count = 105,
                         DegreeId = 1,
                         StudyingYear = DateTime.Now
                     });
                     uow.Capacities.Add(new Capacity
                     {
                         TeacherId = 3,
-                        Count = 3,
+                        Count = 85,
                         DegreeId = 2,
                         StudyingYear = DateTime.Now
                     });
@@ -260,10 +267,24 @@ namespace DiplomaManager.BLL.Services
                 //Add Groups
                 if (uow.Groups.IsEmpty())
                 {
-                    uow.Groups.Add(new Group { Name = "641П", DegreeId = 1 });
-                    uow.Groups.Add(new Group { Name = "642П", DegreeId = 1 });
-                    uow.Groups.Add(new Group { Name = "631ПСТ", DegreeId = 1 });
-                    uow.Groups.Add(new Group { Name = "651П", DegreeId = 2 });
+                    uow.Groups.Add(new Group
+                    {
+                        Name = "641п",
+                        DegreeId = 1,
+                        GraduationYear = DateTime.Now.Year
+                    });
+                    uow.Groups.Add(new Group
+                    {
+                        Name = "642п",
+                        DegreeId = 1,
+                        GraduationYear = DateTime.Now.Year
+                    });
+                    uow.Groups.Add(new Group
+                    {
+                        Name = "631пст",
+                        DegreeId = 1,
+                        GraduationYear = DateTime.Now.Year
+                    });
 
                     uow.Save();
                 }
@@ -281,21 +302,21 @@ namespace DiplomaManager.BLL.Services
                             {
                                 Name = "Алексей",
                                 CreationDate = DateTime.Now,
-                                LocaleId = 193,
+                                LocaleId = 1,
                                 NameKind = NameKind.FirstName
                             },
                             new PeopleName
                             {
                                 Name = "Гаврилов",
                                 CreationDate = DateTime.Now,
-                                LocaleId = 193,
+                                LocaleId = 1,
                                 NameKind = NameKind.LastName
                             },
                             new PeopleName
                             {
                                 Name = "Андреевич",
                                 CreationDate = DateTime.Now,
-                                LocaleId = 193,
+                                LocaleId = 1,
                                 NameKind = NameKind.Patronymic
                             }
                         }

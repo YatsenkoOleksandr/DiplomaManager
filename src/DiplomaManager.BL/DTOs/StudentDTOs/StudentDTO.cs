@@ -1,5 +1,7 @@
 ﻿using System;
 using DiplomaManager.BLL.DTOs.UserDTOs;
+using DiplomaManager.BLL.DTOs.ProjectDTOs;
+using System.Collections.Generic;
 
 namespace DiplomaManager.BLL.DTOs.StudentDTOs
 {
