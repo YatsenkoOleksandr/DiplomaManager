@@ -2,8 +2,6 @@
   <PropertyGroup>
     <TargetFramework>net452</TargetFramework>
     <RuntimeIdentifier>win7-x86</RuntimeIdentifier>
-    <PreBuildEvent>C:\Windows\System32\inetsrv\appcmd recycle apppool ".NET v4.5"</PreBuildEvent>
-    <PostBuildEvent></PostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.3.0" />

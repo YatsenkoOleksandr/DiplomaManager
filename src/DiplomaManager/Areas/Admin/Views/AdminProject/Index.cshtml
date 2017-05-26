@@ -1,0 +1,267 @@
+﻿@using DiplomaManager.Areas.Admin.ViewModels
+@using System.ComponentModel
+@using DiplomaManager.BLL.Extensions.Admin
+@model DiplomaManager.Areas.Admin.ViewModels.AdminProjectsViewModel
+
+@{
+    ViewData["Title"] = "Редактирование заявок";
+}
+
+@{ 
+    ListSortDirection reverseDir = 
+        Model.ProjectFilterViewModel.SD == ListSortDirection.Ascending ? 
+            ListSortDirection.Descending : ListSortDirection.Ascending;
+    ListSortDirection ascDir = ListSortDirection.Ascending;
+}
+
+<h2>Редактирование заявок</h2>
+<hr />
+@Html.Partial("AdminProjectFilter", Model.ProjectFilterViewModel)
+<table id="AdminProjectInfo" class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @if(Model.ProjectFilterViewModel.SF == ProjectSortedField.Student)
+                {
+                    @Html.ActionLink(
+                        "Студент",
+                        "Index",
+                        "AdminProject",
+                        new ProjectFilterViewModel(ProjectSortedField.Student, reverseDir, Model.ProjectFilterViewModel),
+                        null);
+                }
+                else
+                {
+                    @Html.ActionLink(
+                        "Студент",
+                        "Index",
+                        "AdminProject",
+                        new ProjectFilterViewModel(ProjectSortedField.Student, ascDir, Model.ProjectFilterViewModel),
+                        null);
+                }
+            </th>
+            <th>
+                @if (Model.ProjectFilterViewModel.SF == ProjectSortedField.Teacher)
+                {
+                    @Html.ActionLink(
+                        "Преподаватель",
+                        "Index",
+                        "AdminProject",
+                        new ProjectFilterViewModel(ProjectSortedField.Teacher, reverseDir, Model.ProjectFilterViewModel),
+                        null);
+                }
+                else
+                {
+                    @Html.ActionLink(
+                        "Преподаватель",
+                        "Index",
+                        "AdminProject",
+                        new ProjectFilterViewModel(ProjectSortedField.Teacher, ascDir, Model.ProjectFilterViewModel),
+                        null);
+                }
+            </th>
+            <th>
+                @if (Model.ProjectFilterViewModel.SF == ProjectSortedField.Acceptance)
+                {
+                   @Html.ActionLink(
+                        "Статус",
+                        "Index",
+                        "AdminProject",
+                        new ProjectFilterViewModel(ProjectSortedField.Acceptance, reverseDir, Model.ProjectFilterViewModel),
+                        null);
+                }
+                else
+                {
+                    @Html.ActionLink(
+                        "Статус",
+                        "Index",
+                        "AdminProject",
+                        new ProjectFilterViewModel(ProjectSortedField.Acceptance, ascDir, Model.ProjectFilterViewModel),
+                        null);
+                }
+            </th>
+            <th>
+                @if (Model.ProjectFilterViewModel.SF == ProjectSortedField.Title)
+                {
+                    @Html.ActionLink(
+                        "Тема",
+                        "Index",
+                        "AdminProject",
+                        new ProjectFilterViewModel(ProjectSortedField.Title, reverseDir, Model.ProjectFilterViewModel),
+                        null);
+                }
+                else
+                {
+                    @Html.ActionLink(
+                        "Тема",
+                        "Index",
+                        "AdminProject",
+                        new ProjectFilterViewModel(ProjectSortedField.Title, ascDir, Model.ProjectFilterViewModel),
+                        null);
+                }
+            </th>
+            <th>
+                @if (Model.ProjectFilterViewModel.SF == ProjectSortedField.Group)
+                {
+                    @Html.ActionLink(
+                        "Группа",
+                        "Index",
+                        "AdminProject",
+                        new ProjectFilterViewModel(ProjectSortedField.Group, reverseDir, Model.ProjectFilterViewModel),
+                        null);
+                }
+                else
+                {
+                    @Html.ActionLink(
+                        "Группа",
+                        "Index",
+                        "AdminProject",
+                        new ProjectFilterViewModel(ProjectSortedField.Group, ascDir, Model.ProjectFilterViewModel),
+                        null);
+                }
+            </th>
+            <th>
+                @if (Model.ProjectFilterViewModel.SF == ProjectSortedField.Degree)
+                {
+                    @Html.ActionLink(
+                        "Образовательный уровень",
+                        "Index",
+                        "AdminProject",
+                        new ProjectFilterViewModel(ProjectSortedField.Degree, reverseDir, Model.ProjectFilterViewModel),
+                        null);
+                }
+                else
+                {
+                    @Html.ActionLink(
+                        "Образовательный уровень",
+                        "Index",
+                        "AdminProject",
+                        new ProjectFilterViewModel(ProjectSortedField.Degree, ascDir, Model.ProjectFilterViewModel),
+                        null);
+                }
+            </th>
+            <th>
+                @if (Model.ProjectFilterViewModel.SF == ProjectSortedField.GraduationYear)
+                {
+                    @Html.ActionLink(
+                        "Год выпуска",
+                        "Index",
+                        "AdminProject",
+                        new ProjectFilterViewModel(ProjectSortedField.GraduationYear, reverseDir, Model.ProjectFilterViewModel),
+                        null);
+                }
+                else
+                {
+                    @Html.ActionLink(
+                        "Год выпуска",
+                        "Index",
+                        "AdminProject",
+                        new ProjectFilterViewModel(ProjectSortedField.GraduationYear, ascDir, Model.ProjectFilterViewModel),
+                        null);
+                }
+            </th>
+            <th>
+                @if (Model.ProjectFilterViewModel.SF == ProjectSortedField.PracticeJournalPassedDate)
+                {
+                    @Html.ActionLink(
+                        "Дата сдачи журнала",
+                        "Index",
+                        "AdminProject",
+                        new ProjectFilterViewModel(ProjectSortedField.PracticeJournalPassedDate, reverseDir, Model.ProjectFilterViewModel),
+                        null);
+                }
+                else
+                {
+                    @Html.ActionLink(
+                        "Дата сдачи журнала",
+                        "Index",
+                        "AdminProject",
+                        new ProjectFilterViewModel(ProjectSortedField.PracticeJournalPassedDate, ascDir, Model.ProjectFilterViewModel),
+                        null);
+                }
+            </th>
+            <th>
+                @if (Model.ProjectFilterViewModel.SF == ProjectSortedField.CreationDate)
+                {
+                    @Html.ActionLink(
+                        "Дата создания",
+                        "Index",
+                        "AdminProject",
+                        new ProjectFilterViewModel(ProjectSortedField.CreationDate, reverseDir, Model.ProjectFilterViewModel),
+                        null);
+                }
+                else
+                {
+                    @Html.ActionLink(
+                        "Дата создания",
+                        "Index",
+                        "AdminProject",
+                        new ProjectFilterViewModel(ProjectSortedField.CreationDate, ascDir, Model.ProjectFilterViewModel),
+                        null);
+                }
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach(ProjectShortInfo project in Model.Projects)
+        {
+            <tr>
+                <th>@project.Student</th>
+                <th>@project.Teacher</th>
+                <th>@project.Acceptance</th>
+                <th>@project.Title</th>
+                <th>@project.Group</th>
+                <th>@project.Degree</th>
+                <th>@project.GraduationYear</th>
+                <th>@project.PracticeJournalPassDate</th>
+                <th>@project.CreationalDate</th>
+                <th>
+                    @Html.ActionLink(
+                        "Редактировать",
+                        "EditProject",
+                        "AdminProject",
+                        new
+                        {
+                            projectId = project.Id,
+                            degreeId = project.DegreeId,
+                            graduationYear = project.GraduationYear
+                        },
+                        new
+                        {
+                            @class = "btn btn-primary"
+                        })
+                </th>
+                <th>
+                    @Html.ActionLink(
+                        "Удалить",
+                        "DeleteProject",
+                        "AdminProject",
+                        new
+                        {
+                            projectId = project.Id,
+                            A = Model.ProjectFilterViewModel.A,
+                            D = Model.ProjectFilterViewModel.D,
+                            Y = Model.ProjectFilterViewModel.Y,
+                            G = Model.ProjectFilterViewModel.G,
+                            J = Model.ProjectFilterViewModel.J,
+                            SD = Model.ProjectFilterViewModel.SD,
+                            SF = Model.ProjectFilterViewModel.SF,
+                            S = Model.ProjectFilterViewModel.S,
+                            T = Model.ProjectFilterViewModel.T,
+                            Ti = Model.ProjectFilterViewModel.Ti,
+                            Page = 1,
+                            Size = Model.ProjectFilterViewModel.Size
+                        },
+                        new
+                        {
+                            @class = "btn btn-danger"
+                        })
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@Html.Partial("AdminProjectPagination", Model)

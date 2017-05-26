@@ -53,6 +53,8 @@ namespace DiplomaManager
             services.AddMvc()
                 .AddJsonOptions(ConfigureJsonOptions);
 
+            Modules.AutoMapperConfiguration.Configure();
+
             services.AddAuthorization(ConfigureAuthOptions);
 
             ApplicationContainer = services.AddAutofac(_configuration);

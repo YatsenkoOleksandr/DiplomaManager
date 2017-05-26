@@ -37,7 +37,7 @@ namespace DiplomaManager.BLL.DTOs.ProjectDTOs
         public string AcceptanceToString()
         {
             string res = string.Empty;
-            switch (Accepted)
+            switch(Accepted)
             {
                 case null:
                     res = "Заявка активна";
@@ -49,7 +49,7 @@ namespace DiplomaManager.BLL.DTOs.ProjectDTOs
 
                 case true:
                     res = "Заявка принята";
-                    break;
+                    break;                
             }
             return res;
         }
@@ -74,7 +74,7 @@ namespace DiplomaManager.BLL.DTOs.ProjectDTOs
             return (PracticeJournalPassed == null ? "-" : PracticeJournalPassed.ToString());
         }
 
-        public string TitleToString(int localeId = 193)
+        public string TitleToString(int localeId = 1)
         {
             string res;
             ProjectTitleDTO title = ProjectTitles.FirstOrDefault(t => t.LocaleId == localeId);

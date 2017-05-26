@@ -36,6 +36,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Преддипломная практика <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a asp-area="Admin" asp-controller="Import" asp-action="Index">Импорт</a></li>
+                            <li><a asp-area="Admin" asp-controller="AdminProject" asp-action="Index">Заявки</a></li>
                             <li><a asp-area="Admin" asp-controller="Distribution" asp-action="Index">Распределение</a></li>
                         </ul>
                     </li>
@@ -46,8 +47,8 @@
     </div>
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
+        <hr class="col-md-12" />
+        <footer class="col-md-12">
             <p>&copy; 2017 - DiplomaManager</p>
         </footer>
     </div>
