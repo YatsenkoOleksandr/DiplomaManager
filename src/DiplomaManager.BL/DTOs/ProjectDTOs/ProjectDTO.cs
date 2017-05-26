@@ -74,7 +74,7 @@ namespace DiplomaManager.BLL.DTOs.ProjectDTOs
             return (PracticeJournalPassed == null ? "-" : PracticeJournalPassed.ToString());
         }
 
-        public string TitleToString(int localeId = 193)
+        public string TitleToString(int localeId = 1)
         {
             string res;
             ProjectTitleDTO title = ProjectTitles.FirstOrDefault(t => t.LocaleId == localeId);

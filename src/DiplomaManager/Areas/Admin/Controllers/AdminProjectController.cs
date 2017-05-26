@@ -4,17 +4,15 @@ using DiplomaManager.BLL.DTOs.StudentDTOs;
 using DiplomaManager.BLL.DTOs.TeacherDTOs;
 using DiplomaManager.BLL.Extensions;
 using DiplomaManager.BLL.Extensions.Admin;
-using DiplomaManager.BLL.Interfaces;
 using DiplomaManager.BLL.Interfaces.ProjectService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DiplomaManager.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize("Admins")]
     public class AdminProjectController: Controller
     {
         private IAdminProjectService AdminProjectService { get; }
@@ -77,12 +75,12 @@ namespace DiplomaManager.Areas.Admin.Controllers
             }
 
             Dictionary<int, string> freeTeachers = new Dictionary<int, string>();
-            freeTeachers.Add(project.TeacherId, project.Teacher.GetFullName());
+            freeTeachers.Add(project.TeacherId, project.Teacher.GetFullName(193));
             foreach(TeacherDTO t in AdminProjectService.GetFreeTeachers(degreeId, graduationYear))
             {
                 if (t.Id != project.TeacherId)
                 {
-                    freeTeachers.Add(t.Id, t.GetFullName());
+                    freeTeachers.Add(t.Id, t.GetFullName(193));
                 }
             }
 

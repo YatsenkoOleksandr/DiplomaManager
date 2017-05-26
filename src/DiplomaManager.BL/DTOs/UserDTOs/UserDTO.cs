@@ -69,7 +69,7 @@ namespace DiplomaManager.BLL.DTOs.UserDTOs
             return nameDTO?.Name;
         }
 
-        public string GetFullName(int localeId = 193)
+        public string GetFullName(int localeId = 1)
         {
             string ln = this.GetLastName(localeId);
             string fn = this.GetFirstName(localeId);

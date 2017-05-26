@@ -66,13 +66,13 @@ namespace DiplomaManager.Modules
                         opt => opt.MapFrom(s => s.PracticeJournalPassDateToString()))
                     .ForMember(
                         d => d.Student,
-                        opt => opt.MapFrom(s => s.Student.GetFullName(193)))
+                        opt => opt.MapFrom(s => s.Student.GetFullName(1)))
                     .ForMember(
                         d => d.Teacher,
                         opt => opt.MapFrom(s => s.Teacher.GetFullName(193)))
                     .ForMember(
                         d => d.Title,
-                        opt => opt.MapFrom(s => s.TitleToString(193)));
+                        opt => opt.MapFrom(s => s.TitleToString(1)));
             });
         }
     }
