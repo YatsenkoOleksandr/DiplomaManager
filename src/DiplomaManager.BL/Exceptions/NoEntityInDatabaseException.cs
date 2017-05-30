@@ -11,5 +11,10 @@ namespace DiplomaManager.BLL.Exceptions
     /// </summary>
     public class NoEntityInDatabaseException: Exception
     {
+        public NoEntityInDatabaseException(): base()
+        { }
+
+        public NoEntityInDatabaseException(string message): base(message)
+        { }
     }
 }

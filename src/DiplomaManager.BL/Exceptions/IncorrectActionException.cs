@@ -11,5 +11,10 @@ namespace DiplomaManager.BLL.Exceptions
     /// </summary>
     public class IncorrectActionException: Exception
     {
+        public IncorrectActionException(): base()
+        { }
+
+        public IncorrectActionException(string message): base(message)
+        { }
     }
 }
