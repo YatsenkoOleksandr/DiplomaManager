@@ -5,52 +5,52 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DiplomaManager.BLL.DTOs.PredefenseDTOs;
-using DiplomaManager.BLL.DTOs.StudentDTOs;
+using DiplomaManager.BLL.Extensions.PredefenseService;
 using DiplomaManager.DAL.Interfaces;
 using DiplomaManager.BLL.Configuration;
 using DiplomaManager.BLL.Interfaces;
 
 namespace DiplomaManager.BLL.Services.PredefenseService
 {
-    public class StudentPredefenseService : IStudentPredefenseService
+    public class TeacherPredefenseService : ITeacherPredefenseService
     {
         private readonly IDiplomaManagerUnitOfWork _database;
         private readonly ILocaleConfiguration _cultureConfiguration;
         private readonly IEmailService _emailService;
 
-        public StudentPredefenseService(IDiplomaManagerUnitOfWork uow, ILocaleConfiguration configuration, IEmailService emailService)
+        public TeacherPredefenseService(IDiplomaManagerUnitOfWork uow, ILocaleConfiguration configuration, IEmailService emailService)
         {
             _database = uow;
             _cultureConfiguration = configuration;
             _emailService = emailService;
         }
 
-        public IEnumerable<DegreeDTO> GetDegrees()
-        {             
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<StudentDTO> GetFreeStudents(int groupId)
+        public IEnumerable<TeacherPredefensePeriod> GetTeacherPredefensePeriods(int teacherId)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<int> GetGraduationYears(int degreeId)
+        public IEnumerable<PredefenseDateDTO> GetTeacherPredefenseDates(int teacherId, int predefensePeriodId)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<GroupDTO> GetGroups(int degreeId, int graduationYear)
+        public PredefenseDTO GetPredefenseResults(int teacherId, int predefenseId)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<PredefenseDateDTO> GetPredefenseSchedule(int degreeId, int graduationYear)
+        public void SavePredefenseResults(int teacherId, PredefenseDTO predefense)
         {
             throw new NotImplementedException();
         }
 
-        public void SubmitPredefense(int studentId, int predefenseId)
+        public void SubmitToPredefenseDate(int teacherId, int predefenseDateId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DenySubmitToPredefenseDate(int teacherId, int predefenseDateId)
         {
             throw new NotImplementedException();
         }
