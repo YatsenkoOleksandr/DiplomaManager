@@ -8,6 +8,7 @@ using DiplomaManager.DAL.Entities.StudentEntities;
 using DiplomaManager.DAL.Entities.TeacherEntities;
 using DiplomaManager.DAL.Entities.UserEnitites;
 using DiplomaManager.DAL.Interfaces;
+using DiplomaManager.DAL.Entities.PredefenseEntities;
 
 namespace DiplomaManager.DAL.Repositories
 {
@@ -36,6 +37,17 @@ namespace DiplomaManager.DAL.Repositories
         private EFRepository<Capacity> _capacityRepository;
 
         private EFRepository<Group> _groupRepository;
+
+
+        private EFRepository<PredefensePeriod> _predefensePeriodRepository;
+
+        private EFRepository<PredefenseDate> _predefenseDateRepository;
+
+        private EFRepository<Predefense> _predefenseRepository;
+
+        private EFRepository<PredefenseTeacherCapacity> _predefenseTeacherCapacityRepository;
+
+        private EFRepository<Appointment> _appointmentRepository;
 
         public EFUnitOfWork(IDatabaseConnectionConfiguration databaseConnectionConfiguration)
         {
@@ -78,6 +90,24 @@ namespace DiplomaManager.DAL.Repositories
 
         public IRepository<Group> Groups
             => _groupRepository ?? (_groupRepository = new EFRepository<Group>(_db));
+
+
+
+        public IRepository<PredefensePeriod> PredefensePeriods 
+            => _predefensePeriodRepository ?? (_predefensePeriodRepository = new EFRepository<PredefensePeriod>(_db));
+
+        public IRepository<PredefenseDate> PredefenseDates
+            => _predefenseDateRepository ?? (_predefenseDateRepository = new EFRepository<PredefenseDate>(_db));
+
+        public IRepository<Predefense> Predefenses
+            => _predefenseRepository ?? (_predefenseRepository = new EFRepository<Predefense>(_db));
+
+        public IRepository<PredefenseTeacherCapacity> PredefenseTeacherCapacities
+            => _predefenseTeacherCapacityRepository ?? (_predefenseTeacherCapacityRepository = 
+                new EFRepository<PredefenseTeacherCapacity>(_db));
+
+        public IRepository<Appointment> Appointments
+            => _appointmentRepository ?? (_appointmentRepository = new EFRepository<Appointment>(_db));
 
         public void Save()
         {

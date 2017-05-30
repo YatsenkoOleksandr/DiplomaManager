@@ -10,7 +10,7 @@ namespace DiplomaManager.DAL.Entities.PredefenseEntities
         public int PredefenseDateId { get; set; }
         public PredefenseDate PredefenseDate { get; set; }
 
-        public int StudentId { get; set; }
+        public int? StudentId { get; set; }
         public Student Student { get; set; }        
         
         public bool? Passed { get; set; }  
