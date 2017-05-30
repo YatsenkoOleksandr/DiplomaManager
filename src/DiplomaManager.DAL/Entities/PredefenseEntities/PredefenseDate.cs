@@ -20,5 +20,7 @@ namespace DiplomaManager.DAL.Entities.PredefenseEntities
         public DateTime FinishTime { get; set; }
 
         public List<Predefense> Predefenses { get; set; }
+
+        public List<Appointment> Appointments { get; set; }
     }
 }
