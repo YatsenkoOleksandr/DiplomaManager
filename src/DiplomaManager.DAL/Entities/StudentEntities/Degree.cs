@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using DiplomaManager.DAL.Entities.RequestEntities;
+using DiplomaManager.DAL.Entities.PredefenseEntities;
 
 namespace DiplomaManager.DAL.Entities.StudentEntities
 {
@@ -15,6 +16,10 @@ namespace DiplomaManager.DAL.Entities.StudentEntities
         { get; set; }
 
         public List<Capacity> Capacities
+        { get; set; }
+
+
+        public List<PredefensePeriod> PredefensePeriods
         { get; set; }
     }
 }
