@@ -1,5 +1,5 @@
 ﻿using System.Data.Entity;
-using DiplomaManager.DAL.Entities.EventsEntities;
+using DiplomaManager.DAL.Entities.PredefenseEntities;
 using DiplomaManager.DAL.Entities.ProjectEntities;
 using DiplomaManager.DAL.Entities.RequestEntities;
 using DiplomaManager.DAL.Entities.SharedEntities;
@@ -36,11 +36,13 @@ namespace DiplomaManager.DAL.EF
         public DbSet<Capacity> Capacities { get; set; }
         public DbSet<DevelopmentArea> DevelopmentAreas { get; set; }
 
-        //Event
+        // Predefenses
+        public DbSet<PredefensePeriod> PredefensePeriods { get; set; }
+        public DbSet<PredefenseDate> PredefenseDates { get; set; }
+        public DbSet<Predefense> Predefenses { get; set; }
+        public DbSet<PredefenseTeacherCapacity> PredefenseTeacherCapacities { get; set; }        
         public DbSet<Appointment> Appointments { get; set; }
-        public DbSet<Committee> Committees { get; set; }
-        public DbSet<Defense> Defenses { get; set; }
-        public DbSet<UndergraduateDefense> UndergraduateDefenses { get; set; }
+        
 
         public DiplomaManagerContext(string connectionString)
             : base(connectionString)
@@ -59,10 +61,7 @@ namespace DiplomaManager.DAL.EF
                             i.MapRightKey("TeacherId");
                             i.ToTable("Interests");
                         });
-
-            modelBuilder.Entity<Defense>()
-                        .HasRequired(d => d.Student)
-                        .WithOptional(s => s.Defense);
+            
 
             modelBuilder.Entity<User>()
                         .HasMany(u => u.PeopleNames)
