@@ -11,6 +11,8 @@ using DiplomaManager.DAL.Entities.SharedEntities;
 using DiplomaManager.DAL.Entities.StudentEntities;
 using DiplomaManager.DAL.Entities.TeacherEntities;
 using DiplomaManager.DAL.Entities.UserEnitites;
+using DiplomaManager.DAL.Entities.PredefenseEntities;
+using DiplomaManager.BLL.DTOs.PredefenseDTOs;
 
 namespace DiplomaManager.Modules
 {
@@ -35,7 +37,14 @@ namespace DiplomaManager.Modules
                 config.CreateMap<ProjectTitle, ProjectTitleDTO>();
                 config.CreateMap<Project, ProjectDTO>();
                 config.CreateMap<Capacity, CapacityDTO>();
+                config.CreateMap<PredefensePeriod, PredefensePeriodDTO>();
+                config.CreateMap<PredefenseDate, PredefenseDateDTO>();
+                config.CreateMap<Predefense, PredefenseDTO>();
+                config.CreateMap<PredefenseTeacherCapacity, PredefenseTeacherCapacityDTO>();
+                config.CreateMap<Appointment, AppointmentDTO>();
 
+
+                // Map DTO to ViewModels
                 config.CreateMap<ProjectDTO, ProjectShortInfo>()
                    .ForMember(
                        d => d.Id,
