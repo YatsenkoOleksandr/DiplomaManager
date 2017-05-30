@@ -1,4 +1,5 @@
-﻿using DiplomaManager.DAL.Entities.ProjectEntities;
+﻿using DiplomaManager.DAL.Entities.PredefenseEntities;
+using DiplomaManager.DAL.Entities.ProjectEntities;
 using DiplomaManager.DAL.Entities.RequestEntities;
 using DiplomaManager.DAL.Entities.SharedEntities;
 using DiplomaManager.DAL.Entities.StudentEntities;
@@ -38,5 +39,15 @@ namespace DiplomaManager.DAL.Interfaces
         IRepository<Capacity> Capacities { get; }
 
         IRepository<Group> Groups { get; }
+
+        IRepository<PredefensePeriod> PredefensePeriods { get; }
+
+        IRepository<PredefenseDate> PredefenseDates { get; }
+
+        IRepository<Predefense> Predefenses { get; }
+
+        IRepository<PredefenseTeacherCapacity> PredefenseTeacherCapacities { get; }
+
+        IRepository<Appointment> Appointments { get; }
     }
 }
