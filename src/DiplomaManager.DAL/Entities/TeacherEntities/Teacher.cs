@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using DiplomaManager.DAL.Entities.ProjectEntities;
 using DiplomaManager.DAL.Entities.RequestEntities;
 using DiplomaManager.DAL.Entities.UserEnitites;
+using DiplomaManager.DAL.Entities.PredefenseEntities;
 
 namespace DiplomaManager.DAL.Entities.TeacherEntities
 {
@@ -21,5 +22,10 @@ namespace DiplomaManager.DAL.Entities.TeacherEntities
 
         public List<Project> Projects
         { get; set; }
+
+
+        public List<Appointment> Appointments { get; set; }
+
+        public List<PredefenseDate> PredefenseDates { get; set; }
     }
 }

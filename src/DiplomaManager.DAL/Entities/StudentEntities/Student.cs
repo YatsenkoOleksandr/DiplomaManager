@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using DiplomaManager.DAL.Entities.EventsEntities;
 using DiplomaManager.DAL.Entities.ProjectEntities;
 using DiplomaManager.DAL.Entities.UserEnitites;
+using DiplomaManager.DAL.Entities.PredefenseEntities;
 
 namespace DiplomaManager.DAL.Entities.StudentEntities
 {
@@ -14,12 +14,8 @@ namespace DiplomaManager.DAL.Entities.StudentEntities
         { get; set; }
 
         public List<Project> Projects
-        { get; set; }
+        { get; set; }       
 
-        public List<UndergraduateDefense> UndergraduateDefenses
-        { get; set; }
-
-        public Defense Defense
-        { get; set; }
+        public List<Predefense> Predefenses { get; set; }
     }
 }
