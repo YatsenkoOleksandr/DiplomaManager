@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DiplomaManager.BLL.DTOs.StudentDTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,11 @@ namespace DiplomaManager.BLL.DTOs.PredefenseDTOs
 
         public int PredefenseDateId { get; set; }        
 
-        public int? StudentId { get; set; }        
+        public int? StudentId { get; set; }    
+        
+        public StudentDTO Student { get; set; }
+
+        public DateTime Time { get; set; }
 
         public bool? Passed { get; set; }
 
