@@ -9,6 +9,10 @@ using DiplomaManager.BLL.Extensions.PredefenseService;
 using DiplomaManager.DAL.Interfaces;
 using DiplomaManager.BLL.Configuration;
 using DiplomaManager.BLL.Interfaces;
+using DiplomaManager.BLL.Exceptions;
+using DiplomaManager.DAL.Entities.PredefenseEntities;
+using DiplomaManager.DAL.Utils;
+using AutoMapper;
 
 namespace DiplomaManager.BLL.Services.PredefenseService
 {
@@ -16,7 +20,7 @@ namespace DiplomaManager.BLL.Services.PredefenseService
     {
         private readonly IDiplomaManagerUnitOfWork _database;
         private readonly ILocaleConfiguration _cultureConfiguration;
-        private readonly IEmailService _emailService;
+        private readonly IEmailService _emailService;        
 
         public TeacherPredefenseService(IDiplomaManagerUnitOfWork uow, ILocaleConfiguration configuration, IEmailService emailService)
         {
@@ -25,34 +29,300 @@ namespace DiplomaManager.BLL.Services.PredefenseService
             _emailService = emailService;
         }
 
+        #region Private Methods
+        private void CheckTeacherExistance(int teacherId)
+        {
+            if (_database.Teachers.Get(teacherId) == null)
+            {
+                throw new NoEntityInDatabaseException("Не найдено указанного преподавателя.");
+            }
+        }
+
+        private void CheckPredefensePeriodExistance(int predefensePeriodId)
+        {
+            if (_database.PredefensePeriods.Get(predefensePeriodId) == null)
+            {
+                throw new NoEntityInDatabaseException("Не найдено указанного периода предзащит.");
+            }
+        }
+
+        private void CheckPredefenseDateExistance(int predefenseDateId)
+        {
+            if (_database.PredefenseDates.Get(predefenseDateId) == null)
+            {
+                throw new NoEntityInDatabaseException("Не найдено указанный день проведения предзащиты.");
+            }
+        }
+
+        private void CheckPredefenseExistance(int predefenseId)
+        {
+            if (_database.Predefenses.Get(predefenseId) == null)
+            {
+                throw new NoEntityInDatabaseException("Не найдено указанного времени проведения предзащиты.");
+            }
+        }
+
+        private void CheckTeacherAccessToPredefensePeriod(int teacherId, int predefensePeriodId)
+        {
+            IEnumerable<PredefenseTeacherCapacity> capacities =
+                _database.PredefenseTeacherCapacities.Get(
+                    new FilterExpression<PredefenseTeacherCapacity>(ptc =>
+                    ptc.TeacherId == teacherId && ptc.PredefensePeriodId == predefensePeriodId));
+            if (capacities.Count() == 0)
+            {
+                throw new IncorrectActionException("Преподаватель не имеет доступа к периоду проведения предзащит.");
+            }
+        }
+        
+
+        private void CheckTeacherAccessToPredefense(int teacherId, int predefenseId)
+        {
+            Predefense pred = _database.Predefenses.Get(predefenseId);
+
+            CheckPredefenseDateExistance(pred.PredefenseDateId);
+            PredefenseDate predDate = _database.PredefenseDates.Get(pred.PredefenseDateId);
+
+            Appointment appointment = _database.Appointments.Get(new FilterExpression<Appointment>(ap => 
+                    ap.PredefenseDateId == predDate.Id && ap.TeacherId == teacherId))
+                .FirstOrDefault();
+            if (appointment == null)
+            {
+                throw new IncorrectActionException("Преподаватель не имеет доступа к редактированию результатов предзащиты.");
+            }
+        }
+
+#endregion
+
         public IEnumerable<TeacherPredefensePeriod> GetTeacherPredefensePeriods(int teacherId)
         {
-            throw new NotImplementedException();
+            // Check, if exists teacher
+            CheckTeacherExistance(teacherId);
+
+            // Get teacher capacities and periods, ordered by start and finish dates
+            IEnumerable<PredefenseTeacherCapacity> teacherCapacities = _database.PredefenseTeacherCapacities.Get(
+                new FilterExpression<PredefenseTeacherCapacity>[]
+                {
+                    new FilterExpression<PredefenseTeacherCapacity>(ptc => ptc.TeacherId == teacherId)
+                },
+                new IncludeExpression<PredefenseTeacherCapacity>[]
+                {
+                    new IncludeExpression<PredefenseTeacherCapacity>(ptc => ptc.PredefensePeriod)
+                },
+                null,
+                null,
+                new SortExpression<PredefenseTeacherCapacity, DateTime>[]
+                {
+                    new SortExpression<PredefenseTeacherCapacity, DateTime>(
+                        ptc => ptc.PredefensePeriod.StartDate,
+                        System.ComponentModel.ListSortDirection.Descending),
+                    new SortExpression<PredefenseTeacherCapacity, DateTime>(
+                        ptc => ptc.PredefensePeriod.FinishDate,
+                        System.ComponentModel.ListSortDirection.Descending)
+                });
+
+            List<TeacherPredefensePeriod> teacherPeriods = new List<TeacherPredefensePeriod>();
+
+            foreach(var ptc in teacherCapacities)
+            {
+                // Get from capacity period and add to teacher predefense period
+                TeacherPredefensePeriod teacherPeriod = new TeacherPredefensePeriod();
+                teacherPeriod.PredefenseCapacity = Mapper.Map<PredefenseTeacherCapacity, PredefenseTeacherCapacityDTO>(ptc);
+                teacherPeriod.PredefensePeriod = Mapper.Map<PredefensePeriod, PredefensePeriodDTO>(ptc.PredefensePeriod);
+                teacherPeriods.Add(teacherPeriod);
+            }
+            return teacherPeriods;
         }
 
         public IEnumerable<PredefenseDateDTO> GetTeacherPredefenseDates(int teacherId, int predefensePeriodId)
         {
-            throw new NotImplementedException();
+            List<PredefenseDateDTO> predefenseDates = new List<PredefenseDateDTO>();
+
+            CheckTeacherExistance(teacherId);
+            CheckPredefensePeriodExistance(predefensePeriodId);
+            CheckTeacherAccessToPredefensePeriod(teacherId, predefensePeriodId);
+
+            // Get teacher appointments, firstly recieve newer dates, that have sorted predefense by time 
+            IEnumerable<Appointment> appointments = _database.Appointments.Get(
+                new FilterExpression<Appointment>[]
+                {
+                    new FilterExpression<Appointment>(ap => 
+                    ap.TeacherId == teacherId && ap.PredefenseDate.PredefensePeriodId == predefensePeriodId)
+                },
+                new IncludeExpression<Appointment>[]
+                {
+                    new IncludeExpression<Appointment>(ap => ap.PredefenseDate.Predefenses)
+                },
+                null,
+                null,
+                new SortExpression<Appointment, DateTime>[]
+                {
+                    new SortExpression<Appointment, DateTime>(
+                        ap => ap.PredefenseDate.Date,
+                        System.ComponentModel.ListSortDirection.Descending),
+                    new SortExpression<Appointment, DateTime>(
+                        ap => ap.PredefenseDate.BeginTime,
+                        System.ComponentModel.ListSortDirection.Ascending)
+                });
+
+            foreach (var app in appointments)
+            {
+                PredefenseDateDTO date = new PredefenseDateDTO()
+                {
+                    Id = app.PredefenseDateId,
+                    PredefensePeriodId = app.PredefenseDate.PredefensePeriodId,
+                    Date = app.PredefenseDate.Date,
+                    BeginTime = app.PredefenseDate.BeginTime,
+                    FinishTime = app.PredefenseDate.FinishTime,
+                    Predefenses = new List<PredefenseDTO>()
+                };
+
+                // Get predefenses with student and group order by time
+                IEnumerable<Predefense> predefenses = _database.Predefenses.Get(
+                    new FilterExpression<Predefense>[]
+                    {
+                        new FilterExpression<Predefense>(pr => pr.PredefenseDateId == app.PredefenseDateId)
+                    },
+                    new IncludeExpression<Predefense>[]
+                    {
+                        new IncludeExpression<Predefense>(pr => pr.Student.PeopleNames),
+                        new IncludeExpression<Predefense>(pr => pr.Student.Group)
+                    },
+                    null,
+                    null,
+                    new SortExpression<Predefense, DateTime>(
+                        pr => pr.Time, System.ComponentModel.ListSortDirection.Ascending));
+
+                foreach(var pr in predefenses)
+                {
+                    date.Predefenses.Add(Mapper.Map<Predefense, PredefenseDTO>(pr));
+                }
+                predefenseDates.Add(date);
+            }
+
+            return predefenseDates;
         }
 
         public PredefenseDTO GetPredefenseResults(int teacherId, int predefenseId)
         {
-            throw new NotImplementedException();
+            CheckTeacherExistance(teacherId);
+            CheckPredefenseExistance(predefenseId);
+
+            Predefense predefense = _database.Predefenses.Get(
+                new FilterExpression<Predefense>(p => p.Id == predefenseId),
+                new IncludeExpression<Predefense>[]
+                {
+                    new IncludeExpression<Predefense>(p => p.Student),
+                    new IncludeExpression<Predefense>(p => p.Student.Group),
+                    new IncludeExpression<Predefense>(p => p.Student.PeopleNames)
+                }).FirstOrDefault();
+
+            return Mapper.Map<Predefense, PredefenseDTO>(predefense);
         }
 
         public void SavePredefenseResults(int teacherId, PredefenseDTO predefense)
         {
-            throw new NotImplementedException();
+            CheckTeacherExistance(teacherId);
+            CheckPredefenseExistance(predefense.Id);
+            CheckTeacherAccessToPredefense(teacherId, predefense.Id);
+
+            Predefense databasePredefense = _database.Predefenses.Get(predefense.Id);
+
+            // Editing and saving results
+            databasePredefense.Passed = predefense.Passed;
+            databasePredefense.ControlSigned = predefense.ControlSigned;
+            databasePredefense.EconomySigned = predefense.EconomySigned;
+            databasePredefense.PresentationReadiness = predefense.PresentationReadiness;
+            databasePredefense.ReportExist = predefense.ReportExist;
+            databasePredefense.SafetySigned = predefense.SafetySigned;
+            databasePredefense.SoftwareReadiness = predefense.SoftwareReadiness;
+            databasePredefense.WritingReadiness = predefense.WritingReadiness;
+
+            _database.Save();
         }
 
         public void SubmitToPredefenseDate(int teacherId, int predefenseDateId)
         {
-            throw new NotImplementedException();
+            CheckTeacherExistance(teacherId);
+
+            PredefenseDate predefenseDate = _database.PredefenseDates.Get(predefenseDateId);
+            if (predefenseDate == null)
+            {
+                throw new NoEntityInDatabaseException("Не найдено указанный день проведения предзащиты.");
+            }
+
+            PredefenseTeacherCapacity capacity = _database.PredefenseTeacherCapacities.Get(
+                new FilterExpression<PredefenseTeacherCapacity>(ptc =>
+                    ptc.PredefensePeriodId == predefenseDate.PredefensePeriodId &&
+                    ptc.TeacherId == teacherId)).FirstOrDefault();
+            if (capacity == null)
+            {
+                throw new IncorrectActionException("У преподавателя нет назначения посещать предзащиты в данном периоде.");
+            }
+
+            if (capacity.Total == capacity.Count)
+            {
+                throw new IncorrectActionException("У преподавателя исчерпан лимит посещения предзащит.");
+            }
+
+            // Check if teacher is free at predefense date
+            IEnumerable<Appointment> appointments = _database.Appointments.Get(
+                new FilterExpression<Appointment>(ap => ap.TeacherId == teacherId && 
+                    ap.PredefenseDate.Date.Date == predefenseDate.Date.Date),
+                new IncludeExpression<Appointment>[]
+                {
+                    new IncludeExpression<Appointment>(app => app.PredefenseDate)
+                });
+            
+            foreach(var app in appointments)
+            {
+                // Teacher has predefense at same time
+                if (!(app.PredefenseDate.FinishTime < predefenseDate.BeginTime || 
+                    app.PredefenseDate.BeginTime > predefenseDate.FinishTime))
+                {
+                    throw new IncorrectActionException("У преподавателя есть предзащита в то же самое время.");
+                }
+            }
+
+            // Teacher can visit predefense
+            _database.Appointments.Add(new Appointment()
+            {
+                PredefenseDateId = predefenseDateId,
+                TeacherId = teacherId
+            });
+            capacity.Count++;
+            _database.PredefenseTeacherCapacities.Update(capacity);
+            _database.Save();
         }
 
         public void DenySubmitToPredefenseDate(int teacherId, int predefenseDateId)
         {
-            throw new NotImplementedException();
+            CheckTeacherExistance(teacherId);
+            PredefenseDate predefenseDate = _database.PredefenseDates.Get(predefenseDateId);
+            if (predefenseDate == null)
+            {
+                throw new NoEntityInDatabaseException("Не найдено указанный день проведения предзащиты.");
+            }
+
+            Appointment appointment = _database.Appointments.Get(new FilterExpression<Appointment>(
+                ap => ap.TeacherId == teacherId && ap.PredefenseDateId == predefenseDateId)).FirstOrDefault();            
+            if (appointment == null)
+            {
+                throw new IncorrectActionException("Преподаватель не был записан на указанный день предзащит.");
+            }
+
+            PredefenseTeacherCapacity capacity = _database.PredefenseTeacherCapacities.Get(
+                new FilterExpression<PredefenseTeacherCapacity>(
+                    ptc => ptc.PredefensePeriodId == predefenseDate.PredefensePeriodId && ptc.TeacherId == teacherId))
+                .FirstOrDefault();
+            if (capacity == null)
+            {
+                throw new NoEntityInDatabaseException("Не найдено назначения преподавателя на присутствие в данном периоде предзащит.");
+            }
+
+            capacity.Count--;
+            _database.PredefenseTeacherCapacities.Update(capacity);
+            _database.Appointments.Remove(appointment);
+            _database.Save();
         }
     }
 }

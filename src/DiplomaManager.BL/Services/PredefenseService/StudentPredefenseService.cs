@@ -291,6 +291,7 @@ namespace DiplomaManager.BLL.Services.PredefenseService
             }
 
             predefense.StudentId = studentId;
+            _database.Predefenses.Update(predefense);
             _database.Save();
         }
     }
