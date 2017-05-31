@@ -1,7 +1,9 @@
 ﻿using Autofac;
 using DiplomaManager.BLL.Interfaces;
+using DiplomaManager.BLL.Interfaces.PredefenseService;
 using DiplomaManager.BLL.Interfaces.ProjectService;
 using DiplomaManager.BLL.Services;
+using DiplomaManager.BLL.Services.PredefenseService;
 using DiplomaManager.BLL.Services.ProjectService;
 
 namespace DiplomaManager.BLL.Modules
@@ -18,7 +20,9 @@ namespace DiplomaManager.BLL.Modules
             builder.RegisterType<ImportService>().As<IImportService>();
             builder.RegisterType<TranslationService>().As<ITranslationService>();
             builder.RegisterType<DistributionService>().As<IDistributionService>();
-            builder.RegisterType<ExportService>().As<IExportService>();
+            builder.RegisterType<StudentPredefenseService>().As<IStudentPredefenseService>();
+            builder.RegisterType<TeacherPredefenseService>().As<ITeacherPredefenseService>();
+            builder.RegisterType<AdminPredefenseService>().As<IAdminPredefenseService>();
         }
     }
 }
