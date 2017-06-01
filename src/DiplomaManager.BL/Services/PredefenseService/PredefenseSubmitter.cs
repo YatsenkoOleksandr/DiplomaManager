@@ -16,7 +16,7 @@ namespace DiplomaManager.BLL.Services.PredefenseService
     /// <summary>
     /// Class desribes logic of submition and denying submition to predefense
     /// </summary>
-    public class PredefenseSubmitter
+    class PredefenseSubmitter
     {
         private readonly IDiplomaManagerUnitOfWork _database;
         private readonly ILocaleConfiguration _cultureConfiguration;

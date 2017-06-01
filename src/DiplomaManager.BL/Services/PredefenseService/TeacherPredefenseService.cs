@@ -133,73 +133,15 @@ namespace DiplomaManager.BLL.Services.PredefenseService
             return teacherPeriods;
         }
 
-        public IEnumerable<PredefenseDateDTO> GetTeacherPredefenseDates(int teacherId, int predefensePeriodId)
-        {
-            List<PredefenseDateDTO> predefenseDates = new List<PredefenseDateDTO>();
-
+        public IEnumerable<PredefenseSchedule> GetTeacherPredefenseSchedule(int teacherId, int predefensePeriodId)
+        {            
             CheckTeacherExistance(teacherId);
             CheckPredefensePeriodExistance(predefensePeriodId);
             CheckTeacherAccessToPredefensePeriod(teacherId, predefensePeriodId);
 
-            // Get teacher appointments, firstly recieve newer dates, that have sorted predefense by time 
-            IEnumerable<Appointment> appointments = _database.Appointments.Get(
-                new FilterExpression<Appointment>[]
-                {
-                    new FilterExpression<Appointment>(ap => 
-                    ap.TeacherId == teacherId && ap.PredefenseDate.PredefensePeriodId == predefensePeriodId)
-                },
-                new IncludeExpression<Appointment>[]
-                {
-                    new IncludeExpression<Appointment>(ap => ap.PredefenseDate.Predefenses)
-                },
-                null,
-                null,
-                new SortExpression<Appointment, DateTime>[]
-                {
-                    new SortExpression<Appointment, DateTime>(
-                        ap => ap.PredefenseDate.Date,
-                        System.ComponentModel.ListSortDirection.Descending),
-                    new SortExpression<Appointment, DateTime>(
-                        ap => ap.PredefenseDate.BeginTime,
-                        System.ComponentModel.ListSortDirection.Ascending)
-                });
+            PredefenseScheduler scheduler = new PredefenseScheduler(_database, _cultureConfiguration, _emailService);
 
-            foreach (var app in appointments)
-            {
-                PredefenseDateDTO date = new PredefenseDateDTO()
-                {
-                    Id = app.PredefenseDateId,
-                    PredefensePeriodId = app.PredefenseDate.PredefensePeriodId,
-                    Date = app.PredefenseDate.Date,
-                    BeginTime = app.PredefenseDate.BeginTime,
-                    FinishTime = app.PredefenseDate.FinishTime,
-                    Predefenses = new List<PredefenseDTO>()
-                };
-
-                // Get predefenses with student and group order by time
-                IEnumerable<Predefense> predefenses = _database.Predefenses.Get(
-                    new FilterExpression<Predefense>[]
-                    {
-                        new FilterExpression<Predefense>(pr => pr.PredefenseDateId == app.PredefenseDateId)
-                    },
-                    new IncludeExpression<Predefense>[]
-                    {
-                        new IncludeExpression<Predefense>(pr => pr.Student.PeopleNames),
-                        new IncludeExpression<Predefense>(pr => pr.Student.Group)
-                    },
-                    null,
-                    null,
-                    new SortExpression<Predefense, DateTime>(
-                        pr => pr.Time, System.ComponentModel.ListSortDirection.Ascending));
-
-                foreach(var pr in predefenses)
-                {
-                    date.Predefenses.Add(Mapper.Map<Predefense, PredefenseDTO>(pr));
-                }
-                predefenseDates.Add(date);
-            }
-
-            return predefenseDates;
+            return scheduler.GetTeacherPredefenseSchedule(teacherId, predefensePeriodId);            
         }
 
         public PredefenseDTO GetPredefenseResults(int teacherId, int predefenseId)
