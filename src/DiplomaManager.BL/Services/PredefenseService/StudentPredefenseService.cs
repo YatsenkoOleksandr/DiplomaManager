@@ -14,6 +14,9 @@ using DiplomaManager.DAL.Entities.StudentEntities;
 using AutoMapper;
 using DiplomaManager.BLL.Exceptions;
 using DiplomaManager.DAL.Entities.PredefenseEntities;
+using DiplomaManager.BLL.Extensions.PredefenseService;
+using DiplomaManager.DAL.Entities.TeacherEntities;
+using DiplomaManager.BLL.DTOs.TeacherDTOs;
 
 namespace DiplomaManager.BLL.Services.PredefenseService
 {
@@ -142,7 +145,7 @@ namespace DiplomaManager.BLL.Services.PredefenseService
             return Mapper.Map<IEnumerable<Group>, IEnumerable<GroupDTO>>(groups);
         }
 
-        public IEnumerable<PredefenseDateDTO> GetPredefenseSchedule(int degreeId, int graduationYear)
+        public IEnumerable<PredefenseSchedule> GetPredefenseSchedule(int degreeId, int graduationYear)
         {
             // Check if exist degree
             {
@@ -153,7 +156,7 @@ namespace DiplomaManager.BLL.Services.PredefenseService
             }
 
             // Predefense schedule (result)
-            List<PredefenseDateDTO> predefenseSchedule = new List<PredefenseDateDTO>();
+            List<PredefenseSchedule> predefenseSchedules = new List<PredefenseSchedule>();
 
             // Get periods which have same degreeId and graduation year
             IEnumerable<PredefensePeriod> periods = _database.PredefensePeriods.Get(
@@ -193,6 +196,11 @@ namespace DiplomaManager.BLL.Services.PredefenseService
 
                 foreach (var date in predefenseDates)
                 {
+                    PredefenseSchedule schedule = new PredefenseSchedule()
+                    {
+                        Teachers = new List<DTOs.TeacherDTOs.TeacherDTO>()
+                    };
+
                     // Create predefense date DTO
                     PredefenseDateDTO dateDTO = new PredefenseDateDTO()
                     {
@@ -227,12 +235,26 @@ namespace DiplomaManager.BLL.Services.PredefenseService
                     {
                         dateDTO.Predefenses.Add(Mapper.Map<Predefense, PredefenseDTO>(pr));
                     }
+
+                    // Get teachers of predefense date
+                    IEnumerable<Appointment> appointments = _database.Appointments.Get(
+                        new FilterExpression<Appointment>(ap => ap.PredefenseDateId == date.Id),
+                        new IncludeExpression<Appointment>[]
+                        {
+                            new IncludeExpression<Appointment>(app => app.Teacher.PeopleNames)
+                        });
+                    foreach(var app in appointments)
+                    {
+                        schedule.Teachers.Add(Mapper.Map<Teacher, TeacherDTO>(app.Teacher));
+                    }
+                    schedule.PredefenseDate = dateDTO;
+
                     // Add predefense date to schedule
-                    predefenseSchedule.Add(dateDTO);
+                    predefenseSchedules.Add(schedule);
                 }
             }
 
-            return predefenseSchedule;
+            return predefenseSchedules;
         }
 
         public void SubmitPredefense(int studentId, int predefenseId)

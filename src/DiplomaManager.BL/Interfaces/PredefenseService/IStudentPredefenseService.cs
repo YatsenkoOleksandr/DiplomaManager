@@ -1,5 +1,6 @@
 ﻿using DiplomaManager.BLL.DTOs.PredefenseDTOs;
 using DiplomaManager.BLL.DTOs.StudentDTOs;
+using DiplomaManager.BLL.Extensions.PredefenseService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace DiplomaManager.BLL.Interfaces.PredefenseService
 
         IEnumerable<int> GetGraduationYears(int degreeId);
         
-        IEnumerable<PredefenseDateDTO> GetPredefenseSchedule(int degreeId, int graduationYear);
+        IEnumerable<PredefenseSchedule> GetPredefenseSchedule(int degreeId, int graduationYear);
 
         IEnumerable<GroupDTO> GetGroups(int degreeId, int graduationYear);
 
