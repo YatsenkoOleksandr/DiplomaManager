@@ -20,5 +20,7 @@ namespace DiplomaManager.DAL.Entities.PredefenseEntities
         public TimeSpan PredefenseStudentTime { get; set; }
 
         public List<PredefenseDate> PredefenseDates { get; set; }
+
+        public List<PredefenseTeacherCapacity> PredefenseTeacherCapacities { get; set; }
     }
 }
