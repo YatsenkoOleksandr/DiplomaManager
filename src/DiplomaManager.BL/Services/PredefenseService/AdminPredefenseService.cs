@@ -1,12 +1,17 @@
-﻿using DiplomaManager.BLL.Configuration;
+﻿using AutoMapper;
+using DiplomaManager.BLL.Configuration;
 using DiplomaManager.BLL.DTOs.PredefenseDTOs;
 using DiplomaManager.BLL.DTOs.StudentDTOs;
 using DiplomaManager.BLL.DTOs.TeacherDTOs;
+using DiplomaManager.BLL.Exceptions;
 using DiplomaManager.BLL.Interfaces;
 using DiplomaManager.BLL.Interfaces.PredefenseService;
+using DiplomaManager.DAL.Entities.PredefenseEntities;
 using DiplomaManager.DAL.Interfaces;
+using DiplomaManager.DAL.Utils;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,14 +31,76 @@ namespace DiplomaManager.BLL.Services.PredefenseService
             _emailService = emailService;
         }
 
+        #region Private methods
+
+        private void CheckTeacherExistance(int teacherId)
+        {
+            if (_database.Teachers.Get(teacherId) == null)
+            {
+                throw new NoEntityInDatabaseException("Не найдено указанного преподавателя.");
+            }
+        }
+
+        private void CheckPredefensePeriodExistance(int predefensePeriodId)
+        {
+            if (_database.PredefensePeriods.Get(predefensePeriodId) == null)
+            {
+                throw new NoEntityInDatabaseException("Не найдено указанного периода предзащит.");
+            }
+        }
+
+        private void CheckPredefenseDateExistance(int predefenseDateId)
+        {
+            if (_database.PredefenseDates.Get(predefenseDateId) == null)
+            {
+                throw new NoEntityInDatabaseException("Не найдено указанный день проведения предзащиты.");
+            }
+        }
+
+        private void CheckPredefenseExistance(int predefenseId)
+        {
+            if (_database.Predefenses.Get(predefenseId) == null)
+            {
+                throw new NoEntityInDatabaseException("Не найдено указанного времени проведения предзащиты.");
+            }
+        }
+
+        #endregion
 
         public IEnumerable<PredefensePeriodDTO> GetPredefensePeriods()
         {
-            throw new NotImplementedException();
+            // Get info about predefense period - without predefense dates, with degrees
+            IEnumerable<PredefensePeriod> periods = _database.PredefensePeriods.Get(
+                new IncludeExpression<PredefensePeriod>(p => p.Degree.DegreeNames));
+            return Mapper.Map<IEnumerable<PredefensePeriod>, IEnumerable<PredefensePeriodDTO>>(periods);
         }
 
         public IEnumerable<PredefenseDateDTO> GetPredefenseDates(int predefensePeriodId)
         {
+            CheckPredefensePeriodExistance(predefensePeriodId);
+
+            // List<PredefenseDateDTO>
+
+            // Get predefense dates, sorts with
+            FilterExpression<PredefenseDate>[] filters = new FilterExpression<PredefenseDate>[]
+            {
+                new FilterExpression<PredefenseDate>(pd => pd.PredefensePeriodId == predefensePeriodId)
+            };
+            IncludeExpression<PredefenseDate>[] includes = new IncludeExpression<PredefenseDate>[]
+            {
+                new IncludeExpression<PredefenseDate>(pd => pd.Predefenses),
+                new IncludeExpression<PredefenseDate>(pd => pd.Appointments)
+            };
+            SortExpression<PredefenseDate, DateTime>[] sorts = new SortExpression<PredefenseDate, DateTime>[]
+            {
+                new SortExpression<PredefenseDate, DateTime>(pd => pd.Date, ListSortDirection.Ascending),
+                new SortExpression<PredefenseDate, DateTime>(pd => pd.BeginTime, ListSortDirection.Ascending)
+            };
+            IEnumerable<PredefenseDate> predefenseDates = _database.PredefenseDates.Get(
+                filters, includes, null, null, sorts);
+
+
+
             throw new NotImplementedException();
         }
 
