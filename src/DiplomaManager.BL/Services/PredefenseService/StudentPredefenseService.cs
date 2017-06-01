@@ -258,63 +258,9 @@ namespace DiplomaManager.BLL.Services.PredefenseService
         }
 
         public void SubmitPredefense(int studentId, int predefenseId)
-        {            
-            Student student = _database.Students.Get(
-                new FilterExpression<Student>[]
-                {
-                    new FilterExpression<Student>(s => s.Id == studentId)
-                },
-                new IncludeExpression<Student>[]
-                {
-                    new IncludeExpression<Student>(s => s.Group),
-                    new IncludeExpression<Student>(s => s.Predefenses)
-                }).FirstOrDefault();
-            // Check, if exists student
-            if (student == null)
-            {
-                throw new NoEntityInDatabaseException("Указанного студента не найдено.");
-            }
-            // Check, if student doesn't have passed predefenses
-            if (student.Predefenses.Any(p => p.Passed == true))
-            {
-                throw new IncorrectActionException("Студент уже прошёл предзащиту.");
-            }
-            // Check, if student doesn't have active predefenses
-            if (student.Predefenses.Any(p => p.Passed == null || p.Passed == true))
-            {
-                throw new IncorrectActionException("Студент уже записан на предзащиту.");
-            }
-
-            Predefense predefense = _database.Predefenses.Get(
-                new FilterExpression<Predefense>[]
-                {
-                    new FilterExpression<Predefense>(p => p.Id == predefenseId)
-                },
-                new IncludeExpression<Predefense>[]
-                {
-                    new IncludeExpression<Predefense>(p => p.PredefenseDate.PredefensePeriod)
-                }).FirstOrDefault();
-
-            // Check, if exists predefense
-            if (predefense == null)
-            {
-                throw new NoEntityInDatabaseException("Указанной предзащиты не найдено.");
-            }
-
-            // Check, if degrees matches
-            if (predefense.PredefenseDate.PredefensePeriod.DegreeId != student.Group.DegreeId)
-            {
-                throw new IncorrectActionException("Образовательные уровни студента и предзащиты не совпадают.");
-            }
-            // Check, if graduation years matches
-            if (predefense.PredefenseDate.PredefensePeriod.GraduationYear != student.Group.GraduationYear)
-            {
-                throw new IncorrectActionException("Год выпуска студента и предзащиты не совпадают.");
-            }
-
-            predefense.StudentId = studentId;
-            _database.Predefenses.Update(predefense);
-            _database.Save();
+        {
+            PredefenseSubmitter submitter = new PredefenseSubmitter(_database, _cultureConfiguration, _emailService);
+            submitter.SubmitStudentToPredefense(studentId, predefenseId);
         }
     }
 }

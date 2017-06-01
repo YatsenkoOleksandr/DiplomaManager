@@ -243,86 +243,15 @@ namespace DiplomaManager.BLL.Services.PredefenseService
         public void SubmitToPredefenseDate(int teacherId, int predefenseDateId)
         {
             CheckTeacherExistance(teacherId);
-
-            PredefenseDate predefenseDate = _database.PredefenseDates.Get(predefenseDateId);
-            if (predefenseDate == null)
-            {
-                throw new NoEntityInDatabaseException("Не найдено указанный день проведения предзащиты.");
-            }
-
-            PredefenseTeacherCapacity capacity = _database.PredefenseTeacherCapacities.Get(
-                new FilterExpression<PredefenseTeacherCapacity>(ptc =>
-                    ptc.PredefensePeriodId == predefenseDate.PredefensePeriodId &&
-                    ptc.TeacherId == teacherId)).FirstOrDefault();
-            if (capacity == null)
-            {
-                throw new IncorrectActionException("У преподавателя нет назначения посещать предзащиты в данном периоде.");
-            }
-
-            if (capacity.Total == capacity.Count)
-            {
-                throw new IncorrectActionException("У преподавателя исчерпан лимит посещения предзащит.");
-            }
-
-            // Check if teacher is free at predefense date
-            IEnumerable<Appointment> appointments = _database.Appointments.Get(
-                new FilterExpression<Appointment>(ap => ap.TeacherId == teacherId && 
-                    ap.PredefenseDate.Date.Date == predefenseDate.Date.Date),
-                new IncludeExpression<Appointment>[]
-                {
-                    new IncludeExpression<Appointment>(app => app.PredefenseDate)
-                });
-            
-            foreach(var app in appointments)
-            {
-                // Teacher has predefense at same time
-                if (!(app.PredefenseDate.FinishTime < predefenseDate.BeginTime || 
-                    app.PredefenseDate.BeginTime > predefenseDate.FinishTime))
-                {
-                    throw new IncorrectActionException("У преподавателя есть предзащита в то же самое время.");
-                }
-            }
-
-            // Teacher can visit predefense
-            _database.Appointments.Add(new Appointment()
-            {
-                PredefenseDateId = predefenseDateId,
-                TeacherId = teacherId
-            });
-            capacity.Count++;
-            _database.PredefenseTeacherCapacities.Update(capacity);
-            _database.Save();
+            PredefenseSubmitter submitter = new PredefenseSubmitter(_database, _cultureConfiguration, _emailService);
+            submitter.SubmitTeacherToPredefenseDate(teacherId, predefenseDateId);
         }
 
         public void DenySubmitToPredefenseDate(int teacherId, int predefenseDateId)
         {
             CheckTeacherExistance(teacherId);
-            PredefenseDate predefenseDate = _database.PredefenseDates.Get(predefenseDateId);
-            if (predefenseDate == null)
-            {
-                throw new NoEntityInDatabaseException("Не найдено указанный день проведения предзащиты.");
-            }
-
-            Appointment appointment = _database.Appointments.Get(new FilterExpression<Appointment>(
-                ap => ap.TeacherId == teacherId && ap.PredefenseDateId == predefenseDateId)).FirstOrDefault();            
-            if (appointment == null)
-            {
-                throw new IncorrectActionException("Преподаватель не был записан на указанный день предзащит.");
-            }
-
-            PredefenseTeacherCapacity capacity = _database.PredefenseTeacherCapacities.Get(
-                new FilterExpression<PredefenseTeacherCapacity>(
-                    ptc => ptc.PredefensePeriodId == predefenseDate.PredefensePeriodId && ptc.TeacherId == teacherId))
-                .FirstOrDefault();
-            if (capacity == null)
-            {
-                throw new NoEntityInDatabaseException("Не найдено назначения преподавателя на присутствие в данном периоде предзащит.");
-            }
-
-            capacity.Count--;
-            _database.PredefenseTeacherCapacities.Update(capacity);
-            _database.Appointments.Remove(appointment);
-            _database.Save();
+            PredefenseSubmitter submitter = new PredefenseSubmitter(_database, _cultureConfiguration, _emailService);
+            submitter.DenyTeacherSubmitToPredefenseDate(teacherId, predefenseDateId);
         }
     }
 }
