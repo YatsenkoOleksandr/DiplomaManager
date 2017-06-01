@@ -19,15 +19,11 @@ namespace DiplomaManager.BLL.Services.PredefenseService
 {
     class PredefenseScheduler
     {
-        private readonly IDiplomaManagerUnitOfWork _database;
-        private readonly ILocaleConfiguration _cultureConfiguration;
-        private readonly IEmailService _emailService;
+        private readonly IDiplomaManagerUnitOfWork _database;        
 
-        public PredefenseScheduler(IDiplomaManagerUnitOfWork uow, ILocaleConfiguration configuration, IEmailService emailService)
+        public PredefenseScheduler(IDiplomaManagerUnitOfWork uow)
         {
-            _database = uow;
-            _cultureConfiguration = configuration;
-            _emailService = emailService;
+            _database = uow;            
         }
 
         public IEnumerable<PredefenseSchedule> GetPredefenseSchedule(int degreeId, int graduationYear)
