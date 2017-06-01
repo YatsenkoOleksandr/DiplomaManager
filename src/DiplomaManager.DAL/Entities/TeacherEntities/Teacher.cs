@@ -27,5 +27,7 @@ namespace DiplomaManager.DAL.Entities.TeacherEntities
         public List<Appointment> Appointments { get; set; }
 
         public List<PredefenseDate> PredefenseDates { get; set; }
+
+        public List<PredefenseTeacherCapacity> PredefenseTeacherCapacities { get; set; }
     }
 }
