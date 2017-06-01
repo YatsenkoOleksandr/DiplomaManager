@@ -28,75 +28,15 @@ namespace DiplomaManager.BLL.Services.PredefenseService
             _cultureConfiguration = configuration;
             _emailService = emailService;
         }
-
-        #region Private Methods
-        private void CheckTeacherExistance(int teacherId)
-        {
-            if (_database.Teachers.Get(teacherId) == null)
-            {
-                throw new NoEntityInDatabaseException("Не найдено указанного преподавателя.");
-            }
-        }
-
-        private void CheckPredefensePeriodExistance(int predefensePeriodId)
-        {
-            if (_database.PredefensePeriods.Get(predefensePeriodId) == null)
-            {
-                throw new NoEntityInDatabaseException("Не найдено указанного периода предзащит.");
-            }
-        }
-
-        private void CheckPredefenseDateExistance(int predefenseDateId)
-        {
-            if (_database.PredefenseDates.Get(predefenseDateId) == null)
-            {
-                throw new NoEntityInDatabaseException("Не найдено указанный день проведения предзащиты.");
-            }
-        }
-
-        private void CheckPredefenseExistance(int predefenseId)
-        {
-            if (_database.Predefenses.Get(predefenseId) == null)
-            {
-                throw new NoEntityInDatabaseException("Не найдено указанного времени проведения предзащиты.");
-            }
-        }
-
-        private void CheckTeacherAccessToPredefensePeriod(int teacherId, int predefensePeriodId)
-        {
-            IEnumerable<PredefenseTeacherCapacity> capacities =
-                _database.PredefenseTeacherCapacities.Get(
-                    new FilterExpression<PredefenseTeacherCapacity>(ptc =>
-                    ptc.TeacherId == teacherId && ptc.PredefensePeriodId == predefensePeriodId));
-            if (capacities.Count() == 0)
-            {
-                throw new IncorrectActionException("Преподаватель не имеет доступа к периоду проведения предзащит.");
-            }
-        }
-        
-
-        private void CheckTeacherAccessToPredefense(int teacherId, int predefenseId)
-        {
-            Predefense pred = _database.Predefenses.Get(predefenseId);
-
-            CheckPredefenseDateExistance(pred.PredefenseDateId);
-            PredefenseDate predDate = _database.PredefenseDates.Get(pred.PredefenseDateId);
-
-            Appointment appointment = _database.Appointments.Get(new FilterExpression<Appointment>(ap => 
-                    ap.PredefenseDateId == predDate.Id && ap.TeacherId == teacherId))
-                .FirstOrDefault();
-            if (appointment == null)
-            {
-                throw new IncorrectActionException("Преподаватель не имеет доступа к редактированию результатов предзащиты.");
-            }
-        }
-
-#endregion
+     
 
         public IEnumerable<TeacherPredefensePeriod> GetTeacherPredefensePeriods(int teacherId)
         {
             // Check, if exists teacher
-            CheckTeacherExistance(teacherId);
+            {
+                PredefenseChecker checker = new PredefenseChecker(_database);
+                checker.CheckTeacherExistance(teacherId);
+            }
 
             // Get teacher capacities and periods, ordered by start and finish dates
             IEnumerable<PredefenseTeacherCapacity> teacherCapacities = _database.PredefenseTeacherCapacities.Get(
@@ -134,10 +74,14 @@ namespace DiplomaManager.BLL.Services.PredefenseService
         }
 
         public IEnumerable<PredefenseSchedule> GetTeacherPredefenseSchedule(int teacherId, int predefensePeriodId)
-        {            
-            CheckTeacherExistance(teacherId);
-            CheckPredefensePeriodExistance(predefensePeriodId);
-            CheckTeacherAccessToPredefensePeriod(teacherId, predefensePeriodId);
+        {
+            // Check, if exists teacher
+            {
+                PredefenseChecker checker = new PredefenseChecker(_database);
+                checker.CheckTeacherExistance(teacherId);
+                checker.CheckPredefensePeriodExistance(predefensePeriodId);
+                checker.CheckTeacherAccessToPredefensePeriod(teacherId, predefensePeriodId);
+            }            
 
             PredefenseScheduler scheduler = new PredefenseScheduler(_database, _cultureConfiguration, _emailService);
 
@@ -146,8 +90,12 @@ namespace DiplomaManager.BLL.Services.PredefenseService
 
         public PredefenseDTO GetPredefenseResults(int teacherId, int predefenseId)
         {
-            CheckTeacherExistance(teacherId);
-            CheckPredefenseExistance(predefenseId);
+            // Check
+            {
+                PredefenseChecker checker = new PredefenseChecker(_database);
+                checker.CheckTeacherExistance(teacherId);
+                checker.CheckPredefenseExistance(predefenseId);                
+            }            
 
             Predefense predefense = _database.Predefenses.Get(
                 new FilterExpression<Predefense>(p => p.Id == predefenseId),
@@ -163,9 +111,13 @@ namespace DiplomaManager.BLL.Services.PredefenseService
 
         public void SavePredefenseResults(int teacherId, PredefenseDTO predefense)
         {
-            CheckTeacherExistance(teacherId);
-            CheckPredefenseExistance(predefense.Id);
-            CheckTeacherAccessToPredefense(teacherId, predefense.Id);
+            // Check
+            {
+                PredefenseChecker checker = new PredefenseChecker(_database);
+                checker.CheckTeacherExistance(teacherId);
+                checker.CheckPredefenseExistance(predefense.Id);
+                checker.CheckTeacherAccessToPredefense(teacherId, predefense.Id);
+            }            
 
             Predefense databasePredefense = _database.Predefenses.Get(predefense.Id);
 
@@ -184,14 +136,23 @@ namespace DiplomaManager.BLL.Services.PredefenseService
 
         public void SubmitToPredefenseDate(int teacherId, int predefenseDateId)
         {
-            CheckTeacherExistance(teacherId);
+            // Check, if exists teacher
+            {
+                PredefenseChecker checker = new PredefenseChecker(_database);
+                checker.CheckTeacherExistance(teacherId);                
+            }
+
             PredefenseSubmitter submitter = new PredefenseSubmitter(_database, _cultureConfiguration, _emailService);
             submitter.SubmitTeacherToPredefenseDate(teacherId, predefenseDateId);
         }
 
         public void DenySubmitToPredefenseDate(int teacherId, int predefenseDateId)
         {
-            CheckTeacherExistance(teacherId);
+            // Check, if exists teacher
+            {
+                PredefenseChecker checker = new PredefenseChecker(_database);
+                checker.CheckTeacherExistance(teacherId);                
+            }
             PredefenseSubmitter submitter = new PredefenseSubmitter(_database, _cultureConfiguration, _emailService);
             submitter.DenyTeacherSubmitToPredefenseDate(teacherId, predefenseDateId);
         }
