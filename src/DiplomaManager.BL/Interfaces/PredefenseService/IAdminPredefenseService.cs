@@ -1,6 +1,7 @@
 ﻿using DiplomaManager.BLL.DTOs.PredefenseDTOs;
 using DiplomaManager.BLL.DTOs.StudentDTOs;
 using DiplomaManager.BLL.DTOs.TeacherDTOs;
+using DiplomaManager.BLL.Extensions.PredefenseService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace DiplomaManager.BLL.Interfaces.PredefenseService
     {
         IEnumerable<PredefensePeriodDTO> GetPredefensePeriods();
 
-        IEnumerable<PredefenseDateDTO> GetPredefenseDates(int predefensePeriodId);
+        IEnumerable<PredefenseSchedule> GetPredefenseSchedule(int predefensePeriodId);
 
         PredefenseDTO GetPredefense(int predefenseId);
 

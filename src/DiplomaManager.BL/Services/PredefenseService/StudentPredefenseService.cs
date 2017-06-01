@@ -155,7 +155,7 @@ namespace DiplomaManager.BLL.Services.PredefenseService
                 }
             }
 
-            PredefenseScheduler scheduler = new PredefenseScheduler(_database, _cultureConfiguration, _emailService);
+            PredefenseScheduler scheduler = new PredefenseScheduler(_database);
 
             return scheduler.GetPredefenseSchedule(degreeId, graduationYear);
         }

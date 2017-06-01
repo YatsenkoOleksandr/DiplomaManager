@@ -75,7 +75,7 @@ namespace DiplomaManager.BLL.Services.PredefenseService
 
         public IEnumerable<PredefenseSchedule> GetTeacherPredefenseSchedule(int teacherId, int predefensePeriodId)
         {
-            // Check, if exists teacher
+            // Check
             {
                 PredefenseChecker checker = new PredefenseChecker(_database);
                 checker.CheckTeacherExistance(teacherId);
@@ -83,9 +83,22 @@ namespace DiplomaManager.BLL.Services.PredefenseService
                 checker.CheckTeacherAccessToPredefensePeriod(teacherId, predefensePeriodId);
             }            
 
-            PredefenseScheduler scheduler = new PredefenseScheduler(_database, _cultureConfiguration, _emailService);
+            PredefenseScheduler scheduler = new PredefenseScheduler(_database);
 
             return scheduler.GetTeacherPredefenseSchedule(teacherId, predefensePeriodId);            
+        }
+
+        public IEnumerable<PredefenseSchedule> GetPredefenseSchedule(int predefensePeriodId)
+        {
+            // Check
+            {
+                PredefenseChecker checker = new PredefenseChecker(_database);                
+                checker.CheckPredefensePeriodExistance(predefensePeriodId);                
+            }
+
+            PredefenseScheduler scheduler = new PredefenseScheduler(_database);
+
+            return scheduler.GetPredefenseSchedule(predefensePeriodId);
         }
 
         public PredefenseDTO GetPredefenseResults(int teacherId, int predefenseId)

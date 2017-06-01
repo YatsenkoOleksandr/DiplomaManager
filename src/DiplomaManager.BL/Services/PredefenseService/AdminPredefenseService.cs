@@ -4,6 +4,7 @@ using DiplomaManager.BLL.DTOs.PredefenseDTOs;
 using DiplomaManager.BLL.DTOs.StudentDTOs;
 using DiplomaManager.BLL.DTOs.TeacherDTOs;
 using DiplomaManager.BLL.Exceptions;
+using DiplomaManager.BLL.Extensions.PredefenseService;
 using DiplomaManager.BLL.Interfaces;
 using DiplomaManager.BLL.Interfaces.PredefenseService;
 using DiplomaManager.DAL.Entities.PredefenseEntities;
@@ -75,38 +76,24 @@ namespace DiplomaManager.BLL.Services.PredefenseService
             return Mapper.Map<IEnumerable<PredefensePeriod>, IEnumerable<PredefensePeriodDTO>>(periods);
         }
 
-        public IEnumerable<PredefenseDateDTO> GetPredefenseDates(int predefensePeriodId)
+        public IEnumerable<PredefenseSchedule> GetPredefenseSchedule(int predefensePeriodId)
         {
-            CheckPredefensePeriodExistance(predefensePeriodId);
-
-            // List<PredefenseDateDTO>
-
-            // Get predefense dates, sorts with
-            FilterExpression<PredefenseDate>[] filters = new FilterExpression<PredefenseDate>[]
             {
-                new FilterExpression<PredefenseDate>(pd => pd.PredefensePeriodId == predefensePeriodId)
-            };
-            IncludeExpression<PredefenseDate>[] includes = new IncludeExpression<PredefenseDate>[]
-            {
-                new IncludeExpression<PredefenseDate>(pd => pd.Predefenses),
-                new IncludeExpression<PredefenseDate>(pd => pd.Appointments)
-            };
-            SortExpression<PredefenseDate, DateTime>[] sorts = new SortExpression<PredefenseDate, DateTime>[]
-            {
-                new SortExpression<PredefenseDate, DateTime>(pd => pd.Date, ListSortDirection.Ascending),
-                new SortExpression<PredefenseDate, DateTime>(pd => pd.BeginTime, ListSortDirection.Ascending)
-            };
-            IEnumerable<PredefenseDate> predefenseDates = _database.PredefenseDates.Get(
-                filters, includes, null, null, sorts);
-
-
-
-            throw new NotImplementedException();
+                PredefenseChecker checker = new PredefenseChecker(_database);
+                checker.CheckPredefensePeriodExistance(predefensePeriodId);
+            }
+            PredefenseScheduler scheduler = new PredefenseScheduler(_database);
+            return scheduler.GetPredefenseSchedule(predefensePeriodId);           
         }
 
         public PredefenseDTO GetPredefense(int predefenseId)
         {
-            throw new NotImplementedException();
+            {
+                PredefenseChecker checker = new PredefenseChecker(_database);
+                checker.CheckPredefenseExistance(predefenseId);
+            }
+
+
         }
 
         public IEnumerable<PredefenseTeacherCapacityDTO> GetPredefenseTeachers(int predefensePeriodId)
