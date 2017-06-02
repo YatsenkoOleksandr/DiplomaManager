@@ -6,7 +6,9 @@ using DiplomaManager.BLL.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using DiplomaManager.BLL.Extensions.Admin;
 using DiplomaManager.BLL.Extensions.DistributionService;
+using DiplomaManager.BLL.Services;
 
 namespace DiplomaManager.Areas.Admin.Controllers
 {
@@ -14,12 +16,13 @@ namespace DiplomaManager.Areas.Admin.Controllers
     [Authorize("Admins")]
     public class DistributionController : Controller
     {
-
         private IDistributionService DistributionService { get; }
+        private IExportService ExportService { get; }
 
-        public DistributionController(IDistributionService distributionService)
+        public DistributionController(IDistributionService distributionService, IExportService exportService)
         {
             DistributionService = distributionService;
+            ExportService = exportService;
         }
 
         public IActionResult Index()
@@ -58,13 +61,28 @@ namespace DiplomaManager.Areas.Admin.Controllers
             return View("Distribute");
         }
 
-        private IEnumerable<TeacherStudentsViewModel> ConvertToTeacherStudents(IEnumerable<ProjectDTO> projects)
+        public IActionResult Export()
+        {
+            var acceptedProjects = DistributionService.GetAcceptedProjects(1, DateTime.Now.Year);
+            if (acceptedProjects == null) return NotFound();
+            var teacherStudents = ConvertToTeacherStudents(acceptedProjects);
+            if (teacherStudents != null)
+            {
+                var excelStream = ExportService.GetTeacherStudentsStream(teacherStudents);
+                const string fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                const string fileName = "teacher_students.xlsx";
+                return File(excelStream, fileType, fileName);
+            }
+            return NotFound();
+        }
+
+        private static IEnumerable<TeacherStudents> ConvertToTeacherStudents(IEnumerable<ProjectDTO> projects)
         {
             return projects.GroupBy(p => p.Teacher)
-                                                .Select(g => new TeacherStudentsViewModel
+                                                .Select(g => new TeacherStudents
                                                 {
-                                                    Teacher = g.Key,
-                                                    Students = g.Select(p => p.Student).Distinct()
+                                                    Teacher = g.Key.GetFullName(193),
+                                                    Students = g.Select(p => p.Student.GetFullName()).Distinct()
                                                 });
         }
     }

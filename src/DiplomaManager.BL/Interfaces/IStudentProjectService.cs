@@ -2,7 +2,6 @@
 using DiplomaManager.BLL.DTOs.RequestDTOs;
 using DiplomaManager.BLL.DTOs.StudentDTOs;
 using DiplomaManager.BLL.DTOs.TeacherDTOs;
-using DiplomaManager.BLL.DTOs.UserDTOs;
 
 namespace DiplomaManager.BLL.Interfaces
 {

@@ -1,4 +1,4 @@
-﻿﻿@model IEnumerable<DiplomaManager.Areas.Admin.ViewModels.TeacherStudentsViewModel>
+﻿﻿@model IEnumerable<DiplomaManager.BLL.Extensions.Admin.TeacherStudents>
 @{
     ViewBag.Title = "Распределение";
 }
@@ -6,9 +6,21 @@
 <hr />
 @if (Model.Count() > 0)
 {
-    <h4>Сформированные пары "преподаватель-студенты"</h4>
-    @Html.Partial("_TeacherStudents", Model)
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" href="#projects">Сформированные пары "преподаватель-студенты"</a>
+            </h4>
+        </div>
+        <div id="projects" class="panel-collapse collapse in">
+            @Html.Partial("_TeacherStudents", Model)
+        </div>
+    </div>
 }
-<form method="post" asp-action="Distribute" asp-controller="Distribution">
-    <button class="btn btn-primary">Сформировать</button>
+<form asp-area="Admin" asp-action="Distribute" asp-controller="Distribution">
+    <button class="btn btn-primary" asp-action="Distribute">Сформировать</button>
+    @if (Model.Count() > 0)
+    {
+        <button class="btn btn-default" asp-action="Export">Экспортировать</button>
+    }
 </form>

@@ -10,69 +10,64 @@
 {
     <h4>@ViewBag.Message</h4>
 }
-@if (Model != null)
-{
-    @if (Model.ConflictedTeacherStudents.Any())
+<form>
+    @if (Model != null)
     {
-        <div class="panel-group">
-            <div class="panel panel-danger">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" href="#conflicted">Отклоненные ранее заявки</a>
-                    </h4>
+        @:<div class="panel-group">
+            if (Model.ConflictedTeacherStudents.Any())
+            {
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" href="#conflicted">Отклоненные ранее заявки</a>
+                        </h4>
+                    </div>
+                    <div id="conflicted" class="panel-collapse collapse in">
+                        @Html.Partial("_TeacherStudents", Model.ConflictedTeacherStudents)
+                    </div>
                 </div>
-                <div id="conflicted" class="panel-collapse collapse in">
-                    @Html.Partial("_TeacherStudents", Model.ConflictedTeacherStudents)
+            }
+            if (Model.ExistedModifiedTeacherStudents.Any())
+            {
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" href="#existedModified">Утверждённые заявки</a>
+                        </h4>
+                    </div>
+                    <div id="existedModified" class="panel-collapse collapse in">
+                        @Html.Partial("_TeacherStudents", Model.ExistedModifiedTeacherStudents)
+                    </div>
                 </div>
-            </div>
-        </div>
+            }
+            if (Model.ExistedUnchangedTeacherStudents.Any())
+            {
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" href="#existedUnchanged">Незатронутые заявки</a>
+                        </h4>
+                    </div>
+                    <div id="existedUnchanged" class="panel-collapse collapse in">
+                        @Html.Partial("_TeacherStudents", Model.ExistedUnchangedTeacherStudents)
+                    </div>
+                </div>
+            }
+            if (Model.NewTeacherStudents.Any())
+            {
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" href="#new">Новые утвержденные заявки</a>
+                        </h4>
+                    </div>
+                    <div id="new" class="panel-collapse collapse in">
+                        @Html.Partial("_TeacherStudents", Model.NewTeacherStudents)
+                    </div>
+                </div>
+            }
+        @:</div>
+        <button class="btn btn-primary" asp-action="Save">Сохранить</button>
     }
-    @if (Model.ExistedModifiedTeacherStudents.Any())
-    {
-        <div class="panel-group">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" href="#existedModified">Утверждённые заявки</a>
-                    </h4>
-                </div>
-                <div id="existedModified" class="panel-collapse collapse in">
-                    @Html.Partial("_TeacherStudents", Model.ExistedModifiedTeacherStudents)
-                </div>
-            </div>
-        </div>
-    }
-    @if (Model.ExistedUnchangedTeacherStudents.Any())
-    {
-        <div class="panel-group">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" href="#existedUnchanged">Незатронутые заявки</a>
-                    </h4>
-                </div>
-                <div id="existedUnchanged" class="panel-collapse collapse in">
-                    @Html.Partial("_TeacherStudents", Model.ExistedUnchangedTeacherStudents)
-                </div>
-            </div>
-        </div>
-    }
-    @if (Model.NewTeacherStudents.Any())
-    {
-        <div class="panel-group">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" href="#new">Новые утвержденные заявки</a>
-                    </h4>
-                </div>
-                <div id="new" class="panel-collapse collapse in">
-                    @Html.Partial("_TeacherStudents", Model.NewTeacherStudents)
-                </div>
-            </div>
-        </div>
-    }
-    <button class="btn btn-primary" asp-action="Save">Сохранить</button>
-}
-
-
+    <button class="btn btn-default" asp-action="Index">Назад</button>
+</form>

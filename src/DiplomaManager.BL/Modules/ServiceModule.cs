@@ -18,6 +18,7 @@ namespace DiplomaManager.BLL.Modules
             builder.RegisterType<ImportService>().As<IImportService>();
             builder.RegisterType<TranslationService>().As<ITranslationService>();
             builder.RegisterType<DistributionService>().As<IDistributionService>();
+            builder.RegisterType<ExportService>().As<IExportService>();
         }
     }
 }

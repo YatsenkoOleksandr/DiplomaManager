@@ -22,15 +22,12 @@ namespace DiplomaManager.BLL.Services
         private IDiplomaManagerUnitOfWork Database { get; }
         private IEmailService EmailService { get; }
         private ILocaleConfiguration LocaleConfiguration { get; }
-        private IUserService UserService { get; }
 
-        public StudentProjectService(IDiplomaManagerUnitOfWork uow, IEmailService emailService, ILocaleConfiguration localeConfiguration,
-            IUserService userService)
+        public StudentProjectService(IDiplomaManagerUnitOfWork uow, IEmailService emailService, ILocaleConfiguration localeConfiguration)
         {
             Database = uow;
             EmailService = emailService;
             LocaleConfiguration = localeConfiguration;
-            UserService = userService;
         }
 
         public DevelopmentAreaDTO GetDevelopmentArea(int id)
