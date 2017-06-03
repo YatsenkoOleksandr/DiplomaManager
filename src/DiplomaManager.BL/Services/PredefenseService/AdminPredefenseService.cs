@@ -101,6 +101,46 @@ namespace DiplomaManager.BLL.Services.PredefenseService
 
         #endregion
 
+        public IEnumerable<DegreeDTO> GetDegrees()
+        {
+            IncludeExpression<Degree> includePath = new IncludeExpression<Degree>(d => d.DegreeNames);
+
+            IEnumerable<Degree> degrees = _database.Degrees.Get(includePath);
+
+            if (degrees == null || degrees.Count() == 0)
+            {
+                throw new NoEntityInDatabaseException("Не найдено образовательных уровней.");
+            }
+
+            return Mapper.Map<IEnumerable<Degree>, IEnumerable<DegreeDTO>>(degrees);
+        }
+
+        public IEnumerable<int> GetGraduationYears(int degreeId)
+        {
+            Degree degree = _database.Degrees.Get(
+                new FilterExpression<Degree>(d => d.Id == degreeId),
+                new IncludeExpression<Degree>[]
+                { new IncludeExpression<Degree>(d => d.Groups) }).FirstOrDefault();
+
+            if (degree == null)
+            {
+                throw new NoEntityInDatabaseException("Не найден образовательный уровень.");
+            }
+            if (degree.Groups == null || degree.Groups.Count == 0)
+            {
+                // throw new NoEntityInDatabaseException("Нет выпусков образовательного уровня.");
+            }
+
+            List<int> years = new List<int>();
+
+            foreach (var year in degree.Groups.GroupBy(g => g.GraduationYear))
+            {
+                years.Add(year.Key);
+            }
+
+            return years;
+        }
+
         public IEnumerable<PredefensePeriodDTO> GetPredefensePeriods()
         {
             // Get info about predefense period - without predefense dates, with degrees
@@ -182,7 +222,6 @@ namespace DiplomaManager.BLL.Services.PredefenseService
             {
                 throw new NoEntityInDatabaseException("Не найдено указанного дня проведения предзащиты.");
             }
-
 
             // Teachers of period without appointments on predefenseDate
             IEnumerable<Teacher> teachers = _database.Teachers.Get(

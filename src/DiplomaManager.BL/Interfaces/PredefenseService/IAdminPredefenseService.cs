@@ -12,6 +12,11 @@ namespace DiplomaManager.BLL.Interfaces.PredefenseService
 {
     public interface IAdminPredefenseService
     {
+        IEnumerable<DegreeDTO> GetDegrees();
+
+        IEnumerable<int> GetGraduationYears(int degreeId);
+
+
         IEnumerable<PredefensePeriodDTO> GetPredefensePeriods();
 
         IEnumerable<PredefenseSchedule> GetPredefenseSchedule(int predefensePeriodId);
