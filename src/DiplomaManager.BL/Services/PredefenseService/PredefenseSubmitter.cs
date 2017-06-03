@@ -125,6 +125,15 @@ namespace DiplomaManager.BLL.Services.PredefenseService
             {
                 throw new NoEntityInDatabaseException("Не найдено указанный день проведения предзащиты.");
             }
+            // Check if teacher doesn't submit to this date
+            if (_database.Appointments.Get(
+                    new FilterExpression<Appointment>(
+                        ap => ap.PredefenseDateId == predefenseDateId && ap.TeacherId == teacherId))
+                .Count() != 0)
+            {
+                throw new IncorrectActionException("Преподаватель уже записан на этот день предзащиты.");
+            }
+
 
             PredefenseTeacherCapacity capacity = _database.PredefenseTeacherCapacities.Get(
                 new FilterExpression<PredefenseTeacherCapacity>(ptc =>
@@ -139,6 +148,7 @@ namespace DiplomaManager.BLL.Services.PredefenseService
             {
                 throw new IncorrectActionException("У преподавателя исчерпан лимит посещения предзащит.");
             }
+            
 
             // Check if teacher is free at predefense date
             IEnumerable<Appointment> appointments = _database.Appointments.Get(
