@@ -101,12 +101,11 @@ namespace DiplomaManager.BLL.Services.PredefenseService
             return scheduler.GetPredefenseSchedule(predefensePeriodId);
         }
 
-        public PredefenseDTO GetPredefenseResults(int teacherId, int predefenseId)
+        public PredefenseDTO GetPredefenseResults(int predefenseId)
         {
             // Check
             {
-                PredefenseChecker checker = new PredefenseChecker(_database);
-                checker.CheckTeacherExistance(teacherId);
+                PredefenseChecker checker = new PredefenseChecker(_database);                
                 checker.CheckPredefenseExistance(predefenseId);                
             }            
 

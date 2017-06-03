@@ -16,7 +16,7 @@ namespace DiplomaManager.BLL.Interfaces.PredefenseService
 
         IEnumerable<PredefenseSchedule> GetPredefenseSchedule(int predefensePeriodId);
 
-        PredefenseDTO GetPredefenseResults(int teacherId, int predefenseId);
+        PredefenseDTO GetPredefenseResults(int predefenseId);
 
         void SavePredefenseResults(int teacherId, PredefenseDTO predefense);
 
