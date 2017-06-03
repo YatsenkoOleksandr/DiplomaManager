@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using DiplomaManager.DAL.Entities.RequestEntities;
 using DiplomaManager.DAL.Entities.StudentEntities;
+using System.Linq;
 
 namespace DiplomaManager.BLL.DTOs.StudentDTOs
 {
@@ -14,5 +15,16 @@ namespace DiplomaManager.BLL.DTOs.StudentDTOs
 
         public List<Capacity> Capacities
         { get; set; }
+
+
+        public string GetName(int localeId = 193)
+        {
+            DegreeName name = DegreeNames.Where(dn => dn.LocaleId == localeId).FirstOrDefault();
+            if (name != null && !string.IsNullOrEmpty(name.Name))
+            {
+                return name.Name;
+            }
+            return "-";
+        }
     }
 }
