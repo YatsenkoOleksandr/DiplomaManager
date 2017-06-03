@@ -20,6 +20,7 @@ namespace DiplomaManager.BLL.Modules
             builder.RegisterType<ImportService>().As<IImportService>();
             builder.RegisterType<TranslationService>().As<ITranslationService>();
             builder.RegisterType<DistributionService>().As<IDistributionService>();
+            builder.RegisterType<ExportService>().As<IExportService>();
             builder.RegisterType<StudentPredefenseService>().As<IStudentPredefenseService>();
             builder.RegisterType<TeacherPredefenseService>().As<ITeacherPredefenseService>();
             builder.RegisterType<AdminPredefenseService>().As<IAdminPredefenseService>();
