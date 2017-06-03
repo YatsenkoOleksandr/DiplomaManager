@@ -136,7 +136,7 @@ namespace DiplomaManager.Areas.Teacher.Controllers
             try
             {
                 _service.SubmitToPredefenseDate(teacherId, predefenseDateId);
-                return Json("Ok");
+                return Json(new { Message = "Ok" });
             }
             catch (NoEntityInDatabaseException exc)
             {
@@ -160,7 +160,7 @@ namespace DiplomaManager.Areas.Teacher.Controllers
             try
             {
                 _service.DenySubmitToPredefenseDate(teacherId, predefenseDateId);
-                return Json("Ok");
+                return Json(new { Message = "Ok" });
             }
             catch (NoEntityInDatabaseException exc)
             {
@@ -177,6 +177,5 @@ namespace DiplomaManager.Areas.Teacher.Controllers
                     : new { Error = exc.InnerException.ToString(), ErrorMessage = exc.InnerException.Message });
             }
         }
-
     }
 }

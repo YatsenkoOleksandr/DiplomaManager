@@ -120,7 +120,7 @@ namespace DiplomaManager.Controllers
             try
             {
                 _service.SubmitPredefense(studentId, predefenseId);
-                return Json("Ok");
+                return Json(new { Message = "Ok" });
             }
             catch (NoEntityInDatabaseException exc)
             {
