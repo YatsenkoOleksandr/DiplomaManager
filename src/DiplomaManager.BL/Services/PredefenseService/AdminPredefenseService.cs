@@ -445,6 +445,7 @@ namespace DiplomaManager.BLL.Services.PredefenseService
 
             PredefenseDate date = new PredefenseDate()
             {
+                PredefensePeriodId = predefenseDate.PredefensePeriodId,
                 BeginTime = predefenseDate.BeginTime,
                 Date = predefenseDate.Date,
                 FinishTime = predefenseDate.FinishTime

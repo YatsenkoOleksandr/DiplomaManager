@@ -113,7 +113,11 @@ namespace DiplomaManager.Areas.Admin.Controllers
             try
             {
                 IEnumerable<PredefenseSchedule> schedule = _service.GetPredefenseSchedule(predefensePeriodId);
-                return View(schedule);
+                return View(new PredefensePeriodSchedule()
+                {
+                    PredefensePeriodId = predefensePeriodId,
+                    PredefenseSchedule = schedule
+                });
             }
             catch(Exception exc)
             {
@@ -364,16 +368,16 @@ namespace DiplomaManager.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreatePredefenseDate(PredefenseDateViewModel date)
+        public IActionResult CreatePredefenseDate(PredefenseDateViewModel predefenseDate)
         {
             if (ModelState.IsValid)
             {
                 PredefenseDateDTO predfenseDate = new PredefenseDateDTO()
                 {
-                    BeginTime = date.StartTime,
-                    FinishTime = date.FinishTime,
-                    Date = date.Date,
-                    PredefensePeriodId = date.PredefensePeriodId
+                    BeginTime = predefenseDate.StartTime,
+                    FinishTime = predefenseDate.FinishTime,
+                    Date = predefenseDate.Date,
+                    PredefensePeriodId = predefenseDate.PredefensePeriodId
                 };
                 try
                 {
@@ -383,7 +387,7 @@ namespace DiplomaManager.Areas.Admin.Controllers
                 catch (IncorrectParameterException exc)
                 {
                     ModelState.AddModelError("", exc.Message);
-                    return View(date);
+                    return View(predefenseDate);
                 }
             }
             return RedirectToAction("Periods");

@@ -1,4 +1,6 @@
-﻿@model IEnumerable<DiplomaManager.BLL.Extensions.PredefenseService.PredefenseSchedule>
+﻿@model DiplomaManager.Areas.Admin.ViewModels.PredefensePeriodSchedule
+
+@Html.ActionLink("Определить дату предзащиты", "CreatePredefenseDate", new { predefensePeriodId = Model.PredefensePeriodId})
 
 <table id="Schedule" class="table table-striped" border="1" cellpadding="4" cellspacing="0">
     <thead>
@@ -24,7 +26,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach(var schedule in Model)
+        @foreach(var schedule in Model.PredefenseSchedule)
         {
             <tr>
                 @{ 
@@ -85,7 +87,7 @@
                     "Удалить дату предзащиты",
                     "DeletePredefenseDate",
                     "AdminPredefense",
-                    new { predefenseDate = schedule.PredefenseDate.Id })</td>
+                    new { predefenseDateId = schedule.PredefenseDate.Id, predefensePeriodId = Model.PredefensePeriodId })</td>
             </tr>            
             @for(int i = 1; i < schedule.PredefenseDate.Predefenses.Count; i++)
             {
