@@ -111,6 +111,10 @@ namespace DiplomaManager.DAL.Repositories
                     if (orderedQuery == null) throw new ArgumentNullException(nameof(sortExpressions));
                     query = orderedQuery.Skip(((int)page - 1) * (int)pageSize);
                 }
+                else
+                {
+                    query = orderedQuery;
+                }
             }
 
             if (pageSize != null)
