@@ -22,6 +22,7 @@ export class DiplomaRequestComponent implements OnInit {
     dAreasList: Array<SelectItem>;
     degrees: Array<SelectItem>;
     teachersList: Array<SelectItem>;
+    yearsList: Array<SelectItem>;
     groupsList: Array<SelectItem>;
 
     studentsList: Array<SelectItem>;
@@ -50,6 +51,7 @@ export class DiplomaRequestComponent implements OnInit {
             title: new FormControl('', [Validators.required, Validators.minLength(5)]),
 
             studentFGroup: new FormGroup({
+                graduationYear: new FormControl('', [Validators.required, Validators.minLength(4), CustomValidators.number]),
                 groups: new FormControl('', Validators.required),
                 users: new FormControl('', Validators.required),
                 email: new FormControl('', [Validators.required, CustomValidators.email])
@@ -79,7 +81,16 @@ export class DiplomaRequestComponent implements OnInit {
             });
         }
 
-        this.busy = this.dataService.getGroups(degreeid).subscribe((data) => {
+        this.busy = this.dataService.getGraduationYears(degreeid).subscribe((data) => {
+            let years = data.map(y => new SelectItem(y, y.toString()));
+            this.yearsList = years;
+        });
+    }
+
+    yearSelected(degrees, event) {
+        let year = event.id;
+
+        this.busy = this.dataService.getGroups(degrees[0].id, year).subscribe((data) => {
             this.setItemsToSelectList(data, "groupsList");
         });
     }

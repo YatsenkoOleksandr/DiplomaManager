@@ -60,10 +60,17 @@ namespace DiplomaManager.Controllers
             return Json(capacity);
         }
 
-        public IActionResult GetGroups(int? degreeId)
+        public IActionResult GetGraduationYears(int? degreeId)
         {
             if (degreeId == null) return NotFound();
-            var groups = RequestService.GetGroups(degreeId.Value);
+            var years = RequestService.GetGraduationYears(degreeId.Value);
+            return Json(years);
+        }
+
+        public IActionResult GetGroups(int? degreeId, int? graduationYear)
+        {
+            if (degreeId == null || graduationYear == null) return NotFound();
+            var groups = RequestService.GetGroups(degreeId.Value, graduationYear.Value);
             return Json(groups);
         }
 
