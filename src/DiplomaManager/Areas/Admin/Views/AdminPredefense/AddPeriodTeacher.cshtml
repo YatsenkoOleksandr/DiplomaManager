@@ -1,0 +1,54 @@
+﻿@model DiplomaManager.Areas.Admin.ViewModels.PredefenseTeacherCapacityViewModel
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        @Html.HiddenFor(model => model.PredefensePeriodId)
+
+        <select id="TeacherId" name="TeacherId"></select>        
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Total)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Total)
+            @Html.ValidationMessageFor(model => model.Total)
+        </div>
+
+        <p>
+            <input type="submit" value="Добавить" />
+        </p>
+    </fieldset>
+}
+
+<script>
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function (evt) {
+        var freeTeachers = JSON.parse(evt.target.responseText);
+        console.log(freeTeachers);
+
+        var teacherList = document.getElementById('TeacherId');
+        while (teacherList.firstChild != null) {
+            teacherList.removeChild(teacherList.firstChild);
+        }
+
+        for (var i = 0; i < freeTeachers.length; i++) {
+            var ch = document.createElement('option');
+            ch.value = freeTeachers[i].id;
+            ch.innerText = freeTeachers[i].info;
+
+            teacherList.appendChild(ch);
+
+            console.log(freeTeachers[i].id);
+            console.log(freeTeachers[i].info);
+        }
+    }
+    xhr.onerror = function (evt) {
+
+    }
+    xhr.open('GET', '/Admin/AdminPredefense/GetFreePeriodTeachers/' + @Model.PredefensePeriodId);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send();
+</script>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DiplomaManager.BLL.DTOs.TeacherDTOs;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,6 +9,8 @@ namespace DiplomaManager.Areas.Admin.ViewModels
 {
     public class PredefenseTeacherCapacityViewModel
     {
+        public IEnumerable<TeacherDTO> FreeTeachers { get; set; }
+
         public int TeacherId { get; set; }
 
         public int PredefensePeriodId { get; set; }

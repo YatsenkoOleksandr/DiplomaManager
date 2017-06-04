@@ -2,6 +2,7 @@
 
 @Html.ActionLink("Создать период", "CreatePeriod")
 
+
 <table id="PredefensePeriods" class="table table-striped">
     <thead>
         <tr>
@@ -19,7 +20,7 @@
             </th>
         </tr>
     </thead>
-    <tbody>
+    <tbody>        
         @foreach(var period in Model)
         {
             <tr>

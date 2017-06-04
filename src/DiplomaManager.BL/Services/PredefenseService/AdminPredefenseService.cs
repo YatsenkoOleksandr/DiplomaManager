@@ -409,8 +409,6 @@ namespace DiplomaManager.BLL.Services.PredefenseService
             };
             _database.PredefensePeriods.Add(databasePeriod);
             _database.Save();
-
-            throw new NotImplementedException();
         }
 
         public void DeletePredefensePeriod(int predefensePeriodId)
@@ -528,15 +526,13 @@ namespace DiplomaManager.BLL.Services.PredefenseService
             PredefenseTeacherCapacity capacity = new PredefenseTeacherCapacity()
             {
                 TeacherId = teacherCapacity.TeacherId,
-                PredefensePeriodId = teacherCapacity.TeacherId,
+                PredefensePeriodId = teacherCapacity.PredefensePeriodId,
                 Total = teacherCapacity.Total,
                 Count = 0
             };
 
             _database.PredefenseTeacherCapacities.Add(capacity);
             _database.Save();
-
-            throw new NotImplementedException();
         }
 
         public void DeleteTeacher(int teacherId, int predefensePeriodId)

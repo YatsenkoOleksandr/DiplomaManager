@@ -31,7 +31,7 @@ namespace DiplomaManager.Areas.Admin.Controllers
         {
             IEnumerable<PredefensePeriodDTO> periods = _service.GetPredefensePeriods();
 
-            return View();
+            return View(periods);
         }
 
         public IActionResult GetDegrees()
@@ -242,7 +242,11 @@ namespace DiplomaManager.Areas.Admin.Controllers
             {
                 IEnumerable<PredefenseTeacherCapacityDTO> teachers = 
                     _service.GetPredefensePeriodTeachers(predefensePeriodId);
-                return View(teachers);
+                return View(new PredefensePeriodTeachers()
+                {
+                    PeriodTeachers = teachers,
+                    PredefensePeriodId = predefensePeriodId
+                });
             }
             catch (Exception exc)
             {
@@ -252,10 +256,30 @@ namespace DiplomaManager.Areas.Admin.Controllers
 
         public IActionResult AddPeriodTeacher(int predefensePeriodId)
         {
+            PredefenseTeacherCapacityViewModel vm = new PredefenseTeacherCapacityViewModel()
+            {
+                PredefensePeriodId = predefensePeriodId
+            };
+
+            return View(vm);
+        }
+
+        public IActionResult GetFreePeriodTeachers(int id)
+        {
             try
             {
-                IEnumerable<TeacherDTO> freeTeachers = _service.GetFreeTeachersToPeriod(predefensePeriodId);
-                return View(freeTeachers);
+                IEnumerable<TeacherDTO> freeTeachers = _service.GetFreeTeachersToPeriod(id);
+                List<JsonObject> obj = new List<JsonObject>();
+
+                foreach(var t in freeTeachers)
+                {
+                    obj.Add(new JsonObject()
+                    {
+                        Id = t.Id,
+                        Info = t.GetFullName(194)
+                    });
+                }
+                return Json(obj);
             }
             catch
             {
