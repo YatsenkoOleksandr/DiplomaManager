@@ -1,0 +1,50 @@
+﻿@model IEnumerable<DiplomaManager.BLL.DTOs.PredefenseDTOs.PredefensePeriodDTO>
+
+@Html.ActionLink("Создать период", "CreatePeriod")
+
+<table id="PredefensePeriods" class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                <h4>Образовательный уровень</h4> 
+            </th>
+            <th>
+                <h4>Год выпуска</h4>
+            </th>
+            <th>
+                <h4>Дата начала периода</h4>
+            </th>
+            <th>
+                <h4>Дата окончания периода</h4>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var period in Model)
+        {
+            <tr>
+                <th>
+                    @period.Degree.GetName()
+                </th>
+                <th>
+                    @period.GraduationYear
+                </th>
+                <th>
+                    @period.StartDate.ToShortDateString()
+                </th>
+                <th>
+                    @period.FinishDate.ToShortDateString()
+                </th>
+                <th>
+                    @Html.ActionLink("Просмотр расписания", "Schedule", new { predefensePeriodId = period.Id })
+                </th>
+                <th>
+                    @Html.ActionLink("Просмотр списка преподавателей периода", "PeriodTeachers", new { predefensePeriodId = period.Id })
+                </th>
+                <th>
+                    @Html.ActionLink("Удалить", "DeletePeriod", new { predefensePeriodId = period.Id })
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>

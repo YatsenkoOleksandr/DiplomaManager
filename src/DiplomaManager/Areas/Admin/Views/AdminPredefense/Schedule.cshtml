@@ -1,0 +1,124 @@
+﻿@model IEnumerable<DiplomaManager.BLL.Extensions.PredefenseService.PredefenseSchedule>
+
+<table id="Schedule" class="table table-striped" border="1" cellpadding="4" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                Дата проведения предзащит
+            </th>
+            <th>
+                Время начала проведения предзащит
+            </th>
+            <th>
+                Время окончания проведения предзащит
+            </th>
+            <th>
+                Преподаватели
+            </th>
+            <th>
+                Время предзащиты студента
+            </th>
+            <th>
+                Студент
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var schedule in Model)
+        {
+            <tr>
+                @{ 
+                    string rows = schedule.PredefenseDate.Predefenses.Count.ToString();
+                }
+
+                <td rowspan="@rows">@schedule.PredefenseDate.Date.ToShortDateString()</td>
+                <td rowspan="@rows">@schedule.PredefenseDate.BeginTime.ToShortTimeString()</td>
+                <td rowspan="@rows">@schedule.PredefenseDate.FinishTime.ToShortTimeString()</td>
+                @{
+                    string teachers = string.Empty;
+                    if (schedule.Teachers != null && schedule.Teachers.Count != 0)
+                    {
+                        foreach (var teacher in schedule.Teachers)
+                        {
+                            teachers = string.Concat(teachers, teacher.GetFullName(194), "\n");
+                        }
+                    }
+                    else
+                    {
+                        teachers = "-";
+                    }
+                }
+                <td rowspan="@rows">@teachers</td>
+                @{ 
+                    var first = schedule.PredefenseDate.Predefenses.FirstOrDefault();
+                    if (first != null)
+                    {
+                        <td>@first.Time.ToShortTimeString()</td>
+                        @if (first.StudentId != null && first.StudentId != 0)
+                        { 
+                            <td>@first.Student.GetFullName(194)</td>
+                            <td>@Html.ActionLink(
+                               "Результаты предзащиты", 
+                               "PredefenseResults", 
+                               "AdminPredefense",
+                               new { predefenseId = first.Id, predefensePeriodId = schedule.PredefenseDate.PredefensePeriodId})                           
+                            </td>
+                        }
+                        else
+                        {
+                            <td>-</td>
+                            <td>-</td>
+                        }
+                        <td>@Html.ActionLink(
+                           "Изменить студента",
+                           "ChangeStudent",
+                           "AdminPredefense",
+                           new { predefenseId = first.Id, studentId = first.StudentId})</td>
+                    }
+                }
+                <td rowspan="@rows">@Html.ActionLink(
+                    "Изменить преподавателей",
+                    "PredefenseDateTeachers",
+                    "AdminPredefense",
+                    new { predefenseDate = schedule.PredefenseDate.Id })</td>
+                <td rowspan="@rows">@Html.ActionLink(
+                    "Удалить дату предзащиты",
+                    "DeletePredefenseDate",
+                    "AdminPredefense",
+                    new { predefenseDate = schedule.PredefenseDate.Id })</td>
+            </tr>            
+            @for(int i = 1; i < schedule.PredefenseDate.Predefenses.Count; i++)
+            {
+                <tr>
+                    @{ 
+                        var pred = schedule.PredefenseDate.Predefenses[i];
+                    }
+                    <td>@pred.Time.ToShortTimeString()</td>
+                    @if (pred.StudentId != null && pred.StudentId != 0)
+                    {
+                        <td>@pred.Student.GetFullName(194)</td>
+                            <td>
+                                @Html.ActionLink(
+                               "Результаты предзащиты",
+                               "PredefenseResults",
+                               "AdminPredefense",
+                               new { predefenseId = pred.Id, predefensePeriodId = schedule.PredefenseDate.PredefensePeriodId })
+                        </td>
+                    }
+                    else
+                    {
+                        <td>-</td>
+                            <td>-</td>
+                    }
+                    <td>
+                        @Html.ActionLink(
+                           "Изменить студента",
+                           "ChangeStudent",
+                           "AdminPredefense",
+                           new { predefenseId = pred.Id, studentId = pred.StudentId })
+                    </td>                
+                </tr>
+            }
+        }
+    </tbody>
+</table>
