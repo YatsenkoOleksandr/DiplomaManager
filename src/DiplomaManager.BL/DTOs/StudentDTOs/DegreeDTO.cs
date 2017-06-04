@@ -19,8 +19,8 @@ namespace DiplomaManager.BLL.DTOs.StudentDTOs
 
         public string GetName(int localeId = 193)
         {
-            DegreeName name = DegreeNames.Where(dn => dn.LocaleId == localeId).FirstOrDefault();
-            if (name != null && !string.IsNullOrEmpty(name.Name))
+            DegreeName name = DegreeNames.FirstOrDefault(dn => dn.LocaleId == localeId);
+            if (!string.IsNullOrEmpty(name?.Name))
             {
                 return name.Name;
             }

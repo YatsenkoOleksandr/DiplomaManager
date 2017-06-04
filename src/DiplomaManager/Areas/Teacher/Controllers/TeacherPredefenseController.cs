@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DiplomaManager.Areas.Teacher.Controllers
 {
@@ -21,7 +19,6 @@ namespace DiplomaManager.Areas.Teacher.Controllers
         {
             _service = service;
         }
-
 
         public IActionResult GetTeacherPeriods(int teacherId)
         {
