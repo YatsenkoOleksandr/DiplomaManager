@@ -151,8 +151,42 @@ namespace DiplomaManager.Areas.Admin.Controllers
             }
         }
 
-        
+        public IActionResult ChangeStudent(int predefenseId, int predefensePeriodId, int? studentId, string studentName)
+        {
+            if (studentId == null)
+                studentId = 0;
 
+            try
+            {
+                IEnumerable<StudentDTO> freeStudents = _service.GetFreeStudents(predefensePeriodId);
+                ChangeStudentViewModel vm = new ChangeStudentViewModel()
+                {
+                    OldStudentId = (int)studentId,
+                    PredefenseId = predefenseId,
+                    PredefensePeriodId = predefensePeriodId,
+                    Students = new Dictionary<int, string>()
+                };
+                if (studentId != 0)
+                {
+                    vm.Students.Add((int)studentId, studentName);
+                }
+                else
+                {
+                    vm.Students.Add(0, "Студент не выбран");
+                }
+                foreach(var st in freeStudents)
+                {
+                    vm.Students.Add(st.Id, st.GetFullName());
+                }
+                return View(vm);
+            }
+            catch
+            {
+                return RedirectToAction("Periods");
+            }
+        }
+
+        [HttpPost]
         public IActionResult ChangeStudent(int oldStudentId, int studentId, int predefenseId, int predefensePeriodId)
         {
             try
@@ -165,6 +199,22 @@ namespace DiplomaManager.Areas.Admin.Controllers
                 {
                     _service.SubmitStudentToPredefense(predefenseId, studentId);
                 }
+                return RedirectToAction("Schedule", new { predefensePeriodId = predefensePeriodId });
+            }
+            catch (Exception exc)
+            {
+                return RedirectToAction("Periods");
+            }
+        }
+
+        public IActionResult DeleteStudent(int studentId, int predefenseId, int predefensePeriodId)
+        {
+            try
+            {
+                if (studentId != 0)
+                {
+                    _service.DenySubmitStudent(predefenseId, studentId);
+                }                
                 return RedirectToAction("Schedule", new { predefensePeriodId = predefensePeriodId });
             }
             catch (Exception exc)

@@ -58,7 +58,7 @@
                         <td>@first.Time.ToShortTimeString()</td>
                         @if (first.StudentId != null && first.StudentId != 0)
                         { 
-                            <td>@first.Student.GetFullName(194)</td>
+                            <td>@first.Student.GetFullName()</td>
                             <td>@Html.ActionLink(
                                "Результаты предзащиты", 
                                "PredefenseResults", 
@@ -75,7 +75,12 @@
                            "Изменить студента",
                            "ChangeStudent",
                            "AdminPredefense",
-                           new { predefenseId = first.Id, studentId = first.StudentId})</td>
+                           new {
+                               predefenseId = first.Id,
+                               studentId = first.StudentId,
+                               predefensePeriodId = Model.PredefensePeriodId,
+                               studentName = first.Student?.GetFullName()
+                           })</td>
                     }
                 }
                 <td rowspan="@rows">@Html.ActionLink(
