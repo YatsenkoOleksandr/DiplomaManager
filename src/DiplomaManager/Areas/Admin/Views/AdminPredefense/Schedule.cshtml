@@ -87,7 +87,7 @@
                     "Изменить преподавателей",
                     "PredefenseDateTeachers",
                     "AdminPredefense",
-                    new { predefenseDate = schedule.PredefenseDate.Id })</td>
+                    new { predefenseDateId = schedule.PredefenseDate.Id, predefensePeriodId = Model.PredefensePeriodId })</td>
                 <td rowspan="@rows">@Html.ActionLink(
                     "Удалить дату предзащиты",
                     "DeletePredefenseDate",

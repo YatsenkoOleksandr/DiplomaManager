@@ -99,7 +99,7 @@ namespace DiplomaManager.Areas.Admin.Controllers
             {
                 _service.DeletePredefensePeriod(predefensePeriodId);
             }
-            catch
+            catch (Exception exc)
             {
 
             }
@@ -107,7 +107,7 @@ namespace DiplomaManager.Areas.Admin.Controllers
         }
 #endregion
 
-#region Methods for getting schedule and changing students, teachers, results
+#region Methods for getting schedule and results
         public IActionResult Schedule(int predefensePeriodId)
         {
             try
@@ -144,98 +144,6 @@ namespace DiplomaManager.Areas.Admin.Controllers
                     WritingReadiness = predefense.WritingReadiness
                 };
                 return View(results);
-            }
-            catch
-            {
-                return RedirectToAction("Periods");
-            }
-        }
-
-        public IActionResult ChangeStudent(int predefenseId, int predefensePeriodId, int? studentId, string studentName)
-        {
-            if (studentId == null)
-                studentId = 0;
-
-            try
-            {
-                IEnumerable<StudentDTO> freeStudents = _service.GetFreeStudents(predefensePeriodId);
-                ChangeStudentViewModel vm = new ChangeStudentViewModel()
-                {
-                    OldStudentId = (int)studentId,
-                    PredefenseId = predefenseId,
-                    PredefensePeriodId = predefensePeriodId,
-                    Students = new Dictionary<int, string>()
-                };
-                if (studentId != 0)
-                {
-                    vm.Students.Add((int)studentId, studentName);
-                }
-                else
-                {
-                    vm.Students.Add(0, "Студент не выбран");
-                }
-                foreach(var st in freeStudents)
-                {
-                    vm.Students.Add(st.Id, st.GetFullName());
-                }
-                return View(vm);
-            }
-            catch
-            {
-                return RedirectToAction("Periods");
-            }
-        }
-
-        [HttpPost]
-        public IActionResult ChangeStudent(int oldStudentId, int studentId, int predefenseId, int predefensePeriodId)
-        {
-            try
-            {
-                if (oldStudentId != 0)
-                {
-                    _service.DenySubmitStudent(predefenseId, oldStudentId);
-                }
-                if (studentId != 0)
-                {
-                    _service.SubmitStudentToPredefense(predefenseId, studentId);
-                }
-                return RedirectToAction("Schedule", new { predefensePeriodId = predefensePeriodId });
-            }
-            catch (Exception exc)
-            {
-                return RedirectToAction("Periods");
-            }
-        }
-
-        public IActionResult DeleteStudent(int studentId, int predefenseId, int predefensePeriodId)
-        {
-            try
-            {
-                if (studentId != 0)
-                {
-                    _service.DenySubmitStudent(predefenseId, studentId);
-                }                
-                return RedirectToAction("Schedule", new { predefensePeriodId = predefensePeriodId });
-            }
-            catch (Exception exc)
-            {
-                return RedirectToAction("Periods");
-            }
-        }
-
-        public IActionResult ChangeTeacher(int oldTeacherId, int teacherId, int predefenseDateId, int predefensePeriodId)
-        {
-            try
-            {
-                if (oldTeacherId != 0)
-                {
-                    _service.DenySubmitTeacher(predefenseDateId, oldTeacherId);
-                }
-                if (teacherId != 0)
-                {
-                    _service.SubmitTeacherToPredefenseDate(predefenseDateId, teacherId);
-                }
-                return RedirectToAction("Schedule", new { predefensePeriodId = predefensePeriodId });
             }
             catch (Exception exc)
             {
@@ -288,6 +196,222 @@ namespace DiplomaManager.Areas.Admin.Controllers
             return View(results);
         }
 #endregion
+
+#region Methods for changing student
+        public IActionResult ChangeStudent(int predefenseId, int predefensePeriodId, int? studentId, string studentName)
+        {
+            if (studentId == null)
+                studentId = 0;
+
+            try
+            {
+                IEnumerable<StudentDTO> freeStudents = _service.GetFreeStudents(predefensePeriodId);
+                ChangeStudentViewModel vm = new ChangeStudentViewModel()
+                {
+                    OldStudentId = (int)studentId,
+                    PredefenseId = predefenseId,
+                    PredefensePeriodId = predefensePeriodId,
+                    Students = new Dictionary<int, string>()
+                };
+                if (studentId != 0)
+                {
+                    vm.Students.Add((int)studentId, studentName);
+                }
+                else
+                {
+                    vm.Students.Add(0, "Студент не выбран");
+                }
+                foreach(var st in freeStudents)
+                {
+                    vm.Students.Add(st.Id, st.GetFullName());
+                }
+                return View(vm);
+            }
+            catch (Exception exc)
+            {
+                return RedirectToAction("Periods");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ChangeStudent(int oldStudentId, int studentId, int predefenseId, int predefensePeriodId)
+        {
+            try
+            {
+                if (oldStudentId != 0)
+                {
+                    _service.DenySubmitStudent(predefenseId, oldStudentId);
+                }
+                if (studentId != 0)
+                {
+                    _service.SubmitStudentToPredefense(predefenseId, studentId);
+                }
+                return RedirectToAction("Schedule", new { predefensePeriodId = predefensePeriodId });
+            }
+            catch (Exception exc)
+            {
+                return RedirectToAction("Periods");
+            }
+        }
+
+        public IActionResult DeleteStudent(int studentId, int predefenseId, int predefensePeriodId)
+        {
+            try
+            {
+                if (studentId != 0)
+                {
+                    _service.DenySubmitStudent(predefenseId, studentId);
+                }                
+                return RedirectToAction("Schedule", new { predefensePeriodId = predefensePeriodId });
+            }
+            catch (Exception exc)
+            {
+                return RedirectToAction("Periods");
+            }
+        }
+#endregion
+
+#region Methods for chaning predefense date teachers
+        public IActionResult PredefenseDateTeachers(int predefenseDateId, int predefensePeriodId)
+        {
+            try
+            {
+                IEnumerable<TeacherDTO> teachers = _service.GetPredefenseDateTeachers(predefenseDateId);
+                PredefenseDateTeachersViewModel vm = new PredefenseDateTeachersViewModel()
+                {
+                    PredefenseDateId = predefenseDateId,
+                    PredefensePeriodId = predefensePeriodId,
+                    Teachers = new Dictionary<int, string>()
+                };
+                foreach(var t in teachers)
+                {
+                    vm.Teachers.Add(t.Id, t.GetFullName());
+                }
+
+                return View(vm);
+            }
+            catch (Exception exc)
+            {
+                return RedirectToAction("Periods");
+            }
+        }
+
+        public IActionResult CreatePredefenseDateTeacher(int predefensePeriodId, int predefenseDateId)
+        {
+            try
+            {
+                IEnumerable<TeacherDTO> freeTeachers = _service.GetFreeTeachersToPredefenseDate(predefenseDateId);
+                PredefenseDateTeachersViewModel vm = new PredefenseDateTeachersViewModel()
+                {
+                    PredefenseDateId = predefenseDateId,
+                    PredefensePeriodId = predefensePeriodId,
+                    Teachers = new Dictionary<int, string>()
+                };
+                foreach (var t in freeTeachers)
+                {
+                    vm.Teachers.Add(t.Id, t.GetFullName());
+                }
+                return View(vm);
+            }
+            catch (Exception exc)
+            {
+                return RedirectToAction("Periods");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult CreatePredefenseDateTeacher(int predefensePeriodId, int predefenseDateId, int teacherId)
+        {
+            try
+            {
+                if (teacherId != 0)
+                {
+                    _service.SubmitTeacherToPredefenseDate(predefenseDateId, teacherId);
+                }
+                return RedirectToAction(
+                    "PredefenseDateTeachers",
+                    new { predefensePeriodId = predefensePeriodId, predefenseDateId = predefenseDateId });
+            }
+            catch(Exception exc)
+            {
+                return RedirectToAction("Periods");
+            }
+        }
+
+        public IActionResult DeletePredefenseDateTeacher(int predefenseDateId, int teacherId, int predefensePeriodId)
+        {
+            try
+            {
+                _service.DenySubmitTeacher(predefenseDateId, teacherId);
+                return RedirectToAction(
+                    "PredefenseDateTeachers", 
+                    new {
+                        predefenseDateId = predefenseDateId,
+                        predefensePeriodId = predefensePeriodId
+                    });
+            }
+            catch
+            {
+                return RedirectToAction("Periods");
+            }
+        }
+
+        public IActionResult ChangePredefenseDateTeacher(int teacherId, int predefenseDateId, int predefensePeriodId, string teacherName)
+        {
+            try
+            {
+                IEnumerable<TeacherDTO> freeTeachers = _service.GetFreeTeachersToPredefenseDate(predefenseDateId);
+                PredefenseDateTeachersViewModel vm = new PredefenseDateTeachersViewModel()
+                {
+                    PredefenseDateId = predefenseDateId,
+                    PredefensePeriodId = predefensePeriodId,
+                    Teachers = new Dictionary<int, string>(),
+                    OldTeacherId = teacherId
+                };
+                vm.Teachers.Add(teacherId, teacherName);
+
+                foreach (var t in freeTeachers)
+                {
+                    vm.Teachers.Add(t.Id, t.GetFullName());
+                }
+                return View(vm);
+            }
+            catch (Exception exc)
+            {
+                return RedirectToAction("Periods");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ChangePredefenseDateTeacher(int oldTeacherId, int teacherId, int predefenseDateId, int predefensePeriodId)
+        {
+            try
+            {
+                if (oldTeacherId != teacherId)
+                {
+                    if (oldTeacherId != 0)
+                    {
+                        _service.DenySubmitTeacher(predefenseDateId, oldTeacherId);
+                    }
+                    if (teacherId != 0)
+                    {
+                        _service.SubmitTeacherToPredefenseDate(predefenseDateId, teacherId);
+                    }
+                }
+                return RedirectToAction("PredefenseDateTeachers",
+                    new
+                    {
+                        predefenseDateId = predefenseDateId,
+                        predefensePeriodId = predefensePeriodId
+                    });
+            }
+            catch (Exception exc)
+            {
+                return RedirectToAction("Periods");
+            }
+        }
+#endregion
+        
 
 #region Methods for creating teachers in period
         public IActionResult PeriodTeachers(int predefensePeriodId)

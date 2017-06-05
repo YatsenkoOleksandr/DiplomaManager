@@ -1,0 +1,54 @@
+﻿@model DiplomaManager.Areas.Admin.ViewModels.PredefenseDateTeachersViewModel
+
+@Html.ActionLink(
+    "Вернуться к расписанию предзащит",
+    "Schedule",
+    new
+    {
+        predefensePeriodId = Model.PredefensePeriodId
+    })
+
+@if(Model.Teachers.Count < 3)
+{
+    @Html.ActionLink(
+        "Добавить преподавателя",
+        "CreatePredefenseDateTeacher",
+        new
+        {
+            predefensePeriodId = Model.PredefensePeriodId,
+            predefenseDateId = Model.PredefenseDateId
+        });
+}
+
+<table>
+    <tbody>
+        @foreach(var t in Model.Teachers)
+        {
+            <tr>
+                <td>@t.Value</td>
+                <td>
+                    @Html.ActionLink(
+                        "Изменить преподавателя",
+                        "ChangePredefenseDateTeacher",
+                        new { 
+                            predefensePeriodId = Model.PredefensePeriodId,
+                            predefenseDateId = Model.PredefenseDateId,
+                            teacherId = t.Key,
+                            teacherName = t.Value
+                        })
+                </td>
+                <td>
+                    @Html.ActionLink(
+                        "Удалить преподавателя",
+                        "DeletePredefenseDateTeacher",
+                        new
+                        {
+                            predefensePeriodId = Model.PredefensePeriodId,
+                            predefenseDateId = Model.PredefenseDateId,
+                            teacherId = t.Key                            
+                        })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

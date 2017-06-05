@@ -1,0 +1,18 @@
+﻿@model DiplomaManager.Areas.Admin.ViewModels.PredefenseDateTeachersViewModel
+
+@using (Html.BeginForm())
+{    
+    @Html.HiddenFor(model => model.PredefenseDateId);
+    @Html.HiddenFor(model => model.PredefensePeriodId);
+
+    <select id="TeacherId" name="TeacherId">
+        <option selected value="0">Преподаватель не выбран</option>
+        @for (int i = 0; i < Model.Teachers.Count; i++)
+        {
+            <option value="@Model.Teachers.ElementAt(i).Key">@Model.Teachers.ElementAt(i).Value</option>
+        }
+    </select>
+    <p>
+        <input type="submit" value="Принять" />
+    </p>
+}
