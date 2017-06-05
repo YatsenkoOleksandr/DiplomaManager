@@ -7,10 +7,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DiplomaManager.ViewModels;
 
 namespace DiplomaManager.Controllers
 {
-    public class PredefenseController: Controller
+    public class PredefenseController : Controller
     {
         private readonly IStudentPredefenseService _service;
 
@@ -24,7 +25,13 @@ namespace DiplomaManager.Controllers
             try
             {
                 IEnumerable<DegreeDTO> degrees = _service.GetDegrees();
-                return Json(degrees);
+                var degreesNames = degrees.Select(d =>
+                    new DegreeViewModel
+                    {
+                        Id = d.Id,
+                        Name = d.GetName()
+                    });
+                return Json(degreesNames);
             }
             catch (NoEntityInDatabaseException exc)
             {

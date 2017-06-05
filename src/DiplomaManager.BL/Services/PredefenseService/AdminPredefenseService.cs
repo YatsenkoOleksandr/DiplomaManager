@@ -143,6 +143,7 @@ namespace DiplomaManager.BLL.Services.PredefenseService
         public IEnumerable<PredefensePeriodDTO> GetPredefensePeriods()
         {
             // Get info about predefense period - without predefense dates, with degrees
+
             // sorted by date
             IEnumerable<PredefensePeriod> periods = _database.PredefensePeriods.Get(
                 null,
@@ -207,6 +208,7 @@ namespace DiplomaManager.BLL.Services.PredefenseService
                 teachers);
         }
 
+
         public IEnumerable<TeacherDTO> GetPredefenseDateTeachers(int predefenseDateId)
         {
             {
@@ -226,7 +228,7 @@ namespace DiplomaManager.BLL.Services.PredefenseService
             }
             return teachers;
         }
-
+        
         public IEnumerable<TeacherDTO> GetFreeTeachersToPeriod(int predefensePeriodId)
         {
             {
@@ -523,13 +525,13 @@ namespace DiplomaManager.BLL.Services.PredefenseService
             {
                 throw new IncorrectParameterException("Количество посещений не корректно.");
             }
-
+            
             PredefenseTeacherCapacity capacity = new PredefenseTeacherCapacity()
             {
                 TeacherId = teacherCapacity.TeacherId,
                 PredefensePeriodId = teacherCapacity.PredefensePeriodId,
                 Total = teacherCapacity.Total,
-                Count = 0
+                Count = 0                
             };
 
             _database.PredefenseTeacherCapacities.Add(capacity);

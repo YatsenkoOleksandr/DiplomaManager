@@ -1,4 +1,4 @@
-﻿using DiplomaManager.Areas.Admin.ViewModels;
+﻿﻿using DiplomaManager.Areas.Admin.ViewModels;
 using DiplomaManager.BLL.DTOs.PredefenseDTOs;
 using DiplomaManager.BLL.DTOs.StudentDTOs;
 using DiplomaManager.BLL.DTOs.TeacherDTOs;
@@ -9,8 +9,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DiplomaManager.Areas.Admin.Controllers
 {
@@ -65,6 +63,7 @@ namespace DiplomaManager.Areas.Admin.Controllers
         {
             return View();
         }
+
 
         [HttpPost]
         public IActionResult CreatePeriod(PredefensePeriodViewModel period)

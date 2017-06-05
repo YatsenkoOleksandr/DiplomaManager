@@ -55,6 +55,19 @@
             <div class="panel-heading">Студент</div>
             <div class="panel-body">
                 <div class="form-group">
+                    <label>Год выпуска</label>
+                    <ng-select [items]="yearsList"
+                               placeholder="Введите год выпуска"
+                               (selected)="yearSelected(requestFGroup.get('degrees').value, $event)"
+                               formControlName="graduationYear">
+                    </ng-select>
+                    <div class="alert alert-danger"
+                         *ngIf="requestFGroup.get('studentFGroup.graduationYear').hasError('required')
+                            && requestFGroup.get('studentFGroup.graduationYear').touched">
+                        Не выбран год выпуска
+                    </div>
+                </div>
+                <div class="form-group">
                     <label>Группа</label>
                     <ng-select [items]="groupsList"
                                placeholder="Не выбрана группа"

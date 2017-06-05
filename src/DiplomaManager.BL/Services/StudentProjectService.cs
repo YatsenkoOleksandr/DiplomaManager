@@ -119,9 +119,16 @@ namespace DiplomaManager.BLL.Services
             return capacityDto;
         }
 
-        public IEnumerable<GroupDTO> GetGroups(int degreeId)
+        public IEnumerable<int> GetGraduationYears(int degreeId)
         {
-            var groups = Database.Groups.Get(new FilterExpression<Group>(g => g.DegreeId == degreeId));
+            var years = Database.Groups.Get(new FilterExpression<Group>(g => g.DegreeId == degreeId));
+            return years.Select(g => g.GraduationYear).Distinct().OrderBy(y => y);
+        }
+
+        public IEnumerable<GroupDTO> GetGroups(int degreeId, int? graduationYear = null)
+        {
+            var year = graduationYear ?? DateTime.Now.Year;
+            var groups = Database.Groups.Get(new FilterExpression<Group>(g => g.DegreeId == degreeId && g.GraduationYear == year));
 
             var groupDtos = Mapper.Map<IEnumerable<Group>, IEnumerable<GroupDTO>>(groups);
             return groupDtos;

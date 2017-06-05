@@ -2,6 +2,7 @@
     id: number;
     name: string;
     degreeId: number;
+    graduationYear: number;
 
     constructor(id: number, name: string, degreeId: number) {
         this.id = id;

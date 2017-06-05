@@ -42,8 +42,14 @@ export class DiplomaRequestService {
         });
     }
 
-    getGroups(degreeId: number): Observable<Group[]> {
-        return this.http.get(`${this.apiBasePath}/GetGroups/?degreeId=${degreeId}`).map((resp: Response) => {
+    getGraduationYears(degreeId: number): Observable<number[]> {
+        return this.http.get(`${this.apiBasePath}/GetGraduationYears/?degreeId=${degreeId}`).map((resp: Response) => {
+            return resp.json();
+        });
+    }
+
+    getGroups(degreeId: number, graduationYear: number): Observable<Group[]> {
+        return this.http.get(`${this.apiBasePath}/GetGroups/?degreeId=${degreeId}&graduationYear=${graduationYear}`).map((resp: Response) => {
             return resp.json();
         });
     }
