@@ -1,0 +1,32 @@
+﻿@model DiplomaManager.Areas.Admin.ViewModels.ChangeStudentViewModel
+
+@if(Model.OldStudentId != 0)
+{
+    @Html.ActionLink("Удалить студента", "DeleteStudent",
+        new
+        {
+            predefensePeriodId = Model.PredefensePeriodId,
+            predefenseId = Model.PredefenseId,            
+            studentId = Model.OldStudentId
+        });
+}
+
+@using (Html.BeginForm())
+{
+    <input id="OldStudentId" name="OldStudentId" type="hidden" value="@Model.OldStudentId" />
+
+    @*@Html.HiddenFor(model => model.OldStudentId);*@
+    @Html.HiddenFor(model => model.PredefenseId);
+    @Html.HiddenFor(model => model.PredefensePeriodId);
+
+    <select id="StudentId" name="StudentId">
+        <option selected value="@Model.Students.First().Key">@Model.Students.First().Value</option>
+        @for (int i = 1; i < Model.Students.Count; i++)
+        {
+            <option value="@Model.Students.ElementAt(i).Key">@Model.Students.ElementAt(i).Value</option>
+        }
+    </select>
+    <p>
+        <input type="submit" value="Принять" />
+    </p>
+}

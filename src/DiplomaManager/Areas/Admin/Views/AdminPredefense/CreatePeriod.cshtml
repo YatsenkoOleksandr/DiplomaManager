@@ -1,0 +1,164 @@
+﻿@model DiplomaManager.Areas.Admin.ViewModels.PredefensePeriodViewModel
+
+@*
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+
+<!--если браузер не создает специального поля для date, то добавляем datepicker-->
+<script type="text/javascript">
+    $(function () {
+        if (!Modernizr.inputtypes.date) {
+            $(function () {
+                $("input[type='date']")
+                    .datepicker({ dateFormat: 'dd/mm/yy' })
+                    .get(0).setAttribute("type", "text");
+            });
+            $.datepicker.regional['ru'] = {
+                closeText: 'Закрыть',
+                prevText: 'Пред',
+                nextText: 'След',
+                currentText: 'Сегодня',
+                monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+                    'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+                monthNamesShort: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн',
+                    'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+                dayNames: ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'],
+                dayNamesShort: ['вск', 'пнд', 'втр', 'срд', 'чтв', 'птн', 'сбт'],
+                dayNamesMin: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+                weekHeader: 'Не',
+                dateFormat: 'dd.mm.yy',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: ''
+            };
+            $.datepicker.setDefaults($.datepicker.regional['ru']);
+
+        }
+    });
+</script>
+*@
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <fieldset> 
+        <select id="DegreeId" name="DegreeId">            
+        </select>
+
+        <select id="GraduationYear" name="GraduationYear">
+
+        </select>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.StartTime)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.StartTime)
+            @Html.ValidationMessageFor(model => model.StartTime)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FinishTime)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FinishTime)
+            @Html.ValidationMessageFor(model => model.FinishTime)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.StudentTime)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.StudentTime)
+            @Html.ValidationMessageFor(model => model.StudentTime)
+        </div>
+
+        <p>
+            <input type="submit" value="Добавить" />
+        </p>
+    </fieldset>
+}
+
+<script> 
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function (evt) {
+        var degrees = JSON.parse(evt.target.responseText);
+        console.log(degrees);
+
+        var degreeList = document.getElementById('DegreeId');
+
+        for (var i = 0; i < degrees.length; i++) {
+            var ch = document.createElement('option');            
+            ch.value = degrees[i].id;
+            ch.innerText = degrees[i].info;
+
+            degreeList.appendChild(ch);
+
+            console.log(degrees[i].id);
+            console.log(degrees[i].info);
+        }
+
+        loadYears();
+        
+    }
+    xhr.onerror = function (evt) {
+        
+    }
+    xhr.open('GET', '/Admin/AdminPredefense/GetDegrees');
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send();
+
+
+    var degreeSelector = document.getElementById('DegreeId');
+    degreeSelector.onchange = loadYears;
+
+    function loadYears() {
+        var ds = document.getElementById('DegreeId');
+        console.log(ds);
+        var selectedDegree = ds.options[ds.selectedIndex].value;
+        console.log(selectedDegree);
+        var xhr2 = new XMLHttpRequest();
+        xhr2.onload = function (evt) {
+            var years = JSON.parse(evt.target.responseText);
+            console.log(years);
+
+            var yearsList = document.getElementById('GraduationYear');
+            while (yearsList.firstChild != null) {
+                yearsList.removeChild(yearsList.firstChild);
+            }
+
+            for (var i = 0; i < years.length; i++) {
+                var ch2 = document.createElement('option');
+                ch2.value = years[i];
+                ch2.innerText = years[i];
+
+                yearsList.appendChild(ch2);
+
+                console.log(years[i]);
+                console.log(years[i]);
+            }
+
+        }
+        xhr2.onerror = function (evt) {
+        }
+        var url = '/Admin/AdminPredefense/GetGraduationYears/' + selectedDegree;
+        console.log(url);
+        xhr2.open('GET', url);
+        xhr2.setRequestHeader("Content-Type", "application/json");        
+
+        xhr2.send();
+    } 
+        
+    
+</script>
+
+
+
+
+
+
+
+
+

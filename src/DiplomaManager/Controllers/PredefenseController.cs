@@ -11,7 +11,7 @@ using DiplomaManager.ViewModels;
 
 namespace DiplomaManager.Controllers
 {
-    public class PredefenseController: Controller
+    public class PredefenseController : Controller
     {
         private readonly IStudentPredefenseService _service;
 

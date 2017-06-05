@@ -1,0 +1,32 @@
+﻿@model DiplomaManager.Areas.Admin.ViewModels.PredefensePeriodTeachers
+
+@Html.ActionLink("Добавить преподавателя", "AddPeriodTeacher", new { PredefensePeriodId = Model.PredefensePeriodId})
+
+@if(Model.PeriodTeachers != null && Model.PeriodTeachers.Count() != 0)
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Преподаватель</th>
+                <th>Количество посещений</th>
+                <th>Максимальное количество посещений</th>                
+            </tr>            
+        </thead>
+        <tbody>
+            @foreach(var ptc in Model.PeriodTeachers)
+            {
+                <tr>
+                    <th>@ptc.Teacher.GetFullName()</th>
+                    <th>@ptc.Count</th>
+                    <th>@ptc.Total</th>
+                    <th>
+                        @Html.ActionLink(
+                            "Удалить преподавателя", 
+                            "DeletePeriodTeacher", 
+                            new { teacherId = ptc.TeacherId, predefensePeriodId = ptc.PredefensePeriodId})
+                    </th>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

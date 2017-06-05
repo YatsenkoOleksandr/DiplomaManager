@@ -11,7 +11,7 @@ namespace DiplomaManager.Areas.Teacher.Controllers
 {
     [Area("Teacher")]
     [Authorize(Policy = "Teachers&Admins")]
-    public class TeacherPredefenseController: Controller
+    public class TeacherPredefenseController : Controller
     {
         private readonly ITeacherPredefenseService _service;
 
@@ -44,7 +44,7 @@ namespace DiplomaManager.Areas.Teacher.Controllers
             try
             {
                 IEnumerable<PredefenseSchedule> teacherSchedule = _service.GetTeacherPredefenseSchedule(
-                    teacherId, 
+                    teacherId,
                     predefensePeriodId);
                 return Json(teacherSchedule);
             }
@@ -68,14 +68,14 @@ namespace DiplomaManager.Areas.Teacher.Controllers
         {
             try
             {
-                IEnumerable<PredefenseSchedule> schedule = _service.GetPredefenseSchedule(                    
+                IEnumerable<PredefenseSchedule> schedule = _service.GetPredefenseSchedule(
                     predefensePeriodId);
                 return Json(schedule);
             }
             catch (NoEntityInDatabaseException exc)
             {
                 return Json(new { Error = exc.ToString(), ErrorMessage = exc.Message });
-            }            
+            }
             catch (Exception exc)
             {
                 return Json(exc.InnerException == null
@@ -94,7 +94,7 @@ namespace DiplomaManager.Areas.Teacher.Controllers
             catch (NoEntityInDatabaseException exc)
             {
                 return Json(new { Error = exc.ToString(), ErrorMessage = exc.Message });
-            }            
+            }
             catch (Exception exc)
             {
                 return Json(exc.InnerException == null

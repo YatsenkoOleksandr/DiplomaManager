@@ -23,7 +23,9 @@ namespace DiplomaManager.BLL.Interfaces.PredefenseService
 
         PredefenseDTO GetPredefense(int predefenseId);
 
-        IEnumerable<PredefenseTeacherCapacityDTO> GetPredefenseTeachers(int predefensePeriodId);
+        IEnumerable<PredefenseTeacherCapacityDTO> GetPredefensePeriodTeachers(int predefensePeriodId);
+
+        IEnumerable<TeacherDTO> GetPredefenseDateTeachers(int predefenseDateId);
 
         IEnumerable<TeacherDTO> GetFreeTeachersToPeriod(int predefensePeriodId);
 

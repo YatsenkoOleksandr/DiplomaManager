@@ -137,15 +137,26 @@ namespace DiplomaManager.BLL.Services.PredefenseService
             {
                 years.Add(year.Key);
             }
-
             return years;
         }
 
         public IEnumerable<PredefensePeriodDTO> GetPredefensePeriods()
         {
             // Get info about predefense period - without predefense dates, with degrees
+
+            // sorted by date
             IEnumerable<PredefensePeriod> periods = _database.PredefensePeriods.Get(
-                new IncludeExpression<PredefensePeriod>(p => p.Degree.DegreeNames));
+                null,
+                new IncludeExpression<PredefensePeriod>[]
+                {
+                    new IncludeExpression<PredefensePeriod>(p => p.Degree.DegreeNames)
+                },
+                null,
+                null,
+                new SortExpression<PredefensePeriod, DateTime>[]
+                {
+                    new SortExpression<PredefensePeriod, DateTime>(pd => pd.StartDate, ListSortDirection.Descending)
+                });
             return Mapper.Map<IEnumerable<PredefensePeriod>, IEnumerable<PredefensePeriodDTO>>(periods);
         }
 
@@ -178,7 +189,7 @@ namespace DiplomaManager.BLL.Services.PredefenseService
             return Mapper.Map<Predefense, PredefenseDTO>(predefense);
         }
 
-        public IEnumerable<PredefenseTeacherCapacityDTO> GetPredefenseTeachers(int predefensePeriodId)
+        public IEnumerable<PredefenseTeacherCapacityDTO> GetPredefensePeriodTeachers(int predefensePeriodId)
         {
             {
                 PredefenseChecker checker = new PredefenseChecker(_database);
@@ -197,6 +208,27 @@ namespace DiplomaManager.BLL.Services.PredefenseService
                 teachers);
         }
 
+
+        public IEnumerable<TeacherDTO> GetPredefenseDateTeachers(int predefenseDateId)
+        {
+            {
+                PredefenseChecker checker = new PredefenseChecker(_database);
+                checker.CheckPredefenseDateExistance(predefenseDateId);
+            }            
+            List<TeacherDTO> teachers = new List<TeacherDTO>();
+            IEnumerable<Appointment> appointments = _database.Appointments.Get(
+                new FilterExpression<Appointment>(app => app.PredefenseDateId == predefenseDateId),
+                new IncludeExpression<Appointment>[]
+                {
+                    new IncludeExpression<Appointment>(app => app.Teacher.PeopleNames)
+                });
+            foreach(var ap in appointments)
+            {
+                teachers.Add(Mapper.Map<Teacher, TeacherDTO>(ap.Teacher));
+            }
+            return teachers;
+        }
+        
         public IEnumerable<TeacherDTO> GetFreeTeachersToPeriod(int predefensePeriodId)
         {
             {
@@ -379,8 +411,6 @@ namespace DiplomaManager.BLL.Services.PredefenseService
             };
             _database.PredefensePeriods.Add(databasePeriod);
             _database.Save();
-
-            throw new NotImplementedException();
         }
 
         public void DeletePredefensePeriod(int predefensePeriodId)
@@ -417,6 +447,7 @@ namespace DiplomaManager.BLL.Services.PredefenseService
 
             PredefenseDate date = new PredefenseDate()
             {
+                PredefensePeriodId = predefenseDate.PredefensePeriodId,
                 BeginTime = predefenseDate.BeginTime,
                 Date = predefenseDate.Date,
                 FinishTime = predefenseDate.FinishTime
@@ -494,19 +525,17 @@ namespace DiplomaManager.BLL.Services.PredefenseService
             {
                 throw new IncorrectParameterException("Количество посещений не корректно.");
             }
-
+            
             PredefenseTeacherCapacity capacity = new PredefenseTeacherCapacity()
             {
                 TeacherId = teacherCapacity.TeacherId,
-                PredefensePeriodId = teacherCapacity.TeacherId,
+                PredefensePeriodId = teacherCapacity.PredefensePeriodId,
                 Total = teacherCapacity.Total,
-                Count = 0
+                Count = 0                
             };
 
             _database.PredefenseTeacherCapacities.Add(capacity);
             _database.Save();
-
-            throw new NotImplementedException();
         }
 
         public void DeleteTeacher(int teacherId, int predefensePeriodId)

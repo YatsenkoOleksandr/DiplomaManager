@@ -81,7 +81,7 @@ namespace DiplomaManager.Areas.Admin.Controllers
             return projects.GroupBy(p => p.Teacher)
                                                 .Select(g => new TeacherStudents
                                                 {
-                                                    Teacher = g.Key.GetFullName(193),
+                                                    Teacher = g.Key.GetFullName(),
                                                     Students = g.Select(p => p.Student.GetFullName()).Distinct()
                                                 });
         }

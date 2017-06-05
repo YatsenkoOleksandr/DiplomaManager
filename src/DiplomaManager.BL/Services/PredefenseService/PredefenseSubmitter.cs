@@ -153,7 +153,7 @@ namespace DiplomaManager.BLL.Services.PredefenseService
             // Check if teacher is free at predefense date
             IEnumerable<Appointment> appointments = _database.Appointments.Get(
                 new FilterExpression<Appointment>(ap => ap.TeacherId == teacherId &&
-                    ap.PredefenseDate.Date.Date == predefenseDate.Date.Date),
+                    ap.PredefenseDate.Date == predefenseDate.Date),
                 new IncludeExpression<Appointment>[]
                 {
                     new IncludeExpression<Appointment>(app => app.PredefenseDate)
@@ -162,8 +162,8 @@ namespace DiplomaManager.BLL.Services.PredefenseService
             foreach (var app in appointments)
             {
                 // Teacher has predefense at same time
-                if (!(app.PredefenseDate.FinishTime < predefenseDate.BeginTime ||
-                    app.PredefenseDate.BeginTime > predefenseDate.FinishTime))
+                if (!(app.PredefenseDate.FinishTime.TimeOfDay < predefenseDate.BeginTime.TimeOfDay ||
+                    app.PredefenseDate.BeginTime.TimeOfDay > predefenseDate.FinishTime.TimeOfDay))
                 {
                     throw new IncorrectActionException("У преподавателя есть предзащита в то же самое время.");
                 }

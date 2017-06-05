@@ -75,12 +75,12 @@ namespace DiplomaManager.Areas.Admin.Controllers
             }
 
             Dictionary<int, string> freeTeachers = new Dictionary<int, string>();
-            freeTeachers.Add(project.TeacherId, project.Teacher.GetFullName(193));
+            freeTeachers.Add(project.TeacherId, project.Teacher.GetFullName());
             foreach(TeacherDTO t in AdminProjectService.GetFreeTeachers(degreeId, graduationYear))
             {
                 if (t.Id != project.TeacherId)
                 {
-                    freeTeachers.Add(t.Id, t.GetFullName(193));
+                    freeTeachers.Add(t.Id, t.GetFullName());
                 }
             }
 
