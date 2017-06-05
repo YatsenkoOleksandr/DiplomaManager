@@ -1,0 +1,89 @@
+﻿@using DiplomaManager.Areas.Admin.ViewModels
+
+@model PredefenseResultsViewModel
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <fieldset>        
+        @Html.HiddenFor(model => model.Id)        
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Passed)
+        </div>
+        <select id="Passed" name="Passed">
+            @foreach(var status in PredefenseResultsViewModel.PredefensesStatus)
+            {
+                @if(status.Key == Model.Passed)
+                {
+                    <option selected value="@status.Key">@status.Value</option>
+                }
+                else
+                {
+                    <option value="@status.Key">@status.Value</option>
+                }
+            }
+        </select>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SoftwareReadiness)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SoftwareReadiness)
+            @Html.ValidationMessageFor(model => model.SoftwareReadiness)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.WritingReadiness)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.WritingReadiness)
+            @Html.ValidationMessageFor(model => model.WritingReadiness)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PresentationReadiness)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PresentationReadiness)
+            @Html.ValidationMessageFor(model => model.PresentationReadiness)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ReportExist)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ReportExist)
+            @Html.ValidationMessageFor(model => model.ReportExist)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EconomySigned)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.EconomySigned)
+            @Html.ValidationMessageFor(model => model.EconomySigned)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ControlSigned)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ControlSigned)
+            @Html.ValidationMessageFor(model => model.ControlSigned)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SafetySigned)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SafetySigned)
+            @Html.ValidationMessageFor(model => model.SafetySigned)
+        </div>
+
+        <p>
+            <input type="submit" value="Сохранить" />
+        </p>
+    </fieldset>
+}

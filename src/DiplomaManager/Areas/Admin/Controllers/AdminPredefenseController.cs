@@ -25,13 +25,18 @@ namespace DiplomaManager.Areas.Admin.Controllers
             _service = service;
         }
 
-
 #region Methods for predefense period
         public IActionResult Periods()
         {
-            IEnumerable<PredefensePeriodDTO> periods = _service.GetPredefensePeriods();
-
-            return View(periods);
+            try
+            {
+                IEnumerable<PredefensePeriodDTO> periods = _service.GetPredefensePeriods();
+                return View(periods);
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         public IActionResult GetDegrees()
@@ -125,18 +130,22 @@ namespace DiplomaManager.Areas.Admin.Controllers
             }
         }
 
-        public IActionResult PredefenseResults(int predefenseDateId, int predefensePeriodId)
+        public IActionResult PredefenseResults(int predefenseId, int predefensePeriodId)
         {
             try
             {
-                PredefenseDTO predefense = _service.GetPredefense(predefenseDateId);
+                PredefenseDTO predefense = _service.GetPredefense(predefenseId);
+
+                PredefenseStatus passed = 
+                    PredefenseResultsViewModel.ConvertToPredefenseStatus(predefense.Passed);
+
                 PredefenseResultsViewModel results = new PredefenseResultsViewModel()
                 {
                     Id = predefense.Id,
                     PredefensePeriodId = predefensePeriodId,
                     ControlSigned = predefense.ControlSigned,
                     EconomySigned = predefense.EconomySigned,
-                    Passed = predefense.Passed,
+                    Passed = passed,
                     PresentationReadiness = predefense.PresentationReadiness,
                     ReportExist = predefense.ReportExist,
                     SafetySigned = predefense.SafetySigned,
@@ -156,11 +165,13 @@ namespace DiplomaManager.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                bool? passed = PredefenseResultsViewModel.ConvertPredefenseStatus(results.Passed);
+
                 PredefenseDTO predefense = new PredefenseDTO()
                 {
                     Id = results.Id,
                     ControlSigned = results.ControlSigned,
-                    Passed = results.Passed,
+                    Passed = passed,
                     EconomySigned = results.EconomySigned,
                     PresentationReadiness = results.PresentationReadiness,
                     ReportExist = results.ReportExist,
@@ -454,7 +465,7 @@ namespace DiplomaManager.Areas.Admin.Controllers
                     obj.Add(new JsonObject()
                     {
                         Id = t.Id,
-                        Info = t.GetFullName(194)
+                        Info = t.GetFullName()
                     });
                 }
                 return Json(obj);

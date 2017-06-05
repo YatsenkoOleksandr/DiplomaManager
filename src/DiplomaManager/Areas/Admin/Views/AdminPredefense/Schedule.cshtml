@@ -1,6 +1,12 @@
-﻿@model DiplomaManager.Areas.Admin.ViewModels.PredefensePeriodSchedule
+﻿@using DiplomaManager.Areas.Admin.ViewModels
+@model PredefensePeriodSchedule
 
 @Html.ActionLink("Определить дату предзащиты", "CreatePredefenseDate", new { predefensePeriodId = Model.PredefensePeriodId})
+
+@{
+    PredefenseStatus status;
+    string result;
+}
 
 <table id="Schedule" class="table table-striped" border="1" cellpadding="4" cellspacing="0">
     <thead>
@@ -42,7 +48,7 @@
                     {
                         foreach (var teacher in schedule.Teachers)
                         {
-                            teachers = string.Concat(teachers, teacher.GetFullName(194), "\n");
+                            teachers = string.Concat(teachers, teacher.GetFullName(), "\n");
                         }
                     }
                     else
@@ -59,6 +65,12 @@
                         @if (first.StudentId != null && first.StudentId != 0)
                         { 
                             <td>@first.Student.GetFullName()</td>
+                            {
+                                status = PredefenseResultsViewModel.ConvertToPredefenseStatus(first.Passed);
+                                result = PredefenseResultsViewModel.PredefensesStatus
+                                    .Where(kp => kp.Key == status).FirstOrDefault().Value;
+                            }
+                            <td>@result</td>
                             <td>@Html.ActionLink(
                                "Результаты предзащиты", 
                                "PredefenseResults", 
@@ -68,6 +80,7 @@
                         }
                         else
                         {
+                            <td>-</td>
                             <td>-</td>
                             <td>-</td>
                         }
@@ -103,8 +116,14 @@
                     <td>@pred.Time.ToShortTimeString()</td>
                     @if (pred.StudentId != null && pred.StudentId != 0)
                     {
-                        <td>@pred.Student.GetFullName(194)</td>
-                            <td>
+                        <td>@pred.Student.GetFullName()</td>
+                        { 
+                            status = PredefenseResultsViewModel.ConvertToPredefenseStatus(pred.Passed);
+                            result = PredefenseResultsViewModel.PredefensesStatus
+                                .Where(kp => kp.Key == status).FirstOrDefault().Value;
+                        }
+                        <td>@result</td>
+                        <td>
                                 @Html.ActionLink(
                                "Результаты предзащиты",
                                "PredefenseResults",
@@ -115,7 +134,8 @@
                     else
                     {
                         <td>-</td>
-                            <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
                     }
                     <td>
                         @Html.ActionLink(
