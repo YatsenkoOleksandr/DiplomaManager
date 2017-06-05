@@ -1,0 +1,28 @@
+﻿<div [formGroup]="studentFGroup">
+    <div class="form-group">
+        <label>Группа</label>
+        <ng-select [items]="groupsList"
+                   placeholder="Не выбрана группа"
+                   (selected)="groupSelected($event)"
+                   formControlName="groups">
+        </ng-select>
+        <div class="alert alert-danger"
+             *ngIf="studentFGroup.get('groups').hasError('required')
+                            && studentFGroup.get('groups').touched">
+            Не выбрана группа
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="students">ФИО</label>
+        <ng-select id="students"
+                   [items]="studentsList"
+                   placeholder="Введите ФИО"
+                   formControlName="users">
+        </ng-select>
+        <div class="alert alert-danger"
+             *ngIf="studentFGroup.get('users').hasError('required')
+                            && studentFGroup.get('users').touched">
+            Не указано ФИО
+        </div>
+    </div>
+</div>

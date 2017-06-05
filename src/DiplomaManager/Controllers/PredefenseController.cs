@@ -107,7 +107,15 @@ namespace DiplomaManager.Controllers
             try
             {
                 IEnumerable<StudentDTO> freeStudents = _service.GetFreeStudents(groupId);
-                return Json(freeStudents);
+                var studentsFio = freeStudents.Select(s =>
+                    new UserInfoViewModel
+                    {
+                        Id = s.Id,
+                        ShortName = s.GetShortName(),
+                        FullName = s.GetFullName(),
+                    });
+
+                return Json(studentsFio);
             }
             catch (NoEntityInDatabaseException exc)
             {

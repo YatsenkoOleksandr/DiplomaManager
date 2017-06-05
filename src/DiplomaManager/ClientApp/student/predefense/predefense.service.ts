@@ -14,7 +14,7 @@ export class PredefenseService {
 
     constructor(private dataService: DataService) { }
 
-    getDegrees(): Observable<Degree> {
+    getDegrees(): Observable<Degree[]> {
         return this.dataService
             .get(this.apiBasePath + '/GetDegrees')
             .map((resp: Response) => {
@@ -30,7 +30,7 @@ export class PredefenseService {
             });
     }
 
-    getPredefenseSchedule(degreeId: number, graduationYear: number): Observable<PredefenseSchedule> {
+    getPredefenseSchedule(degreeId: number, graduationYear: number): Observable<PredefenseSchedule[]> {
         return this.dataService
             .get(`${this.apiBasePath}/GetPredefenseSchedule`, { degreeId: degreeId, graduationYear: graduationYear })
             .map((resp: Response) => {
@@ -38,21 +38,21 @@ export class PredefenseService {
             });
     }
 
-    getGroups(degreeId: number, graduationYear: number): Observable<Group[]> {
-        return this.dataService
-            .get(`${this.apiBasePath}/GetGroups`, { degreeId: degreeId, graduationYear: graduationYear })
-            .map((resp: Response) => {
-                return resp.json();
-            });
-    }
+    //getGroups(degreeId: number, graduationYear: number): Observable<Group[]> {
+    //    return this.dataService
+    //        .get(`${this.apiBasePath}/GetGroups`, { degreeId: degreeId, graduationYear: graduationYear })
+    //        .map((resp: Response) => {
+    //            return resp.json();
+    //        });
+    //}
 
-    getFreeStudents(groupId: number): Observable<User[]> {
-        return this.dataService
-            .get(`${this.apiBasePath}/GetFreeStudents`, { groupId: groupId })
-            .map((resp: Response) => {
-                return resp.json();
-            });
-    }
+    //getFreeStudents(groupId: number): Observable<User[]> {
+    //    return this.dataService
+    //        .get(`${this.apiBasePath}/GetFreeStudents`, { groupId: groupId })
+    //        .map((resp: Response) => {
+    //            return resp.json();
+    //        });
+    //}
 
     submitToPredefense(studentId: number, predefenseId: number) {
         return this.dataService

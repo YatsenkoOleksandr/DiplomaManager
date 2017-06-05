@@ -1,10 +1,57 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+﻿<h2>Подача заявки</h2>
+<hr class="col-md-12" />
+<form (ngSubmit)="onSubmit(predefenseFGroup)" novalidate [formGroup]="predefenseFGroup"
+      [ngBusy]="{busy: busy}">
+    <div class="col-md-5">
+        <div class="form-group">
+            <label>Образовательный уровень (бакалавр, магистр)</label>
+            <ng-select [items]="degreesList"
+                       placeholder="Не выбран образовательный уровень"
+                       (selected)="degreeSelected($event)"
+                       formControlName="degrees">
+            </ng-select>
+            <div class="alert alert-danger"
+                 *ngIf="predefenseFGroup.get('degrees').hasError('required')
+                            && predefenseFGroup.get('degrees').touched">
+                Не выбран образовательный уровень
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Год выпуска</label>
+            <ng-select [items]="yearsList"
+                       placeholder="Введите год выпуска"
+                       (selected)="yearSelected(predefenseFGroup.get('degrees').value, $event)"
+                       formControlName="graduationYears">
+            </ng-select>
+            <div class="alert alert-danger"
+                 *ngIf="predefenseFGroup.get('graduationYears').hasError('required')
+                            && predefenseFGroup.get('graduationYears').touched">
+                Не выбран год выпуска
+            </div>
+        </div>
+    </div>
+    <!--<student></student>-->
+    <table class="col-md-12">
+        <tr>
+            <th>Дата</th>
+            <th>Присутствующие преподаватели</th>
+            <th>Время начала проведения</th>
+            <th>Время окончания проведения</th>
+            <th></th>
+        </tr>
+        <tr *ngFor="let ps of predefenseSchedule">
+            <td [[attr.rowspan]]="ps.predefenseDate.predefenses.length">ps.predefenseDate.date</td>
+            <td [[attr.rowspan]]="ps.predefenseDate.predefenses.length">
+                <div *ngFor="let teacher of ps.teachers">
+                    teacher.shortName
+                </div>
+            </td>
+            <td [[attr.rowspan]]="ps.predefenseDate.predefenses.length">ps.predefenseDate.beginTime</td>
+            <td [[attr.rowspan]]="ps.predefenseDate.predefenses.length">ps.predefenseDate.endTime</td>
+        </tr>
+        <tr *ngFor="let predefense of ps.predefenseDate.predefenses">
+            <td>predefense.time</td>
+            <td>predefense.id></td>
+        </tr>
+    </table>
+</form>

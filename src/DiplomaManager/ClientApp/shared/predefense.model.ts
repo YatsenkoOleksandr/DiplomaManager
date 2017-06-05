@@ -6,6 +6,7 @@ export class Predefense {
     studentId: number;
     student: StudentInfo;
     time: Date;
+
     passed: boolean;
 
     softwareReadiness: number;
