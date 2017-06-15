@@ -89,6 +89,11 @@ namespace DiplomaManager.Areas.Admin.Controllers
                     ModelState.AddModelError("", exc.Message);
                     return View(period);
                 }
+                catch (NoEntityInDatabaseException exc)
+                {
+                    ModelState.AddModelError("", exc.Message);
+                    return View(period);
+                }
                 catch (Exception exc)
                 {
                     return RedirectToAction("Periods");

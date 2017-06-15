@@ -1,6 +1,10 @@
 ﻿@using DiplomaManager.Areas.Admin.ViewModels
 @model PredefensePeriodSchedule
 
+@Html.ActionLink("Преподаватели периода предзащиты", "PeriodTeachers", new { predefensePeriodId = Model.PredefensePeriodId})
+
+<p></p>
+
 @Html.ActionLink("Определить дату предзащиты", "CreatePredefenseDate", new { predefensePeriodId = Model.PredefensePeriodId})
 
 @{
@@ -8,7 +12,9 @@
     string result;
 }
 
-<table id="Schedule" class="table table-striped" border="1" cellpadding="4" cellspacing="0">
+<p></p>
+
+<table id="Schedule" class="table table-striped" cellpadding="5" cellspacing="5">
     <thead>
         <tr>
             <th>
@@ -29,6 +35,12 @@
             <th>
                 Студент
             </th>
+            <th>
+                Статус предзащиты
+            </th>
+            <th>
+                Результаты предзащиты
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -46,10 +58,11 @@
                     string teachers = string.Empty;
                     if (schedule.Teachers != null && schedule.Teachers.Count != 0)
                     {
-                        foreach (var teacher in schedule.Teachers)
+                        for(int i = 0; i < schedule.Teachers.Count - 1; i++)
                         {
-                            teachers = string.Concat(teachers, teacher.GetFullName(), "\n");
+                            teachers = string.Concat(teachers, schedule.Teachers[i].GetFullName(), ",\n");
                         }
+                        teachers = string.Concat(teachers, schedule.Teachers[schedule.Teachers.Count - 1].GetFullName());
                     }
                     else
                     {
@@ -142,7 +155,12 @@
                            "Изменить студента",
                            "ChangeStudent",
                            "AdminPredefense",
-                           new { predefenseId = pred.Id, studentId = pred.StudentId })
+                           new {
+                               predefenseId = pred.Id,
+                               studentId = pred.StudentId,
+                               predefensePeriodId = Model.PredefensePeriodId,
+                               studentName = pred.Student?.GetFullName()
+                           })
                     </td>                
                 </tr>
             }

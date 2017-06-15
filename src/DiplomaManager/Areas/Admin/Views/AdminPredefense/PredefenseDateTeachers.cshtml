@@ -8,6 +8,8 @@
         predefensePeriodId = Model.PredefensePeriodId
     })
 
+<p></p>
+
 @if(Model.Teachers.Count < 3)
 {
     @Html.ActionLink(
@@ -18,9 +20,11 @@
             predefensePeriodId = Model.PredefensePeriodId,
             predefenseDateId = Model.PredefenseDateId
         });
+
+    <p></p>
 }
 
-<table>
+<table class="table table-striped" cellpadding="5" cellspacing="5"">
     <tbody>
         @foreach(var t in Model.Teachers)
         {

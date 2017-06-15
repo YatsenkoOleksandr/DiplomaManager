@@ -9,6 +9,7 @@
             predefenseId = Model.PredefenseId,            
             studentId = Model.OldStudentId
         });
+    <p></p>
 }
 
 @using (Html.BeginForm())
@@ -18,7 +19,7 @@
     @*@Html.HiddenFor(model => model.OldStudentId);*@
     @Html.HiddenFor(model => model.PredefenseId);
     @Html.HiddenFor(model => model.PredefensePeriodId);
-
+    <label>Студент</label>
     <select id="StudentId" name="StudentId">
         <option selected value="@Model.Students.First().Key">@Model.Students.First().Value</option>
         @for (int i = 1; i < Model.Students.Count; i++)
@@ -26,6 +27,9 @@
             <option value="@Model.Students.ElementAt(i).Key">@Model.Students.ElementAt(i).Value</option>
         }
     </select>
+
+    <p></p>
+
     <p>
         <input type="submit" value="Принять" />
     </p>

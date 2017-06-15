@@ -6,8 +6,9 @@
 
     <fieldset>
         @Html.HiddenFor(model => model.PredefensePeriodId)
-
-        <select id="TeacherId" name="TeacherId"></select>        
+        <label>Преподаватель</label>
+        <select id="TeacherId" name="TeacherId"></select> 
+        <p></p>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Total)
@@ -16,7 +17,8 @@
             @Html.EditorFor(model => model.Total)
             @Html.ValidationMessageFor(model => model.Total)
         </div>
-
+        <p></p>
+        
         <p>
             <input type="submit" value="Добавить" />
         </p>

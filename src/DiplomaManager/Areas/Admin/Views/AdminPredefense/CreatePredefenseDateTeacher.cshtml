@@ -4,7 +4,7 @@
 {    
     @Html.HiddenFor(model => model.PredefenseDateId);
     @Html.HiddenFor(model => model.PredefensePeriodId);
-
+    <label>Преподаватель</label>
     <select id="TeacherId" name="TeacherId">
         <option selected value="0">Преподаватель не выбран</option>
         @for (int i = 0; i < Model.Teachers.Count; i++)
@@ -12,6 +12,8 @@
             <option value="@Model.Teachers.ElementAt(i).Key">@Model.Teachers.ElementAt(i).Value</option>
         }
     </select>
+    <p></p>
+
     <p>
         <input type="submit" value="Принять" />
     </p>
