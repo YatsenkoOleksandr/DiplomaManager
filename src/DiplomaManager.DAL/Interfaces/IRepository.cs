@@ -33,7 +33,9 @@ namespace DiplomaManager.DAL.Interfaces
             int? pageSize = null,
             params SortExpression<TEntity, TKey>[] sortExpressions);
 
-        void Add(TEntity entity);
+        void Add(TEntity entity, bool identitySet = false);
+
+        void AddRange(IEnumerable<TEntity> entities, bool identitySet = false);
 
         void Attach(TEntity entity);
 

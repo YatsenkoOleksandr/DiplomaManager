@@ -130,9 +130,20 @@ namespace DiplomaManager.DAL.Repositories
             return _dbSet.Find(id);
         }
 
-        public virtual void Add(TEntity entity)
+        public virtual void Add(TEntity entity, bool identitySet = false)
         {
-            _dbSet.Add(entity);
+            if (identitySet == false)
+                _dbSet.Add(entity);
+            else
+                _db.AddWithId(entity);
+        }
+
+        public virtual void AddRange(IEnumerable<TEntity> entities, bool identitySet = false)
+        {
+            if (identitySet == false)
+                _dbSet.AddRange(entities);
+            else
+                _db.AddRangeWithId(entities);
         }
 
         public virtual void Attach(TEntity entity)

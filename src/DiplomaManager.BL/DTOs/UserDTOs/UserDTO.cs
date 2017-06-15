@@ -75,7 +75,7 @@ namespace DiplomaManager.BLL.DTOs.UserDTOs
             return nameDTO?.Name;
         }
 
-        public string GetFullName(int localeId = 1)
+        public string GetFullName(int localeId = 3)
         {
             string ln = this.GetLastName(localeId);
             string fn = this.GetFirstName(localeId);
@@ -84,13 +84,13 @@ namespace DiplomaManager.BLL.DTOs.UserDTOs
             return string.Concat(ln ?? "-", " ", fn ?? "-", " ", pn ?? "-");
         }
 
-        public string GetShortName(int localeId = 1)
+        public string GetShortName(int localeId = 3)
         {
             string ln = this.GetLastName(localeId);
             string fn = this.GetFirstName(localeId);
             string pn = this.GetPatronymic(localeId);
 
-            return string.Concat(ln ?? "-", " ", fn?.Substring(0, 1) ?? "-", ". ", pn?.Substring(0, 1) ?? "-", ".");
+            return string.Concat(ln ?? "-", " ", fn?.Substring(0, 1) ?? "-", ".", pn?.Substring(0, 1) ?? "-", ".");
         }
 
         public override bool Equals(object obj)

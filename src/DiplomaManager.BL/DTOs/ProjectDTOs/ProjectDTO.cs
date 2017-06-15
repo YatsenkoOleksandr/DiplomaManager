@@ -54,7 +54,7 @@ namespace DiplomaManager.BLL.DTOs.ProjectDTOs
             return res;
         }
 
-        public string DegreeToString(int localeId = 193)
+        public string DegreeToString(int localeId = 3)
         {
             string res;
             DegreeName degreeName = Student.Group.Degree.DegreeNames.FirstOrDefault(d => d.LocaleId == localeId);

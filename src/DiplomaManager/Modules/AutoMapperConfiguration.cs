@@ -57,7 +57,7 @@ namespace DiplomaManager.Modules
                        opt => opt.MapFrom(s => s.CreationDate.ToString()))
                    .ForMember(
                        d => d.Degree,
-                       opt => opt.MapFrom(s => s.DegreeToString(193)))
+                       opt => opt.MapFrom(s => s.DegreeToString(3)))
                    .ForMember(
                        d => d.DegreeId,
                        opt => opt.MapFrom(s => s.Student.Group.DegreeId))
@@ -72,10 +72,10 @@ namespace DiplomaManager.Modules
                        opt => opt.MapFrom(s => s.PracticeJournalPassDateToString()))
                    .ForMember(
                        d => d.Student,
-                       opt => opt.MapFrom(s => s.Student.GetFullName(1)))
+                       opt => opt.MapFrom(s => s.Student.GetFullName(3)))
                    .ForMember(
                        d => d.Teacher,
-                       opt => opt.MapFrom(s => s.Teacher.GetFullName(1)))
+                       opt => opt.MapFrom(s => s.Teacher.GetFullName(3)))
                    .ForMember(
                        d => d.Title,
                        opt => opt.MapFrom(s => s.TitleToString(1)));

@@ -25,8 +25,8 @@ namespace DiplomaManager.Controllers
                 new TeacherInfoViewModel
                 {
                     Id = t.Id,
-                    ShortName = t.GetShortName(193),
-                    FullName = t.GetFullName(193),
+                    ShortName = t.GetShortName(),
+                    FullName = t.GetFullName(),
                     PositionName = string.Empty
                 });
 

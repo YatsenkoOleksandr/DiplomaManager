@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 using DiplomaManager.DAL.Entities.PredefenseEntities;
 using DiplomaManager.DAL.Entities.ProjectEntities;
 using DiplomaManager.DAL.Entities.RequestEntities;
@@ -40,9 +41,9 @@ namespace DiplomaManager.DAL.EF
         public DbSet<PredefensePeriod> PredefensePeriods { get; set; }
         public DbSet<PredefenseDate> PredefenseDates { get; set; }
         public DbSet<Predefense> Predefenses { get; set; }
-        public DbSet<PredefenseTeacherCapacity> PredefenseTeacherCapacities { get; set; }        
+        public DbSet<PredefenseTeacherCapacity> PredefenseTeacherCapacities { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
-        
+
 
         public DiplomaManagerContext(string connectionString)
             : base(connectionString)
@@ -52,6 +53,7 @@ namespace DiplomaManager.DAL.EF
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            //Map DevelopmentArea And Teacher entities with Many-To-Many relationship
             modelBuilder.Entity<Teacher>()
                         .HasMany(t => t.DevelopmentAreas)
                         .WithMany(da => da.Teachers)
@@ -61,8 +63,8 @@ namespace DiplomaManager.DAL.EF
                             i.MapRightKey("TeacherId");
                             i.ToTable("Interests");
                         });
-            
 
+            //Map User And PeopleName entities with Many-To-Many relationship
             modelBuilder.Entity<User>()
                         .HasMany(u => u.PeopleNames)
                         .WithMany(n => n.Users)

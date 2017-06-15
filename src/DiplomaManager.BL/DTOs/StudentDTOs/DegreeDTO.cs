@@ -17,7 +17,7 @@ namespace DiplomaManager.BLL.DTOs.StudentDTOs
         { get; set; }
 
 
-        public string GetName(int localeId = 193)
+        public string GetName(int localeId = 3)
         {
             DegreeName name = DegreeNames.FirstOrDefault(dn => dn.LocaleId == localeId);
             if (!string.IsNullOrEmpty(name?.Name))
