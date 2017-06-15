@@ -266,7 +266,8 @@ namespace DiplomaManager.BLL.Services.PredefenseService
                 new IncludeExpression<Teacher>[]
                 {
                     new IncludeExpression<Teacher>(t => t.PredefenseTeacherCapacities),
-                    new IncludeExpression<Teacher>(t => t.Appointments)
+                    new IncludeExpression<Teacher>(t => t.Appointments),
+                    new IncludeExpression<Teacher>(t => t.PeopleNames)
                 });
 
             // Add to list teachers that have free time
