@@ -6,6 +6,7 @@
     @Html.HiddenFor(model => model.PredefensePeriodId);
     @Html.HiddenFor(model => model.OldTeacherId);
 
+    <label>Преподаватель</label>
     <select id="TeacherId" name="TeacherId">
         @{ 
             var oldTeacher = Model.Teachers.ElementAt(0);
@@ -16,6 +17,8 @@
             <option value="@Model.Teachers.ElementAt(i).Key">@Model.Teachers.ElementAt(i).Value</option>
         }
     </select>
+    <p></p>
+
     <p>
         <input type="submit" value="Принять" />
     </p>
